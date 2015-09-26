@@ -10,14 +10,18 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -40,6 +44,7 @@ public class GUI {
 	final static boolean shouldWeightX = true;
 	private final JFrame frame;
 	private Container contentPane;
+	final JProgressBar progressBar;
 	private VideoManipulation vFF;
 	private VideoManipulation vRewind;
 	private boolean hasRewinded = false;
@@ -85,8 +90,8 @@ public class GUI {
 		MediaPlayerFactory mediaPlayerFactory = new MediaPlayerFactory();// Creates the media player to be placed on the canvas
 		mediaPlayer = mediaPlayerFactory.newEmbeddedMediaPlayer();// The video runs on the media player
 		mediaPlayer.setVideoSurface(mediaPlayerFactory.newVideoSurface(canvas));
-		mediaPlayer.setAspectRatio("16:9");// Fixes aspect ratio
-
+		mediaPlayer.setAspectRatio("16:9");// Fixes aspect ratio	
+		
 		/*-------------------------This is the Menu---------------------------*/
 
 		JPanel menu = new JPanel();
@@ -119,12 +124,13 @@ public class GUI {
 		JPanel pane = new JPanel();
 		pane.setBackground(Color.GRAY);
 		pane.setLayout(new GridBagLayout());
-
+		
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.HORIZONTAL;
-
+	
+				
 		//REWIND BUTTON
-		gbc.gridx = 0;gbc.gridy = 0;gbc.gridwidth = 3;
+		gbc.gridx = 0;gbc.gridy = 1;gbc.gridwidth = 3;
 		gbc.insets = new Insets(5,0,5,0);  //vertical padding
 		final JButton rewind_btn = new JButton();
 		rewind_btn.setBackground(Color.WHITE);
@@ -240,7 +246,7 @@ public class GUI {
 		pane.add(slider, gbc);
 
 		//TEXTFIELD
-		gbc.gridy = 2;gbc.gridx = 0;gbc.gridwidth = 18;
+		gbc.gridy = 3;gbc.gridx = 0;gbc.gridwidth = 18;
 		final JTextArea textArea = new JTextArea();
 		textArea.setColumns(10);
 		textArea.setRows(3);
@@ -315,47 +321,56 @@ public class GUI {
 		btnNewButton_6.setToolTipText("Press to create a new video with text dubbed");
 		pane.add(btnNewButton_6, gbc);
 
-
 		/*-------------------------This is the Overall layout---------------------------*/
 		contentPane = frame.getContentPane();
 		contentPane.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+		contentPane.setBackground(Color.GRAY);
 
 		contentPane.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.HORIZONTAL;
 
 		//Menu
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.ipady = 18;      //make this component tall
-		c.weightx = 0.0;c.gridwidth = 3;c.gridx = 0;c.gridy = 0;
+		c.ipady = 18;c.weightx = 0.0;c.gridwidth = 3;c.gridx = 0;c.gridy = 0;
 		contentPane.add(menu, c);
 
 		//Pane
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.ipady = 50;       //reset to default	 
-		c.anchor = GridBagConstraints.PAGE_END; //bottom of space
-		c.gridx = 0;c.gridwidth = 2;c.gridy = 2;       
+		c.ipady = 50;c.anchor = GridBagConstraints.PAGE_END;c.gridx = 0;c.gridwidth = 2;c.gridy = 3;       
 		contentPane.add(pane, c);
-
+		
+		//Progress Bar
+		gbc.gridy = 2;gbc.gridx = 0;gbc.gridwidth = 18;gbc.ipady = 0;gbc.insets = new Insets(0,0,0,0);
+		progressBar = new JProgressBar(0,100);
+		progressBar.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int position = progressBar.getValue();
+			}	
+		});
+		//progressBar.setBackground(Color.GRAY);
+		progressBar.setForeground(Color.orange);
+		progressBar.setValue(0);
+		ProgressBar pbHelper = new ProgressBar(progressBar, mediaPlayer);
+		pbHelper.execute();
+		contentPane.add(progressBar, gbc);
+		
 		//Screen
-		if (shouldWeightX) {
-			c.weightx = 0.5;
-		}
-		c.fill = GridBagConstraints.BOTH;
-		c.gridx = 0;c.gridy = 1;c.weighty = 1.0;  //request any extra vertical space
+		c.weightx = 0.5;c.fill = GridBagConstraints.BOTH;c.gridx = 0;c.gridy = 1;c.weighty = 1.0;
 		contentPane.add(canvas, c);
-
+		
 		//Launch the application
 		frame.pack();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
+		video = "sample_video.avi";
+		mediaPlayer.playMedia(video);
 	}	
 	
 	//gets image that fits the button
 	private ImageIcon getResizedImage(String image) {
 		URL url = GUI.class.getResource("/icons/"+image);
 		ImageIcon icon = new ImageIcon(url);
-		Image getImage = icon.getImage().getScaledInstance(29, 23,  java.awt.Image.SCALE_SMOOTH);
+		Image getImage = icon.getImage().getScaledInstance(29, 23, java.awt.Image.SCALE_SMOOTH);
 		return new ImageIcon(getImage);
 	}
 }
