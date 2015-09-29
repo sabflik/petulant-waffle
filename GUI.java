@@ -172,9 +172,9 @@ public class GUI {
 		});
 
 		if(mediaPlayer.isPlaying()) { //toggle image of button depending on whether video is playing or not
-			pause_btn.setIcon(getResizedImage("play.png"));
-		} else {
 			pause_btn.setIcon(getResizedImage("pause.png"));
+		} else {
+			pause_btn.setIcon(getResizedImage("play.png"));
 		}
 		pane.add(pause_btn, gbc);
 
@@ -205,6 +205,7 @@ public class GUI {
 		replay_btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				mediaPlayer.playMedia(video);
+				pause_btn.setIcon(getResizedImage("pause.png"));
 			}
 		});
 		replay_btn.setIcon(getResizedImage("replay.png"));
@@ -226,9 +227,9 @@ public class GUI {
 		});
 		
 		if(mediaPlayer.isMute()) { //toggle image of button depending on whether video is playing or not
-			mute_btn.setIcon(getResizedImage("mute.png"));
-		} else {
 			mute_btn.setIcon(getResizedImage("sound.png"));
+		} else {
+			mute_btn.setIcon(getResizedImage("mute.png"));
 		}
 		pane.add(mute_btn, gbc);
 
@@ -302,11 +303,12 @@ public class GUI {
 			public void actionPerformed(ActionEvent arg0) {
 				if (textArea.getText().trim() != null && !textArea.getText().trim().equals("")) {
 					try {
-						Combo f = new Combo(frame, "", true, textArea.getText());
+						Combo f = new Combo(frame, "", video, textArea.getText());
 						f.setVisible(true);
 						video = f.getNewFile();
 						if (video != null) { //play newly created video
 							mediaPlayer.playMedia(video);
+							pause_btn.setIcon(getResizedImage("pause.png"));
 						}
 					} catch (IOException e) {
 						e.printStackTrace();
@@ -344,7 +346,15 @@ public class GUI {
 		progressBar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				int position = progressBar.getValue();
+				if(video != null) {
+					int pos = (e.getX() * 100) / frame.getWidth();
+					float position = (float)pos / 100;
+//					System.out.println(mediaPlayer.getPosition());
+//					if(mediaPlayer.getPosition() == 1.00) {
+//						mediaPlayer.playMedia(video);
+//					}
+					mediaPlayer.setPosition(position);
+				}
 			}	
 		});
 		//progressBar.setBackground(Color.GRAY);
@@ -362,8 +372,10 @@ public class GUI {
 		frame.pack();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
-		video = "sample_video.avi";
-		mediaPlayer.playMedia(video);
+		
+//		video = "sample_video.avi";
+//		mediaPlayer.playMedia(video);
+		pause_btn.setIcon(getResizedImage("pause.png"));
 	}	
 	
 	//gets image that fits the button

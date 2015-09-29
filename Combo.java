@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -33,20 +34,20 @@ public class Combo extends JDialog {
 	 * Create the dialog.
 	 * @throws IOException 
 	 */
-	public Combo(JFrame jframe, String title, boolean isModal, final String text) throws IOException {
-		super(jframe, title, isModal);
-		setBounds(100, 100, 450, 200);
+	public Combo(JFrame jframe, String title, final String currentlyPlaying, final String text) throws IOException {
+		super(jframe, title, true);
+		setBounds(100, 100, 450, 210);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
-		
+				
 		//JFileChooser allows user to find and select any files with .avi and .mp4 extension
 		JLabel label = new JLabel("Choose video to play");
 		label.setBounds(57, 20, 200, 20);
 		contentPanel.add(label);
 		
-		JButton chooseVideo = new JButton("Choose");
+		final JButton chooseVideo = new JButton("Choose");
 		chooseVideo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				JFileChooser fChooser = new JFileChooser();
@@ -63,15 +64,42 @@ public class Combo extends JDialog {
 		});
 		chooseVideo.setBounds(250, 20, 100, 20);
 		contentPanel.add(chooseVideo);
+		
+		
+
+		//-------------------------------Check Box----------------------------
+		//the user can choose whether or not they want to overlay the selected video with an existing audio file (this combination is NOT saved)
+		final JLabel label1 = new JLabel("Select this video");
+		label1.setBounds(80, 55, 200, 20);
+		contentPanel.add(label1);
+		
+		final JCheckBox checkBox = new JCheckBox();
+		checkBox.setBounds(57, 55, 20, 20);
+		contentPanel.add(checkBox);
+		checkBox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(checkBox.isSelected()) {
+					chooseVideo.setEnabled(false);
+				} else {
+					chooseVideo.setEnabled(true);
+				}
+			}
+		});
+		
+		if(currentlyPlaying == null) {
+			label1.setEnabled(false);
+			checkBox.setEnabled(false);
+		}
 
 		//create JLabel to instruct user on what to do
 		JLabel lblName = new JLabel("Please enter a name for your new video file");
-		lblName.setBounds(57, 70, 316, 15);
+		lblName.setBounds(57, 85, 316, 15);
 		contentPanel.add(lblName);
 
 		//create JTextField for user to enter name of new video file
 		textField = new JTextField();
-		textField.setBounds(57, 100, 366, 19);
+		textField.setBounds(57, 115, 366, 19);
 		contentPanel.add(textField);
 		textField.setColumns(10);
 
@@ -83,6 +111,9 @@ public class Combo extends JDialog {
 		JButton okButton = new JButton("OK");
 		okButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				if(checkBox.isSelected()) {
+					video = currentlyPlaying;
+				}
 				if (textField.getText().trim() != null && !textField.getText().trim().equals("") && video != null) { //ensure file is selected and text field is not empty
 					//overwrite the contents of the Speech.txt file
 					try {
