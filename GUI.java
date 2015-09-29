@@ -25,6 +25,8 @@ import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import combo.Combo;
+import openfile.OpenFile;
 import uk.co.caprica.vlcj.discovery.NativeDiscovery;
 import uk.co.caprica.vlcj.player.MediaPlayerFactory;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
@@ -246,23 +248,32 @@ public class GUI {
 		slider.setBackground(Color.GRAY);
 		pane.add(slider, gbc);
 
+		/*-------------------------This is the Panel with the specialized buttons---------------------------*/
+
+		JPanel extension = new JPanel();
+		extension.setBackground(Color.GRAY);
+		extension.setLayout(new GridBagLayout());
+		
+		GridBagConstraints gb = new GridBagConstraints();
+		gb.fill = GridBagConstraints.HORIZONTAL;
+	
+				
 		//TEXTFIELD
-		gbc.gridy = 3;gbc.gridx = 0;gbc.gridwidth = 18;
+		gb.gridy = 0;gb.gridx = 0;gb.weightx = 1.00;gb.gridheight = 3;gb.insets = new Insets(0,10,0,0);
 		final JTextArea textArea = new JTextArea();
-		textArea.setColumns(10);
-		textArea.setRows(3);
+		textArea.setRows(5);
 		textArea.setToolTipText("Enter up to 30 words for each screen"); //30 word maximum means that processes called later will not take so long
 		JScrollPane textScroll = new JScrollPane(textArea);
-		pane.add(textScroll, gbc);
+		extension.add(textScroll, gb);
 
 		//SPEAK BUTTON
-		gbc.gridx = 0;gbc.gridy = 4;gbc.gridwidth = 6;
+		gb.gridx = 1;gb.gridy = 0;gb.gridwidth = 6;gb.weightx = 0;gb.gridheight = 1;gb.insets = new Insets(0,0,0,10);
 		JButton btnNewButton_8 = new JButton("Speak");
 		btnNewButton_8.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (textArea.getText().trim() != null && !textArea.getText().trim().equals("")) {
 					String speech = textArea.getText();
-					Helper helper = new Helper(speech);
+					Speech helper = new Speech(speech);
 					helper.execute();
 				} else {
 					JOptionPane.showMessageDialog(frame, "ERROR: Please enter text to be spoken");
@@ -272,10 +283,10 @@ public class GUI {
 		btnNewButton_8.setBackground(new Color(255, 255, 255));
 		btnNewButton_8.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		btnNewButton_8.setToolTipText("Press for Festival to speak the text entered");
-		pane.add(btnNewButton_8, gbc);	
+		extension.add(btnNewButton_8, gb);	
 
 		//CREATE MP3 BUTTON
-		gbc.gridx = 6;
+		gb.gridy = 1;
 		JButton btnNewButton_7 = new JButton("Create mp3");
 		btnNewButton_7.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -294,10 +305,10 @@ public class GUI {
 		btnNewButton_7.setBackground(Color.WHITE);
 		btnNewButton_7.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		btnNewButton_7.setToolTipText("Press to convert entered text to mp3");
-		pane.add(btnNewButton_7, gbc);	
+		extension.add(btnNewButton_7, gb);	
 
 		//COMBO BUTTON
-		gbc.gridx = 12;
+		gb.gridy = 2;
 		JButton btnNewButton_6 = new JButton("Combine Speech with Video");
 		btnNewButton_6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -321,7 +332,7 @@ public class GUI {
 		btnNewButton_6.setBackground(Color.WHITE);
 		btnNewButton_6.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		btnNewButton_6.setToolTipText("Press to create a new video with text dubbed");
-		pane.add(btnNewButton_6, gbc);
+		extension.add(btnNewButton_6, gb);
 
 		/*-------------------------This is the Overall layout---------------------------*/
 		contentPane = frame.getContentPane();
@@ -337,7 +348,7 @@ public class GUI {
 		contentPane.add(menu, c);
 
 		//Pane
-		c.ipady = 50;c.anchor = GridBagConstraints.PAGE_END;c.gridx = 0;c.gridwidth = 2;c.gridy = 3;       
+		c.gridx = 0;c.gridwidth = 2;c.gridy = 3;       
 		contentPane.add(pane, c);
 		
 		//Progress Bar
@@ -363,6 +374,9 @@ public class GUI {
 		ProgressBar pbHelper = new ProgressBar(progressBar, mediaPlayer);
 		pbHelper.execute();
 		contentPane.add(progressBar, gbc);
+		
+		c.gridy = 4;c.ipady = 50;
+		contentPane.add(extension, c);
 		
 		//Screen
 		c.weightx = 0.5;c.fill = GridBagConstraints.BOTH;c.gridx = 0;c.gridy = 1;c.weighty = 1.0;

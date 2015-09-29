@@ -1,6 +1,7 @@
-package gui;
+package combo;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
 
 import javax.swing.JButton;
@@ -41,6 +42,7 @@ public class Combo extends JDialog {
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
+		contentPanel.setBackground(Color.GRAY);
 				
 		//JFileChooser allows user to find and select any files with .avi and .mp4 extension
 		JLabel label = new JLabel("Choose video to play");
@@ -75,6 +77,7 @@ public class Combo extends JDialog {
 		
 		final JCheckBox checkBox = new JCheckBox();
 		checkBox.setBounds(57, 55, 20, 20);
+		checkBox.setBackground(Color.GRAY);
 		contentPanel.add(checkBox);
 		checkBox.addActionListener(new ActionListener() {
 			@Override
@@ -105,6 +108,7 @@ public class Combo extends JDialog {
 
 		JPanel buttonPane = new JPanel();
 		buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
+		buttonPane.setBackground(Color.GRAY);
 		getContentPane().add(buttonPane, BorderLayout.SOUTH);
 
 		//ok button

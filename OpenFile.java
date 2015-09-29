@@ -1,6 +1,7 @@
-package gui;
+package openfile;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
 
 import javax.swing.JButton;
@@ -25,9 +26,11 @@ import java.io.IOException;
 public class OpenFile extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
+	private MP3Overlay overlay;
 	private String video = null;
 	private String audio = null;
 	private boolean withMP3 = false;
+	private boolean canCancel = false;
 
 	/**
 	 * Create the dialog. 
@@ -37,6 +40,7 @@ public class OpenFile extends JDialog {
 		setBounds(100, 100, 400, 200);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPanel.setBackground(Color.GRAY);
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 		
@@ -66,7 +70,6 @@ public class OpenFile extends JDialog {
 		//-------------------------------Choose Audio----------------------------
 		final JLabel aLabel = new JLabel("Choose audio to play");
 		aLabel.setEnabled(false);
-		aLabel.setBounds(57, 100, 200, 20);
 		contentPanel.add(aLabel);
 		final JButton chooseAudio = new JButton("Choose");
 		chooseAudio.addActionListener(new ActionListener() {
@@ -94,6 +97,7 @@ public class OpenFile extends JDialog {
 		
 		final JCheckBox checkBox = new JCheckBox();
 		checkBox.setBounds(57, 70, 20, 20);
+		checkBox.setBackground(Color.GRAY);
 		contentPanel.add(checkBox);
 		checkBox.addActionListener(new ActionListener() {
 			@Override
@@ -113,6 +117,7 @@ public class OpenFile extends JDialog {
 		//create JPanel
 		JPanel buttonPane = new JPanel();
 		buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
+		buttonPane.setBackground(Color.GRAY);
 		getContentPane().add(buttonPane, BorderLayout.SOUTH);
 
 		//ok button - combines the audio and video files if necessary
@@ -128,17 +133,9 @@ public class OpenFile extends JDialog {
 				}
 				
 				if(withMP3 && (audio != null) && (video != null)) {
-					String cmd = "ffmpeg -i "+video+" -i "+audio+" -map 0:v -map 1:a -y .ZealousQuack/out.avi";
-					ProcessBuilder builder = new ProcessBuilder("/bin/bash", "-c", cmd);
-					Process process;
-					try {
-						process = builder.start();
-						process.waitFor();
-					} catch (IOException | InterruptedException e) {
-						e.printStackTrace();
-					}
-					video = ".ZealousQuack/out.avi";
-					mediaPlayer.playMedia(video);
+					overlay = new MP3Overlay(video, audio, mediaPlayer);
+					overlay.execute();
+					canCancel = true;
 					((JDialog)((java.awt.Component)arg0.getSource()).getParent().getParent().getParent().getParent().getParent()).dispose();
 				} else if((withMP3 && (video == null)) || (withMP3 && (audio == null))) {
 					JOptionPane.showMessageDialog(contentPanel, "ERROR: Please select a file");
@@ -153,6 +150,9 @@ public class OpenFile extends JDialog {
 		JButton cancelButton = new JButton("Cancel");
 		cancelButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				if(canCancel) {
+					overlay.cancel(true);
+				}
 				((JDialog)((java.awt.Component)arg0.getSource()).getParent().getParent().getParent().getParent().getParent()).dispose();
 			}
 		});
@@ -163,10 +163,5 @@ public class OpenFile extends JDialog {
 	//getter - retrieves the video that the user selected to be played
 	public String getVideo() {
 		return video;
-	}
-	
-	//getter - retrieves the mp3 that the user selected to be played
-	public String getAudio() {
-		return audio;
 	}		
 }
