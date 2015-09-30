@@ -46,8 +46,8 @@ public class GUI {
 	private final JFrame frame;
 	private Container contentPane;
 	final JProgressBar progressBar;
-	private VideoManipulation vFF;
-	private VideoManipulation vRewind;
+	private VideoManipulator vFF;
+	private VideoManipulator vRewind;
 	private boolean hasRewinded = false;
 	private boolean hasFFed = false;
 	private String video = null;
@@ -144,7 +144,7 @@ public class GUI {
 				vFF.cancel(true);
 			}
 			hasRewinded = true;
-			vRewind = new VideoManipulation(mediaPlayer, "rewind");
+			vRewind = new VideoManipulator(mediaPlayer, VMType.REWIND);
 			vRewind.execute();
 			}
 		});
@@ -192,7 +192,7 @@ public class GUI {
 					vFF.cancel(true);
 				}
 				hasFFed = true;
-				vFF = new VideoManipulation(mediaPlayer, "ff");
+				vFF = new VideoManipulator(mediaPlayer, VMType.FASTFORWARD);
 				vFF.execute();
 			}
 		});
@@ -259,13 +259,13 @@ public class GUI {
 		//TEXTFIELD
 		gb.gridy = 1;gb.gridx = 0;gb.weightx = 1.00;gb.gridheight = 3;gb.insets = new Insets(0,10,0,0);
 		final JTextArea textArea = new JTextArea();
-		textArea.setRows(5);
+		textArea.setRows(4);
 		textArea.setToolTipText("Enter up to 30 words for each screen"); //30 word maximum means that processes called later will not take so long
 		JScrollPane textScroll = new JScrollPane(textArea);
 		extension.add(textScroll, gb);
 
 		//SPEAK BUTTON
-		gb.gridx = 1;gb.gridy = 1;gb.gridwidth = 6;gb.weightx = 0;gb.gridheight = 1;gb.insets = new Insets(0,0,0,10);
+		gb.gridx = 1;gb.gridy = 1;gb.weightx = 0;gb.gridheight = 1;gb.insets = new Insets(0,0,0,10);
 		JButton btnNewButton_8 = new JButton("Speak");
 		btnNewButton_8.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {

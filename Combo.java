@@ -18,6 +18,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -28,7 +29,6 @@ public class Combo extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 	private JTextField textField;
 	private String video = null;
-	private String cmd;
 	private String newFile;
 
 	/**
@@ -106,14 +106,40 @@ public class Combo extends JDialog {
 		checkBox1.setBackground(Color.GRAY);
 		contentPanel.add(checkBox1);
 
+//		JButton save = new JButton("Save");
+//		save.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent arg0) {
+//				JFileChooser fChooser = new JFileChooser();
+//				fChooser.setAcceptAllFileFilterUsed(false);
+//				FileFilter aviFilter = new FileNameExtensionFilter("avi file", "avi");
+//				FileFilter mp4Filter = new FileNameExtensionFilter("mp4 file", "mp4");
+//				fChooser.addChoosableFileFilter(aviFilter);
+//				fChooser.addChoosableFileFilter(mp4Filter);
+//				
+//				int number = fChooser.showSaveDialog(null);
+//				
+//				if(number == fChooser.APPROVE_OPTION) {
+//					File file = fChooser.getSelectedFile();
+//						System.out.println(file.getAbsolutePath());
+//				}
+//				
+//			}
+//		});
+//		save.setBounds(250, 60, 100, 20);
+//		contentPanel.add(save);
+		
+		
+		
+		
+		
 		//create JLabel to instruct user on what to do
 		JLabel lblName = new JLabel("Please enter a name for your new video file");
-		lblName.setBounds(57, 105, 316, 15);
+		lblName.setBounds(57, 115, 316, 15);
 		contentPanel.add(lblName);
 
 		//create JTextField for user to enter name of new video file
 		textField = new JTextField();
-		textField.setBounds(57, 130, 366, 19);
+		textField.setBounds(57, 140, 366, 19);
 		contentPanel.add(textField);
 		textField.setColumns(10);
 
@@ -140,21 +166,14 @@ public class Combo extends JDialog {
 						e.printStackTrace();
 					}
 					
-					if (checkBox1.isSelected()) {
-						try {
-							mergeAudio(video, textField.getText());
-						} catch (IOException | InterruptedException e) {
-							e.printStackTrace();
-						}
-					} else {
-						try {
-							replaceAudio(video, textField.getText());
-						} catch (IOException | InterruptedException e) {
-							e.printStackTrace();
-						}
+					if (checkBox1.isSelected()) {//Convert text to mp3 and merge it with video's audio
+						ComboCreator cc = new ComboCreator(video, textField.getText(), AudioSetting.MERGE);
+						cc.execute();
+					} else { //Convert the text to an mp3 file and replace video's audio with it
+						ComboCreator cc = new ComboCreator(video, textField.getText(), AudioSetting.REPLACE);
+						cc.execute();
 					}
-					
-					
+				
 					newFile = "PWNewFiles/" + textField.getText() + ".avi";
 					((JDialog)((java.awt.Component)arg0.getSource()).getParent().getParent().getParent().getParent().getParent()).dispose();
 				} else {
@@ -181,30 +200,4 @@ public class Combo extends JDialog {
 	public String getNewFile() {
 			return newFile;
 		}
-		
-	//method called that converts the text to an mp3 file and combines it with the selected video
-	private void replaceAudio(String video, String name) throws IOException, InterruptedException {
-		//create the wav file from the text in Speech.txt, convert the wav file to mp3 and finally combine the new audio with the video file selected and name the created file according to the user's input
-		cmd = "text2wave .PetulantWaffle/Speech.txt -o .PetulantWaffle/speech.wav;"
-				+ "ffmpeg -i .PetulantWaffle/speech.wav -y .PetulantWaffle/audio.mp3;"
-				+ "ffmpeg -i " + video + " -i .PetulantWaffle/audio.mp3 -map 0:v -map 1:a PWNewFiles/" + name + ".avi";
- 		ProcessBuilder makeWav = new ProcessBuilder("/bin/bash", "-c", cmd);
- 		Process processMW;
- 		processMW = makeWav.start();
- 		processMW.waitFor();
-	}
-	
-	//Code from http://stackoverflow.com/questions/24804928/singler-line-ffmpeg-cmd-to-merge-video-audio-and-retain-both-audios
-	private void mergeAudio(String video, String name) throws IOException, InterruptedException {
-		cmd = "text2wave .PetulantWaffle/Speech.txt -o .PetulantWaffle/speech.wav;"
-				+ "ffmpeg -i .PetulantWaffle/speech.wav -y .PetulantWaffle/audio.mp3;"
-				+"ffmpeg -i " + video + " -y -vn -acodec copy .PetulantWaffle/video.mp3;"
-				+"ffmpeg -i .PetulantWaffle/video.mp3 -i .PetulantWaffle/audio.mp3 -filter_complex amix=inputs=2:duration=first:dropout_transition=3 -y .PetulantWaffle/audiofinal.mp3;"
-				+"ffmpeg -i "+ video + " -an -y .PetulantWaffle/tempVideo.avi;"
-				+ "ffmpeg -i .PetulantWaffle/tempVideo.avi -i .PetulantWaffle/audiofinal.mp3 -map 0:v -map 1:a PWNewFiles/" + name + ".avi";
- 		ProcessBuilder makeWav = new ProcessBuilder("/bin/bash", "-c", cmd);
- 		Process processMW;
- 		processMW = makeWav.start();
- 		processMW.waitFor();
-	}
 }
