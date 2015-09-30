@@ -43,7 +43,6 @@ import javax.swing.JSlider;
 
 public class GUI {
 	
-	final static boolean shouldWeightX = true;
 	private final JFrame frame;
 	private Container contentPane;
 	final JProgressBar progressBar;
@@ -57,17 +56,17 @@ public class GUI {
 	public static void main(String[] args) throws IOException {
 
 		//create hidden directory to store intermediate files
-		File hDir = new File(".ZealousQuack");
+		File hDir = new File(".PetulantWaffle");
 		if (!hDir.exists()) {
 			hDir.mkdir();
 		}
 		//create directory for files to be saved to that user creates
-		File dir = new File("ZQNewFiles");
+		File dir = new File("PWNewFiles");
 		if (!dir.exists()) {
 			dir.mkdir();
 		}
 		//create file for saving text to turn into speech if it doesn't already exist
-		File speechFile = new File(".ZealousQuack/Speech.txt");
+		File speechFile = new File(".PetulantWaffle/Speech.txt");
 		speechFile.createNewFile();
 
 		EventQueue.invokeLater(new Runnable() {
@@ -246,7 +245,7 @@ public class GUI {
 			}	
 		});
 		slider.setBackground(Color.GRAY);
-		pane.add(slider, gbc);
+		pane.add(slider, gbc);		
 
 		/*-------------------------This is the Panel with the specialized buttons---------------------------*/
 
@@ -256,10 +255,9 @@ public class GUI {
 		
 		GridBagConstraints gb = new GridBagConstraints();
 		gb.fill = GridBagConstraints.HORIZONTAL;
-	
 				
 		//TEXTFIELD
-		gb.gridy = 0;gb.gridx = 0;gb.weightx = 1.00;gb.gridheight = 3;gb.insets = new Insets(0,10,0,0);
+		gb.gridy = 1;gb.gridx = 0;gb.weightx = 1.00;gb.gridheight = 3;gb.insets = new Insets(0,10,0,0);
 		final JTextArea textArea = new JTextArea();
 		textArea.setRows(5);
 		textArea.setToolTipText("Enter up to 30 words for each screen"); //30 word maximum means that processes called later will not take so long
@@ -267,7 +265,7 @@ public class GUI {
 		extension.add(textScroll, gb);
 
 		//SPEAK BUTTON
-		gb.gridx = 1;gb.gridy = 0;gb.gridwidth = 6;gb.weightx = 0;gb.gridheight = 1;gb.insets = new Insets(0,0,0,10);
+		gb.gridx = 1;gb.gridy = 1;gb.gridwidth = 6;gb.weightx = 0;gb.gridheight = 1;gb.insets = new Insets(0,0,0,10);
 		JButton btnNewButton_8 = new JButton("Speak");
 		btnNewButton_8.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -286,7 +284,7 @@ public class GUI {
 		extension.add(btnNewButton_8, gb);	
 
 		//CREATE MP3 BUTTON
-		gb.gridy = 1;
+		gb.gridy = 2;
 		JButton btnNewButton_7 = new JButton("Create mp3");
 		btnNewButton_7.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -308,7 +306,7 @@ public class GUI {
 		extension.add(btnNewButton_7, gb);	
 
 		//COMBO BUTTON
-		gb.gridy = 2;
+		gb.gridy = 3;
 		JButton btnNewButton_6 = new JButton("Combine Speech with Video");
 		btnNewButton_6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -360,15 +358,10 @@ public class GUI {
 				if(video != null) {
 					int pos = (e.getX() * 100) / frame.getWidth();
 					float position = (float)pos / 100;
-//					System.out.println(mediaPlayer.getPosition());
-//					if(mediaPlayer.getPosition() == 1.00) {
-//						mediaPlayer.playMedia(video);
-//					}
 					mediaPlayer.setPosition(position);
 				}
 			}	
 		});
-		//progressBar.setBackground(Color.GRAY);
 		progressBar.setForeground(Color.orange);
 		progressBar.setValue(0);
 		ProgressBar pbHelper = new ProgressBar(progressBar, mediaPlayer);
