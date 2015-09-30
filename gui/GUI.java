@@ -312,13 +312,9 @@ public class GUI {
 			public void actionPerformed(ActionEvent arg0) {
 				if (textArea.getText().trim() != null && !textArea.getText().trim().equals("")) {
 					try {
-						Combo f = new Combo(frame, "", video, textArea.getText());
+						Combo f = new Combo(frame, "", video, textArea.getText(), mediaPlayer);
 						f.setVisible(true);
 						video = f.getNewFile();
-						if (video != null) { //play newly created video
-							mediaPlayer.playMedia(video);
-							pause_btn.setIcon(getResizedImage("pause.png"));
-						}
 					} catch (IOException e) {
 						e.printStackTrace();
 					}

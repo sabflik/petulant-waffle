@@ -17,6 +17,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
+
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileWriter;
@@ -35,7 +37,7 @@ public class Combo extends JDialog {
 	 * Create the dialog.
 	 * @throws IOException 
 	 */
-	public Combo(JFrame jframe, String title, final String currentlyPlaying, final String text) throws IOException {
+	public Combo(JFrame jframe, String title, final String currentlyPlaying, final String text, final EmbeddedMediaPlayer mediaPlayer) throws IOException {
 		super(jframe, title, true);
 		setBounds(100, 100, 450, 220);
 		getContentPane().setLayout(new BorderLayout());
@@ -167,10 +169,10 @@ public class Combo extends JDialog {
 					}
 					
 					if (checkBox1.isSelected()) {//Convert text to mp3 and merge it with video's audio
-						ComboCreator cc = new ComboCreator(video, textField.getText(), AudioSetting.MERGE);
+						ComboCreator cc = new ComboCreator(video, textField.getText(), AudioSetting.MERGE, mediaPlayer);
 						cc.execute();
 					} else { //Convert the text to an mp3 file and replace video's audio with it
-						ComboCreator cc = new ComboCreator(video, textField.getText(), AudioSetting.REPLACE);
+						ComboCreator cc = new ComboCreator(video, textField.getText(), AudioSetting.REPLACE, mediaPlayer);
 						cc.execute();
 					}
 				

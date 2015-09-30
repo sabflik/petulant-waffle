@@ -21,7 +21,7 @@ public class MP3Overlay extends SwingWorker<Void,Void>{
 	@Override
 	protected Void doInBackground() throws Exception {
 		if (!isCancelled()) {
-			String cmd = "ffmpeg -i "+video+" -i "+audio+" -map 0:v -map 1:a -y .ZealousQuack/out.avi";
+			String cmd = "ffmpeg -i "+video+" -i "+audio+" -map 0:v -map 1:a -y .PetulantWaffle/out.avi";
 			ProcessBuilder builder = new ProcessBuilder("/bin/bash", "-c", cmd);
 			Process process;
 			try {
@@ -37,7 +37,7 @@ public class MP3Overlay extends SwingWorker<Void,Void>{
 	
 	protected void done() {
 		if (!isCancelled()) {
-			video = ".ZealousQuack/out.avi";
+			video = ".PetulantWaffle/out.avi";
 			mediaPlayer.playMedia(video);
 		}
 	}
