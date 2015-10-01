@@ -13,6 +13,7 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JProgressBar;
 
 import uk.co.caprica.vlcj.discovery.NativeDiscovery;
@@ -109,7 +110,7 @@ public class GUI {
 		progressBar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(video != null) {
+				if(video != null && (e.getButton() == MouseEvent.BUTTON1)) {
 					int pos = (e.getX() * 100) / frame.getWidth();
 					float position = (float)pos / 100;
 					mediaPlayer.setPosition(position);
@@ -122,6 +123,13 @@ public class GUI {
 		pbHelper.execute();
 		contentPane.add(progressBar, gbc);
 		
+		JPopupMenu popup = new JPopupMenu();
+		popup.add("Add speech here");
+		popup.add("Add mp3 here");
+		progressBar.setComponentPopupMenu(popup);
+		
+		
+		//Text Panel
 		c.gridy = 4;c.ipady = 50;
 		contentPane.add(extension, c);
 		
