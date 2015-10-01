@@ -1,5 +1,7 @@
 package combo;
 
+import gui.Video;
+
 import javax.swing.SwingWorker;
 
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;

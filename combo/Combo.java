@@ -1,5 +1,7 @@
 package combo;
 
+import gui.Video;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -30,14 +32,13 @@ public class Combo extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 	private JTextField textField;
-	private String video = null;
 	private String newFile;
 
 	/**
 	 * Create the dialog.
 	 * @throws IOException 
 	 */
-	public Combo(JFrame jframe, String title, final String currentlyPlaying, final String text, final EmbeddedMediaPlayer mediaPlayer) throws IOException {
+	public Combo(JFrame jframe, String title, final Video currentlyPlaying, final String text, final EmbeddedMediaPlayer mediaPlayer) throws IOException {
 		super(jframe, title, true);
 		setBounds(100, 100, 450, 220);
 		getContentPane().setLayout(new BorderLayout());
@@ -61,7 +62,7 @@ public class Combo extends JDialog {
 				int number = fChooser.showDialog(null, "Choose a Video File");
 				
 				if(number == fChooser.APPROVE_OPTION) {
-					video = fChooser.getSelectedFile().getAbsolutePath();
+					Video.setVideoName(fChooser.getSelectedFile().getAbsolutePath());
 				}
 				
 			}
@@ -131,9 +132,6 @@ public class Combo extends JDialog {
 //		contentPanel.add(save);
 		
 		
-		
-		
-		
 		//create JLabel to instruct user on what to do
 		JLabel lblName = new JLabel("Please enter a name for your new video file");
 		lblName.setBounds(57, 115, 316, 15);
@@ -154,10 +152,7 @@ public class Combo extends JDialog {
 		JButton okButton = new JButton("OK");
 		okButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(checkBox.isSelected()) {
-					video = currentlyPlaying;
-				}
-				if (textField.getText().trim() != null && !textField.getText().trim().equals("") && video != null) { //ensure file is selected and text field is not empty
+				if (textField.getText().trim() != null && !textField.getText().trim().equals("") && Video.getVideoName() != null) { //ensure file is selected and text field is not empty
 					//overwrite the contents of the Speech.txt file
 					try {
 						PrintWriter out;
@@ -169,10 +164,10 @@ public class Combo extends JDialog {
 					}
 					
 					if (checkBox1.isSelected()) {//Convert text to mp3 and merge it with video's audio
-						ComboCreator cc = new ComboCreator(video, textField.getText(), AudioSetting.MERGE, mediaPlayer);
+						ComboCreator cc = new ComboCreator(Video.getVideoName(), textField.getText(), AudioSetting.MERGE, mediaPlayer);
 						cc.execute();
 					} else { //Convert the text to an mp3 file and replace video's audio with it
-						ComboCreator cc = new ComboCreator(video, textField.getText(), AudioSetting.REPLACE, mediaPlayer);
+						ComboCreator cc = new ComboCreator(Video.getVideoName(), textField.getText(), AudioSetting.REPLACE, mediaPlayer);
 						cc.execute();
 					}
 				
@@ -200,6 +195,6 @@ public class Combo extends JDialog {
 	
 	//getter - retrieves the file that the user created so it can be played
 	public String getNewFile() {
-			return newFile;
-		}
+		return newFile;
+	}
 }

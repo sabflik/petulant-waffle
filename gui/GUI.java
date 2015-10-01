@@ -50,7 +50,7 @@ public class GUI {
 	private VideoManipulator vRewind;
 	private boolean hasRewinded = false;
 	private boolean hasFFed = false;
-	private String video = null;
+	private Video video = null;
 	private EmbeddedMediaPlayer mediaPlayer;
 
 	public static void main(String[] args) throws IOException {
@@ -92,6 +92,7 @@ public class GUI {
 		mediaPlayer = mediaPlayerFactory.newEmbeddedMediaPlayer();// The video runs on the media player
 		mediaPlayer.setVideoSurface(mediaPlayerFactory.newVideoSurface(canvas));
 		mediaPlayer.setAspectRatio("16:9");// Fixes aspect ratio	
+		video = Video.getInstance();
 		
 		/*-------------------------This is the Menu---------------------------*/
 
@@ -109,7 +110,7 @@ public class GUI {
 					f = new OpenFile(frame, "Please select a video to import", mediaPlayer);
 					f.setVisible(true);
 					if (f.getVideo() != null) {
-						video = f.getVideo();
+						Video.setVideoName(f.getVideo());
 					}
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -205,7 +206,7 @@ public class GUI {
 		replay_btn.setBackground(Color.WHITE);
 		replay_btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				mediaPlayer.playMedia(video);
+				mediaPlayer.playMedia(Video.getVideoName());
 				pause_btn.setIcon(getResizedImage("pause.png"));
 			}
 		});
@@ -249,85 +250,8 @@ public class GUI {
 
 		/*-------------------------This is the Panel with the specialized buttons---------------------------*/
 
-		JPanel extension = new JPanel();
-		extension.setBackground(Color.GRAY);
-		extension.setLayout(new GridBagLayout());
+		JPanel extension = new TextPanel(mediaPlayer, frame, video);
 		
-		GridBagConstraints gb = new GridBagConstraints();
-		gb.fill = GridBagConstraints.HORIZONTAL;
-				
-		//TEXTFIELD
-		gb.gridy = 1;gb.gridx = 0;gb.weightx = 1.00;gb.gridheight = 3;gb.insets = new Insets(0,10,0,0);
-		final JTextArea textArea = new JTextArea();
-		textArea.setRows(4);
-		textArea.setToolTipText("Enter up to 30 words for each screen"); //30 word maximum means that processes called later will not take so long
-		JScrollPane textScroll = new JScrollPane(textArea);
-		extension.add(textScroll, gb);
-
-		//SPEAK BUTTON
-		gb.gridx = 1;gb.gridy = 1;gb.weightx = 0;gb.gridheight = 1;gb.insets = new Insets(0,0,0,10);
-		JButton btnNewButton_8 = new JButton("Speak");
-		btnNewButton_8.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if (textArea.getText().trim() != null && !textArea.getText().trim().equals("")) {
-					String speech = textArea.getText();
-					Speech helper = new Speech(speech);
-					helper.execute();
-				} else {
-					JOptionPane.showMessageDialog(frame, "ERROR: Please enter text to be spoken");
-				}
-			}
-		});
-		btnNewButton_8.setBackground(new Color(255, 255, 255));
-		btnNewButton_8.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		btnNewButton_8.setToolTipText("Press for Festival to speak the text entered");
-		extension.add(btnNewButton_8, gb);	
-
-		//CREATE MP3 BUTTON
-		gb.gridy = 2;
-		JButton btnNewButton_7 = new JButton("Create mp3");
-		btnNewButton_7.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if (textArea.getText().trim() != null && !textArea.getText().trim().equals("")) {
-					try {
-						CreateAudio f = new CreateAudio(frame, "Please enter a name for your mp3 file", true, textArea.getText());
-						f.setVisible(true);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				} else {
-					JOptionPane.showMessageDialog(frame, "ERROR: Please enter text to be converted");
-				}
-			}
-		});
-		btnNewButton_7.setBackground(Color.WHITE);
-		btnNewButton_7.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		btnNewButton_7.setToolTipText("Press to convert entered text to mp3");
-		extension.add(btnNewButton_7, gb);	
-
-		//COMBO BUTTON
-		gb.gridy = 3;
-		JButton btnNewButton_6 = new JButton("Combine Speech with Video");
-		btnNewButton_6.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if (textArea.getText().trim() != null && !textArea.getText().trim().equals("")) {
-					try {
-						Combo f = new Combo(frame, "", video, textArea.getText(), mediaPlayer);
-						f.setVisible(true);
-						video = f.getNewFile();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				} else {
-					JOptionPane.showMessageDialog(frame, "ERROR: Please enter text to be converted");
-				}
-			}
-		});
-		btnNewButton_6.setBackground(Color.WHITE);
-		btnNewButton_6.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		btnNewButton_6.setToolTipText("Press to create a new video with text dubbed");
-		extension.add(btnNewButton_6, gb);
-
 		/*-------------------------This is the Overall layout---------------------------*/
 		contentPane = frame.getContentPane();
 		contentPane.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
