@@ -40,7 +40,7 @@ public class Combo extends JDialog {
 	 */
 	public Combo(JFrame jframe, String title, final Video currentlyPlaying, final String text, final EmbeddedMediaPlayer mediaPlayer) throws IOException {
 		super(jframe, title, true);
-		setBounds(100, 100, 450, 220);
+		setBounds(100, 100, 450, 320);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -48,7 +48,7 @@ public class Combo extends JDialog {
 		contentPanel.setBackground(Color.GRAY);
 				
 		//JFileChooser allows user to find and select any files with .avi and .mp4 extension
-		JLabel label = new JLabel("Choose video to play");
+		JLabel label = new JLabel("Choose a Different Video");
 		label.setBounds(57, 20, 200, 20);
 		contentPanel.add(label);
 		
@@ -70,16 +70,15 @@ public class Combo extends JDialog {
 		chooseVideo.setBounds(250, 20, 100, 20);
 		contentPanel.add(chooseVideo);
 		
-		
 
 		//-------------------------------Check Box Current Video----------------------------
 		//the user can choose whether or not they want to overlay the selected video with an existing audio file (this combination is NOT saved)
-		final JLabel label1 = new JLabel("Select this video");
-		label1.setBounds(80, 55, 200, 20);
+		final JLabel label1 = new JLabel("Select Current Video");
+		label1.setBounds(80, 50, 200, 20);
 		contentPanel.add(label1);
 		
 		final JCheckBox checkBox = new JCheckBox();
-		checkBox.setBounds(57, 55, 20, 20);
+		checkBox.setBounds(57, 50, 20, 20);
 		checkBox.setBackground(Color.GRAY);
 		contentPanel.add(checkBox);
 		checkBox.addActionListener(new ActionListener() {
@@ -93,53 +92,35 @@ public class Combo extends JDialog {
 			}
 		});
 		
-		if(currentlyPlaying == null) {
+		if(Video.getVideoName() == null) {
 			label1.setEnabled(false);
 			checkBox.setEnabled(false);
 		}
 		
+		//-------------------------------Audio Settings----------------------------
+		final JLabel s_label = new JLabel("Audio Settings");
+		s_label.setBounds(57, 85, 200, 20);
+		contentPanel.add(s_label);
+		
 		//-------------------------------Check Box Keep audio----------------------------
 		//the user can choose whether or not they want to keep the video's audio
 		final JLabel label2 = new JLabel("Keep the video's audio");
-		label2.setBounds(80, 75, 200, 20);
+		label2.setBounds(80, 110, 200, 20);
 		contentPanel.add(label2);
 				
 		final JCheckBox checkBox1 = new JCheckBox();
-		checkBox1.setBounds(57, 75, 20, 20);
+		checkBox1.setBounds(57, 110, 20, 20);
 		checkBox1.setBackground(Color.GRAY);
 		contentPanel.add(checkBox1);
 
-//		JButton save = new JButton("Save");
-//		save.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent arg0) {
-//				JFileChooser fChooser = new JFileChooser();
-//				fChooser.setAcceptAllFileFilterUsed(false);
-//				FileFilter aviFilter = new FileNameExtensionFilter("avi file", "avi");
-//				FileFilter mp4Filter = new FileNameExtensionFilter("mp4 file", "mp4");
-//				fChooser.addChoosableFileFilter(aviFilter);
-//				fChooser.addChoosableFileFilter(mp4Filter);
-//				
-//				int number = fChooser.showSaveDialog(null);
-//				
-//				if(number == fChooser.APPROVE_OPTION) {
-//					File file = fChooser.getSelectedFile();
-//						System.out.println(file.getAbsolutePath());
-//				}
-//				
-//			}
-//		});
-//		save.setBounds(250, 60, 100, 20);
-//		contentPanel.add(save);
-		
-		
 		//create JLabel to instruct user on what to do
 		JLabel lblName = new JLabel("Please enter a name for your new video file");
-		lblName.setBounds(57, 115, 316, 15);
+		lblName.setBounds(57, 210, 316, 15);
 		contentPanel.add(lblName);
 
 		//create JTextField for user to enter name of new video file
 		textField = new JTextField();
-		textField.setBounds(57, 140, 366, 19);
+		textField.setBounds(57, 235, 350, 19);
 		contentPanel.add(textField);
 		textField.setColumns(10);
 
@@ -155,8 +136,7 @@ public class Combo extends JDialog {
 				if (textField.getText().trim() != null && !textField.getText().trim().equals("") && Video.getVideoName() != null) { //ensure file is selected and text field is not empty
 					//overwrite the contents of the Speech.txt file
 					try {
-						PrintWriter out;
-						out = new PrintWriter(new FileWriter(".PetulantWaffle/Speech.txt"));
+						PrintWriter out = new PrintWriter(new FileWriter(".PetulantWaffle/Speech.txt"));
 						out.println(text);
 						out.close();
 					} catch (IOException e) {

@@ -8,48 +8,26 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.UIManager;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
-import combo.Combo;
-import openfile.OpenFile;
 import uk.co.caprica.vlcj.discovery.NativeDiscovery;
 import uk.co.caprica.vlcj.player.MediaPlayerFactory;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 
-import java.awt.Font;
-import java.awt.Image;
 import java.awt.Insets;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-
-import javax.swing.JSlider;
-
 
 public class GUI {
 	
 	private final JFrame frame;
 	private Container contentPane;
 	final JProgressBar progressBar;
-	private VideoManipulator vFF;
-	private VideoManipulator vRewind;
-	private boolean hasRewinded = false;
-	private boolean hasFFed = false;
 	private Video video = null;
 	private EmbeddedMediaPlayer mediaPlayer;
 
@@ -96,159 +74,13 @@ public class GUI {
 		
 		/*-------------------------This is the Menu---------------------------*/
 
-		JPanel menu = new JPanel();
-		menu.setBackground(Color.GRAY);
-		menu.setLayout(null);
+		JPanel menu = new MenuPanel(frame, mediaPlayer);
 
-		//This button imports the video file to be played
-		final JButton btnNewButton = new JButton("Import File");
-		btnNewButton.setBackground(Color.WHITE);
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				OpenFile f;
-				try {
-					f = new OpenFile(frame, "Please select a video to import", mediaPlayer);
-					f.setVisible(true);
-					if (f.getVideo() != null) {
-						Video.setVideoName(f.getVideo());
-					}
-				} catch (IOException e) {
-					e.printStackTrace();
-				}		
-			}
-		});
-		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		btnNewButton.setBounds(0, 0, 140, 20);
-		menu.add(btnNewButton);
+		/*-------------------------This is the Panel with all the buttons------------------------*/
 
-		/*-------------------------This is the Panel with all the buttons---------------------------*/
+		JPanel pane = new ButtonPanel(mediaPlayer);
 
-		JPanel pane = new JPanel();
-		pane.setBackground(Color.GRAY);
-		pane.setLayout(new GridBagLayout());
-		
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-	
-				
-		//REWIND BUTTON
-		gbc.gridx = 0;gbc.gridy = 1;gbc.gridwidth = 3;
-		gbc.insets = new Insets(5,0,5,0);  //vertical padding
-		final JButton rewind_btn = new JButton();
-		rewind_btn.setBackground(Color.WHITE);
-		rewind_btn.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent arg0) {
-			if(hasRewinded) {
-				vRewind.cancel(true);
-			}
-			if(hasFFed) {
-				vFF.cancel(true);
-			}
-			hasRewinded = true;
-			vRewind = new VideoManipulator(mediaPlayer, VMType.REWIND);
-			vRewind.execute();
-			}
-		});
-		rewind_btn.setIcon(getResizedImage("rewind.png"));
-		pane.add(rewind_btn, gbc);
-
-		//PAUSE AND PLAY BUTTON
-		gbc.gridx = 3;
-		final JButton pause_btn = new JButton();
-		pause_btn.setBackground(Color.WHITE);
-		pause_btn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if(hasFFed) {
-					vFF.cancel(true);
-				}
-				if(hasRewinded) {
-					vRewind.cancel(true);
-				}
-				if(mediaPlayer.isPlaying()) { //toggle image of button depending on whether video is playing or not
-					pause_btn.setIcon(getResizedImage("play.png"));
-				} else {
-					pause_btn.setIcon(getResizedImage("pause.png"));
-				}
-				mediaPlayer.pause();
-			}
-		});
-
-		if(mediaPlayer.isPlaying()) { //toggle image of button depending on whether video is playing or not
-			pause_btn.setIcon(getResizedImage("pause.png"));
-		} else {
-			pause_btn.setIcon(getResizedImage("play.png"));
-		}
-		pane.add(pause_btn, gbc);
-
-		//FASTFORWARD BUTTON
-		gbc.gridx = 6;
-		final JButton fastforward_btn = new JButton();
-		fastforward_btn.setBackground(Color.WHITE);
-		fastforward_btn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if(hasRewinded) {
-					vRewind.cancel(true);
-				}
-				if(hasFFed) {
-					vFF.cancel(true);
-				}
-				hasFFed = true;
-				vFF = new VideoManipulator(mediaPlayer, VMType.FASTFORWARD);
-				vFF.execute();
-			}
-		});
-		fastforward_btn.setIcon(getResizedImage("forward.png"));
-		pane.add(fastforward_btn, gbc);
-
-		//REPLAY BUTTON
-		gbc.gridx = 9;
-		final JButton replay_btn = new JButton();
-		replay_btn.setBackground(Color.WHITE);
-		replay_btn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				mediaPlayer.playMedia(Video.getVideoName());
-				pause_btn.setIcon(getResizedImage("pause.png"));
-			}
-		});
-		replay_btn.setIcon(getResizedImage("replay.png"));
-		pane.add(replay_btn, gbc);
-		
-		//MUTE BUTTON
-		gbc.gridx = 12;
-		final JButton mute_btn = new JButton();
-		mute_btn.setBackground(Color.WHITE);
-		mute_btn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {	
-				if(mediaPlayer.isMute()) { //toggle image of button depending on whether video is playing or not
-					mute_btn.setIcon(getResizedImage("mute.png"));
-				} else {
-					mute_btn.setIcon(getResizedImage("sound.png"));
-				}
-				mediaPlayer.mute();
-			}
-		});
-		
-		if(mediaPlayer.isMute()) { //toggle image of button depending on whether video is playing or not
-			mute_btn.setIcon(getResizedImage("sound.png"));
-		} else {
-			mute_btn.setIcon(getResizedImage("mute.png"));
-		}
-		pane.add(mute_btn, gbc);
-
-		//VOLUME SLIDER
-		gbc.gridx = 15;gbc.gridwidth = 3;
-		final JSlider slider = new JSlider();
-		slider.addChangeListener(new ChangeListener() {
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				int sliderPos = slider.getValue();
-				mediaPlayer.setVolume(sliderPos*2);
-			}	
-		});
-		slider.setBackground(Color.GRAY);
-		pane.add(slider, gbc);		
-
-		/*-------------------------This is the Panel with the specialized buttons---------------------------*/
+		/*----------------------This is the Panel with the specialized buttons------------------*/
 
 		JPanel extension = new TextPanel(mediaPlayer, frame, video);
 		
@@ -270,6 +102,8 @@ public class GUI {
 		contentPane.add(pane, c);
 		
 		//Progress Bar
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.gridy = 2;gbc.gridx = 0;gbc.gridwidth = 18;gbc.ipady = 0;gbc.insets = new Insets(0,0,0,0);
 		progressBar = new JProgressBar(0,100);
 		progressBar.addMouseListener(new MouseAdapter() {
@@ -302,14 +136,6 @@ public class GUI {
 		
 //		video = "sample_video.avi";
 //		mediaPlayer.playMedia(video);
-		pause_btn.setIcon(getResizedImage("pause.png"));
+//		pause_btn.setIcon(getResizedImage("pause.png"));
 	}	
-	
-	//gets image that fits the button
-	private ImageIcon getResizedImage(String image) {
-		URL url = GUI.class.getResource("/icons/"+image);
-		ImageIcon icon = new ImageIcon(url);
-		Image getImage = icon.getImage().getScaledInstance(29, 23, java.awt.Image.SCALE_SMOOTH);
-		return new ImageIcon(getImage);
-	}
 }

@@ -49,7 +49,7 @@ public class OpenFile extends JDialog {
 		vLabel.setBounds(57, 20, 200, 20);
 		contentPanel.add(vLabel);
 		
-		JButton chooseVideo = new JButton("Choose");
+		JButton chooseVideo = new JButton("Open");
 		chooseVideo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				JFileChooser fChooser = new JFileChooser();
@@ -69,9 +69,11 @@ public class OpenFile extends JDialog {
 		
 		//-------------------------------Choose Audio----------------------------
 		final JLabel aLabel = new JLabel("Choose audio to play");
+		aLabel.setBounds(57, 100, 200, 20);
 		aLabel.setEnabled(false);
 		contentPanel.add(aLabel);
-		final JButton chooseAudio = new JButton("Choose");
+		
+		final JButton chooseAudio = new JButton("Open");
 		chooseAudio.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				JFileChooser fChooser = new JFileChooser();
