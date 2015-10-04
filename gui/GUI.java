@@ -8,13 +8,18 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 
 import javax.swing.JFrame;
+import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JProgressBar;
+import javax.swing.Timer;
 
 import uk.co.caprica.vlcj.discovery.NativeDiscovery;
 import uk.co.caprica.vlcj.player.MediaPlayerFactory;
@@ -64,26 +69,54 @@ public class GUI {
 
 		/*-------------------------This is the Screen---------------------------*/
 
+		//JLayeredPane screen = frame.getLayeredPane();
 		final Canvas canvas = new Canvas();// Creates a canvas to display the video
 		canvas.setBackground(Color.black);
+		//screen.add(canvas, new Integer(1));
 
 		MediaPlayerFactory mediaPlayerFactory = new MediaPlayerFactory();// Creates the media player to be placed on the canvas
 		mediaPlayer = mediaPlayerFactory.newEmbeddedMediaPlayer();// The video runs on the media player
 		mediaPlayer.setVideoSurface(mediaPlayerFactory.newVideoSurface(canvas));
 		mediaPlayer.setAspectRatio("16:9");// Fixes aspect ratio	
-		video = Video.getInstance();
+		Video.getInstance();
+		MP3.getInstance();
 		
 		/*-------------------------This is the Menu---------------------------*/
 
-		JPanel menu = new MenuPanel(frame, mediaPlayer);
+		MenuPanel menu = new MenuPanel(frame, mediaPlayer);
 
 		/*-------------------------This is the Panel with all the buttons------------------------*/
 
-		JPanel pane = new ButtonPanel(mediaPlayer);
+		final ButtonPanel pane = new ButtonPanel(mediaPlayer, menu);
+		pane.setVisible(false);
 
+		final MouseMotionListener listener = new MouseMotionListener() {
+			@Override
+			public void mouseDragged(MouseEvent arg0) {
+			}
+
+			@Override
+			public void mouseMoved(MouseEvent arg0) {
+				pane.setVisible(true);
+				
+				Timer timer = new Timer(5000, new ActionListener() {
+
+			    @Override
+			    public void actionPerformed(ActionEvent e) {
+			        pane.setVisible(false);
+			    }
+				});
+				timer.setRepeats(false);
+				timer.start();
+			}
+		};
+		
+		canvas.addMouseMotionListener(listener);
+		
+		
 		/*----------------------This is the Panel with the specialized buttons------------------*/
 
-		JPanel extension = new TextPanel(mediaPlayer, frame, video);
+		TextPanel extension = new TextPanel(mediaPlayer, frame, video, menu);
 		
 		/*-------------------------This is the Overall layout---------------------------*/
 		contentPane = frame.getContentPane();
@@ -110,7 +143,7 @@ public class GUI {
 		progressBar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(video != null && (e.getButton() == MouseEvent.BUTTON1)) {
+				if(Video.getVideoName() != null && (e.getButton() == MouseEvent.BUTTON1)) {
 					int pos = (e.getX() * 100) / frame.getWidth();
 					float position = (float)pos / 100;
 					mediaPlayer.setPosition(position);

@@ -7,6 +7,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.IOException;
 
 import javax.swing.JButton;
@@ -33,15 +35,20 @@ public class TextPanel extends JPanel{
 	JButton btnNewButton_6;
 	JButton btnNewButton_7;
 	JButton btnNewButton_8;
+	MenuPanel menu;
 	
-	public TextPanel(final EmbeddedMediaPlayer mediaPlayer, final JFrame frame, Video video) {
+	public TextPanel(final EmbeddedMediaPlayer mediaPlayer, final JFrame frame, Video video, MenuPanel menu) {
 		this.frame = frame;
 		this.mediaPlayer = mediaPlayer;
 		this.video = video;
+		this.menu = menu;
 		setUp();
 	}
 	
 	private void setUp() {
+		
+		menu.attachTextObserver(this);
+		
 		setBackground(Color.GRAY);
 		setLayout(new GridBagLayout());
 		
@@ -52,16 +59,18 @@ public class TextPanel extends JPanel{
 		gb.gridy = 0;gb.insets = new Insets(0,10,0,0);
 		JLabel t_label = new JLabel("Enter Commentary Here");
 		t_label.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		t_label.setForeground(Color.orange);
 		add(t_label, gb);
 		
 		//CHAR LIMIT LABEL
 		gb.gridy = 4;gb.insets = new Insets(0,10,0,0);
 		final JLabel cl_label = new JLabel("Characters Remaining: 200");
 		cl_label.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		cl_label.setForeground(Color.orange);
 		add(cl_label, gb);
 		
 		//TEXTAREA
-		gb.gridy = 1;gb.gridx = 0;gb.weightx = 1.00;gb.gridheight = 3;
+		gb.gridy = 1;gb.gridx = 0;gb.weightx = 1.00;gb.gridheight = 3;gb.gridwidth = 10;
 		final JTextArea textArea = new JTextArea();
 		DocumentListener documentListener = new DocumentListener() {
 		      public void changedUpdate(DocumentEvent documentEvent) {
@@ -90,13 +99,13 @@ public class TextPanel extends JPanel{
 		      }
 		};
 		textArea.getDocument().addDocumentListener(documentListener);
-		textArea.setRows(4);
+		textArea.setRows(5);
 		textArea.setToolTipText("Enter up to 30 words for each screen"); //30 word maximum means that processes called later will not take so long
 		JScrollPane textScroll = new JScrollPane(textArea);
 		add(textScroll, gb);
-
+		
 		//SPEAK BUTTON
-		gb.gridx = 1;gb.gridy = 1;gb.weightx = 0;gb.gridheight = 1;gb.insets = new Insets(0,0,0,10);
+		gb.gridx = 109;gb.gridy = 1;gb.weightx = 0;gb.gridwidth = 2;gb.gridheight = 1;gb.insets = new Insets(0,0,0,10);
 		btnNewButton_8 = new JButton("Speak");
 		btnNewButton_8.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -110,6 +119,29 @@ public class TextPanel extends JPanel{
 		btnNewButton_8.setToolTipText("Press for Festival to speak the text entered");
 		btnNewButton_8.setEnabled(false);
 		add(btnNewButton_8, gb);	
+		
+		textArea.addKeyListener(new KeyListener() {
+
+			@Override
+			public void keyPressed(KeyEvent arg0) {
+				if ((arg0.getKeyChar() == KeyEvent.VK_ENTER) && (btnNewButton_8.isEnabled())) {
+					String speech = textArea.getText();
+					Speech helper = new Speech(speech);
+					helper.execute();
+				}
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				
+			}
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+				
+			}
+			
+		});
 
 		//CREATE MP3 BUTTON
 		gb.gridy = 2;
@@ -149,5 +181,9 @@ public class TextPanel extends JPanel{
 		btnNewButton_6.setToolTipText("Press to create a new video with text dubbed");
 		btnNewButton_6.setEnabled(false);
 		add(btnNewButton_6, gb);
+	}
+	
+	public void update() {
+		
 	}
 }

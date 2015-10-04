@@ -20,6 +20,8 @@ public class ProgressBar extends SwingWorker<Void,Void>{
 		int position = 0;
 		
 		while(true) {
+			//progressBar.setMaximum((int)mediaPlayer.getLength());
+			//float currentPos = mediaPlayer.getTime();
 			float currentPos = mediaPlayer.getPosition()*100;
 			position = (int)currentPos;
 		

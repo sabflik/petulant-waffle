@@ -26,7 +26,9 @@ public class ButtonPanel extends JPanel {
 	private boolean hasFFed = false;
 	private JButton pause_btn;
 
-	public ButtonPanel(final EmbeddedMediaPlayer mediaPlayer) {
+	public ButtonPanel(final EmbeddedMediaPlayer mediaPlayer, MenuPanel menu) {
+		
+		menu.attachButtonObserver(this);
 		
 		setBackground(Color.GRAY);
 		setLayout(new GridBagLayout());
@@ -164,4 +166,8 @@ public class ButtonPanel extends JPanel {
 //	public void setPauseImage() {
 //		pause_btn.setIcon(getResizedImage("pause.png"));
 //	}
+	
+	public void update() {
+		
+	}
 }
