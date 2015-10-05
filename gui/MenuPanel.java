@@ -7,9 +7,13 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -22,6 +26,7 @@ public class MenuPanel extends JPanel {
 	private ButtonPanel button_observer;
 	private TextPanel text_observer;
 	private JButton mp3Button;
+	JMenuItem timing;
 
 	public MenuPanel(final JFrame frame, final EmbeddedMediaPlayer mediaPlayer) {
 		
@@ -73,6 +78,13 @@ public class MenuPanel extends JPanel {
 		mp3Button.setEnabled(false);
 		add(mp3Button);
 		
+		JPopupMenu popup = new JPopupMenu();
+		JCheckBoxMenuItem check = new JCheckBoxMenuItem("Keep original audio");
+		popup.add(check);
+		timing = new JMenuItem("Start: 00:00");
+		popup.add(timing);
+		mp3Button.setComponentPopupMenu(popup);
+		
 		//This button imports the video file to be played
 		final JButton tnNewButton = new JButton("File");
 		tnNewButton.setBackground(Color.WHITE);
@@ -93,6 +105,10 @@ public class MenuPanel extends JPanel {
 		tnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		tnNewButton.setBounds(200, 0, 100, 20);
 		add(tnNewButton);
+	}
+	
+	public void MP3Start(String time) {
+		timing.setText(time);
 	}
 	
 	public void attachButtonObserver(ButtonPanel observer) {
