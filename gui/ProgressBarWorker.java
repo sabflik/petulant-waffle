@@ -6,13 +6,13 @@ import javax.swing.SwingWorker;
 
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 
-public class ProgressBar extends SwingWorker<Void,Void>{
+public class ProgressBarWorker extends SwingWorker<Void,Void>{
 	
 	JProgressBar progressBar;
 	EmbeddedMediaPlayer mediaPlayer;
 	JLabel timeStamp;
 
-	public ProgressBar(JProgressBar progressBar, JLabel timeStamp, EmbeddedMediaPlayer mediaPlayer) {
+	public ProgressBarWorker(JProgressBar progressBar, JLabel timeStamp, EmbeddedMediaPlayer mediaPlayer) {
 		this.progressBar = progressBar;
 		this.mediaPlayer = mediaPlayer;
 		this.timeStamp = timeStamp;

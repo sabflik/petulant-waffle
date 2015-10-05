@@ -143,17 +143,17 @@ public class Combo extends JDialog {
 					}
 					
 					if (checkBox1.isSelected()) {//Convert text to mp3 and merge it with video's audio
-						ComboCreator cc = new ComboCreator(Video.getVideoName(), textField.getText(), AudioSetting.MERGE, mediaPlayer, timing);
+						ComboCreationWorker cc = new ComboCreationWorker(Video.getVideoName(), textField.getText(), AudioSetting.MERGE, mediaPlayer, timing);
 						cc.execute();
 					} else { //Convert the text to an mp3 file and replace video's audio with it
-						ComboCreator cc = new ComboCreator(Video.getVideoName(), textField.getText(), AudioSetting.REPLACE, mediaPlayer, timing);
+						ComboCreationWorker cc = new ComboCreationWorker(Video.getVideoName(), textField.getText(), AudioSetting.REPLACE, mediaPlayer, timing);
 						cc.execute();
 					}
 				
 					newFile = "PWNewFiles/" + textField.getText() + ".avi";
 					((JDialog)((java.awt.Component)arg0.getSource()).getParent().getParent().getParent().getParent().getParent()).dispose();
 				} else {
-					JOptionPane.showMessageDialog(contentPanel, "ERROR: Please select a video and enter the name you want to give the new file");
+					JOptionPane.showMessageDialog(contentPanel, "ERROR: Please enter the name you want to give the new file");
 				}
 			}
 		});

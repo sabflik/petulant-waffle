@@ -6,13 +6,13 @@ import javax.swing.SwingWorker;
 
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 
-public class MP3Overlay extends SwingWorker<Void,Void>{
+public class MP3OverlayWorker extends SwingWorker<Void,Void>{
 
 	private String video;
 	private String audio;
 	private EmbeddedMediaPlayer mediaPlayer;
 	
-	public MP3Overlay(String video, String audio, EmbeddedMediaPlayer mediaPlayer) {
+	public MP3OverlayWorker(String video, String audio, EmbeddedMediaPlayer mediaPlayer) {
 		this.video = video;
 		this.audio = audio;
 		this.mediaPlayer = mediaPlayer;

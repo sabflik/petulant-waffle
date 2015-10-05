@@ -70,7 +70,7 @@ public class GUI {
 		new NativeDiscovery().discover();
 
 		frame = new JFrame("Media Player");
-		frame.setMinimumSize(new Dimension(650, 500));
+		frame.setMinimumSize(new Dimension(650, 600));
 
 		/*-------------------------This is the Screen---------------------------*/
 
@@ -152,12 +152,18 @@ public class GUI {
 		// Popup
 		final JPopupMenu popup = new JPopupMenu();
 		JMenuItem addSpeech = new JMenuItem("Add speech here");
+		addSpeech.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				menu.speechTiming(time);
+			}
+		});
 		popup.add(addSpeech);
 		JMenuItem addMP3 = new JMenuItem("Add mp3 here");
 		addMP3.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				menu.timing(time);
+				menu.mp3Timing(time);
 			}
 		});
 		popup.add(addMP3);
@@ -188,7 +194,7 @@ public class GUI {
 		});
 		progressBar.setForeground(Color.orange);
 		progressBar.setValue(0);
-		ProgressBar pbHelper = new ProgressBar(progressBar, timeStamp, mediaPlayer);
+		ProgressBarWorker pbHelper = new ProgressBarWorker(progressBar, timeStamp, mediaPlayer);
 		pbHelper.execute();
 		contentPane.add(progressBar, gbc);
 

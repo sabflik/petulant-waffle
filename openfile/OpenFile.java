@@ -1,5 +1,7 @@
 package openfile;
 
+import gui.Video;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -26,11 +28,10 @@ import java.io.IOException;
 public class OpenFile extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
-	private MP3Overlay overlay;
-	private String video = null;
-	private String audio = null;
+	private MP3OverlayWorker overlay;
 	private boolean withMP3 = false;
 	private boolean canCancel = false;
+	private String audio = null;
 
 	/**
 	 * Create the dialog. 
@@ -44,28 +45,6 @@ public class OpenFile extends JDialog {
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 		
-		//-------------------------------Choose Video----------------------------
-		JLabel vLabel = new JLabel("Choose video to play");
-		vLabel.setBounds(57, 20, 200, 20);
-		contentPanel.add(vLabel);
-		
-		JButton chooseVideo = new JButton("Open");
-		chooseVideo.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				JFileChooser fChooser = new JFileChooser();
-				fChooser.setAcceptAllFileFilterUsed(false);
-				FileFilter filter = new FileNameExtensionFilter("avi, mp4", "avi", "mp4"); //JFileChooser allows user to find and select any files with .avi and .mp4 extension
-				fChooser.addChoosableFileFilter(filter);
-				int number = fChooser.showDialog(null, "Choose Video");
-				
-				if(number == fChooser.APPROVE_OPTION) {
-					video = fChooser.getSelectedFile().getAbsolutePath();
-				}
-				
-			}
-		});
-		chooseVideo.setBounds(250, 20, 100, 20);
-		contentPanel.add(chooseVideo);
 		
 		//-------------------------------Choose Audio----------------------------
 		final JLabel aLabel = new JLabel("Choose audio to play");
@@ -127,19 +106,19 @@ public class OpenFile extends JDialog {
 		okButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				if(!withMP3 && (video != null)) {
-					mediaPlayer.playMedia(video);
+				if(!withMP3 && (Video.getVideoName() != null)) {
+					mediaPlayer.playMedia(Video.getVideoName());
 					((JDialog)((java.awt.Component)arg0.getSource()).getParent().getParent().getParent().getParent().getParent()).dispose();
-				} else if(!withMP3 && (video == null)){
+				} else if(!withMP3 && (Video.getVideoName() == null)){
 					JOptionPane.showMessageDialog(contentPanel, "ERROR: Please select a file");
 				}
 				
-				if(withMP3 && (audio != null) && (video != null)) {
-					overlay = new MP3Overlay(video, audio, mediaPlayer);
+				if(withMP3 && (audio != null) && (Video.getVideoName() != null)) {
+					overlay = new MP3OverlayWorker(Video.getVideoName(), audio, mediaPlayer);
 					overlay.execute();
 					canCancel = true;
 					((JDialog)((java.awt.Component)arg0.getSource()).getParent().getParent().getParent().getParent().getParent()).dispose();
-				} else if((withMP3 && (video == null)) || (withMP3 && (audio == null))) {
+				} else if((withMP3 && (Video.getVideoName() == null)) || (withMP3 && (audio == null))) {
 					JOptionPane.showMessageDialog(contentPanel, "ERROR: Please select a file");
 				}				
 			}
@@ -161,9 +140,4 @@ public class OpenFile extends JDialog {
 		cancelButton.setActionCommand("Cancel");
 		buttonPane.add(cancelButton);		
 	}
-
-	//getter - retrieves the video that the user selected to be played
-	public String getVideo() {
-		return video;
-	}		
 }

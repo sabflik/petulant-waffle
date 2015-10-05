@@ -20,8 +20,8 @@ import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 
 public class ButtonPanel extends JPanel {
 	
-	private VideoManipulator vFF;
-	private VideoManipulator vRewind;
+	private VideoManipulationWorker vFF;
+	private VideoManipulationWorker vRewind;
 	private boolean hasRewinded = false;
 	private boolean hasFFed = false;
 	private JButton pause_btn;
@@ -51,7 +51,7 @@ public class ButtonPanel extends JPanel {
 				vFF.cancel(true);
 			}
 			hasRewinded = true;
-			vRewind = new VideoManipulator(mediaPlayer, VMType.REWIND);
+			vRewind = new VideoManipulationWorker(mediaPlayer, VMType.REWIND);
 			vRewind.execute();
 			}
 		});
@@ -99,7 +99,7 @@ public class ButtonPanel extends JPanel {
 					vFF.cancel(true);
 				}
 				hasFFed = true;
-				vFF = new VideoManipulator(mediaPlayer, VMType.FASTFORWARD);
+				vFF = new VideoManipulationWorker(mediaPlayer, VMType.FASTFORWARD);
 				vFF.execute();
 			}
 		});

@@ -5,13 +5,13 @@ import javax.swing.SwingWorker;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 
 //this class fast forwards/rewinds the video until another video manipulator button is clicked (done in background)
-public class VideoManipulator extends SwingWorker<Void, Void>{
+public class VideoManipulationWorker extends SwingWorker<Void, Void>{
 	
 	private VMType type;
 	//private String type;
 	private EmbeddedMediaPlayer mediaPlayer;
 	
-	public VideoManipulator(EmbeddedMediaPlayer mediaPlayer, VMType type) { //save inputted variables
+	public VideoManipulationWorker(EmbeddedMediaPlayer mediaPlayer, VMType type) { //save inputted variables
 		this.type = type;
 		this.mediaPlayer = mediaPlayer;
 	}

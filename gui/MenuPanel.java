@@ -76,7 +76,7 @@ public class MenuPanel extends JPanel {
 		speechPopup.add(speechCheck);
 		speechTiming = new JMenuItem("00:00");
 		speechPopup.add(speechTiming);
-		mp3Button.setComponentPopupMenu(speechPopup);		
+		speechButton.setComponentPopupMenu(speechPopup);		
 		
 		//This button imports the video file to be played
 		final JButton btnNewButton = new JButton("Video");
@@ -94,6 +94,7 @@ public class MenuPanel extends JPanel {
 					Video.setVideoName(video);
 					mediaPlayer.playMedia(video);
 					mp3Button.setEnabled(true);
+					speechButton.setEnabled(true);
 				}
 			}
 		});
@@ -110,9 +111,6 @@ public class MenuPanel extends JPanel {
 				try {
 					f = new OpenFile(frame, "Please select a video to import", mediaPlayer);
 					f.setVisible(true);
-					if (f.getVideo() != null) {
-						Video.setVideoName(f.getVideo());
-					}
 				} catch (IOException e) {
 					e.printStackTrace();
 				}		
@@ -123,7 +121,8 @@ public class MenuPanel extends JPanel {
 		add(tnNewButton);
 	}
 	
-	public void timing(float time) {
+	//Sets the selected time for mp3 placement
+	public void mp3Timing(float time) {
 		if(time != -1) {
 			float timeInSeconds = time / 1000;
 			int sec = (int)timeInSeconds % 60;
@@ -132,6 +131,17 @@ public class MenuPanel extends JPanel {
 		}
 	}
 	
+	//Sets the selected time for mp3 placement
+	public void speechTiming(float time) {
+		if(time != -1) {
+			float timeInSeconds = time / 1000;
+			int sec = (int)timeInSeconds % 60;
+			int min = (int)(timeInSeconds / 60) % 60;
+			speechTiming.setText(String.format("%02d:%02d", min, sec));
+		}
+	}
+	
+	//Gets the selected time for mp3 placement
 	public String getTiming() {
 		return mp3Timing.getText();
 	}

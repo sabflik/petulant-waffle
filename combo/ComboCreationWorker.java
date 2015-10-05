@@ -6,7 +6,7 @@ import javax.swing.SwingWorker;
 
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 
-public class ComboCreator extends SwingWorker<Void,Void> {
+public class ComboCreationWorker extends SwingWorker<Void,Void> {
 
 	private AudioSetting setting;
 	private String video;
@@ -14,7 +14,7 @@ public class ComboCreator extends SwingWorker<Void,Void> {
 	private EmbeddedMediaPlayer mediaPlayer;
 	private String timing;
 	
-	public ComboCreator(String video, String name, AudioSetting setting, EmbeddedMediaPlayer mediaPlayer, String timing) {
+	public ComboCreationWorker(String video, String name, AudioSetting setting, EmbeddedMediaPlayer mediaPlayer, String timing) {
 		this.setting = setting;
 		this.video = video;
 		this.name = name;

@@ -32,6 +32,7 @@ public class TextPanel extends JPanel{
 	private JFrame frame;
 	private EmbeddedMediaPlayer mediaPlayer;
 	private Video video;
+	JButton mp3Button;
 	JButton btnNewButton_6;
 	JButton btnNewButton_7;
 	JButton btnNewButton_8;
@@ -63,14 +64,14 @@ public class TextPanel extends JPanel{
 		add(t_label, gb);
 		
 		//CHAR LIMIT LABEL
-		gb.gridy = 4;gb.insets = new Insets(0,10,0,0);
+		gb.gridy = 5;gb.insets = new Insets(0,10,0,0);
 		final JLabel cl_label = new JLabel("Characters Remaining: 200");
 		cl_label.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		cl_label.setForeground(Color.orange);
 		add(cl_label, gb);
 		
 		//TEXTAREA
-		gb.gridy = 1;gb.gridx = 0;gb.weightx = 1.00;gb.gridheight = 3;gb.gridwidth = 10;
+		gb.gridy = 1;gb.gridx = 0;gb.weightx = 1.00;gb.gridheight = 4;gb.gridwidth = 10;
 		final JTextArea textArea = new JTextArea();
 		DocumentListener documentListener = new DocumentListener() {
 		      public void changedUpdate(DocumentEvent documentEvent) {
@@ -99,7 +100,7 @@ public class TextPanel extends JPanel{
 		      }
 		};
 		textArea.getDocument().addDocumentListener(documentListener);
-		textArea.setRows(5);
+		textArea.setRows(6);
 		textArea.setToolTipText("Enter up to 30 words for each screen"); //30 word maximum means that processes called later will not take so long
 		JScrollPane textScroll = new JScrollPane(textArea);
 		add(textScroll, gb);
@@ -162,7 +163,7 @@ public class TextPanel extends JPanel{
 		btnNewButton_7.setEnabled(false);
 		add(btnNewButton_7, gb);	
 
-		//COMBO BUTTON
+		//SPEECH COMBO BUTTON
 		gb.gridy = 3;
 		btnNewButton_6 = new JButton("Combine Speech with Video");
 		btnNewButton_6.addActionListener(new ActionListener() {
@@ -181,6 +182,20 @@ public class TextPanel extends JPanel{
 		btnNewButton_6.setToolTipText("Press to create a new video with text dubbed");
 		btnNewButton_6.setEnabled(false);
 		add(btnNewButton_6, gb);
+	
+		//MP3 COMBO BUTTON
+		gb.gridy = 4;
+		mp3Button = new JButton("Combine MP3 with Video");
+		mp3Button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+					
+			}
+		});
+		mp3Button.setBackground(Color.WHITE);
+		mp3Button.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		mp3Button.setToolTipText("Press to create a new video with text dubbed");
+		add(mp3Button, gb);		
+		
 	}
 	
 	public void update() {
