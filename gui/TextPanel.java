@@ -120,28 +120,28 @@ public class TextPanel extends JPanel{
 		btnNewButton_8.setEnabled(false);
 		add(btnNewButton_8, gb);	
 		
-		textArea.addKeyListener(new KeyListener() {
-
-			@Override
-			public void keyPressed(KeyEvent arg0) {
-				if ((arg0.getKeyChar() == KeyEvent.VK_ENTER) && (btnNewButton_8.isEnabled())) {
-					String speech = textArea.getText();
-					Speech helper = new Speech(speech);
-					helper.execute();
-				}
-			}
-
-			@Override
-			public void keyReleased(KeyEvent e) {
-				
-			}
-
-			@Override
-			public void keyTyped(KeyEvent e) {
-				
-			}
-			
-		});
+//		textArea.addKeyListener(new KeyListener() {
+//
+//			@Override
+//			public void keyPressed(KeyEvent arg0) {
+//				if ((arg0.getKeyChar() == KeyEvent.VK_ENTER) && (btnNewButton_8.isEnabled())) {
+//					String speech = textArea.getText();
+//					Speech helper = new Speech(speech);
+//					helper.execute();
+//				}
+//			}
+//
+//			@Override
+//			public void keyReleased(KeyEvent e) {
+//				
+//			}
+//
+//			@Override
+//			public void keyTyped(KeyEvent e) {
+//				
+//			}
+//			
+//		});
 
 		//CREATE MP3 BUTTON
 		gb.gridy = 2;
@@ -168,7 +168,7 @@ public class TextPanel extends JPanel{
 		btnNewButton_6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 					try {
-						Combo f = new Combo(frame, "", video, textArea.getText(), mediaPlayer);
+						Combo f = new Combo(frame, "", video, textArea.getText(), mediaPlayer, menu.getTiming());
 						f.setVisible(true);
 						Video.setVideoName(f.getNewFile());
 					} catch (IOException e) {

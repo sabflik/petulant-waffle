@@ -37,7 +37,7 @@ public class Combo extends JDialog {
 	 * Create the dialog.
 	 * @throws IOException 
 	 */
-	public Combo(JFrame jframe, String title, final Video currentlyPlaying, final String text, final EmbeddedMediaPlayer mediaPlayer) throws IOException {
+	public Combo(JFrame jframe, String title, final Video currentlyPlaying, final String text, final EmbeddedMediaPlayer mediaPlayer, final String timing) throws IOException {
 		super(jframe, title, true);
 		setBounds(100, 100, 450, 320);
 		getContentPane().setLayout(new BorderLayout());
@@ -143,10 +143,10 @@ public class Combo extends JDialog {
 					}
 					
 					if (checkBox1.isSelected()) {//Convert text to mp3 and merge it with video's audio
-						ComboCreator cc = new ComboCreator(Video.getVideoName(), textField.getText(), AudioSetting.MERGE, mediaPlayer);
+						ComboCreator cc = new ComboCreator(Video.getVideoName(), textField.getText(), AudioSetting.MERGE, mediaPlayer, timing);
 						cc.execute();
 					} else { //Convert the text to an mp3 file and replace video's audio with it
-						ComboCreator cc = new ComboCreator(Video.getVideoName(), textField.getText(), AudioSetting.REPLACE, mediaPlayer);
+						ComboCreator cc = new ComboCreator(Video.getVideoName(), textField.getText(), AudioSetting.REPLACE, mediaPlayer, timing);
 						cc.execute();
 					}
 				

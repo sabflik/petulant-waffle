@@ -7,7 +7,6 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -25,14 +24,60 @@ public class MenuPanel extends JPanel {
 	
 	private ButtonPanel button_observer;
 	private TextPanel text_observer;
-	private JButton mp3Button;
-	JMenuItem timing;
+	final private JButton mp3Button;
+	final private JButton speechButton;
+	JMenuItem mp3Timing;
+	JMenuItem speechTiming;
 
 	public MenuPanel(final JFrame frame, final EmbeddedMediaPlayer mediaPlayer) {
 		
 		setBackground(Color.GRAY);
 		setLayout(null);
-
+		
+		//This button imports the mp3 file to be played
+		mp3Button = new JButton("MP3 Settings");
+		mp3Button.setBackground(Color.WHITE);
+		mp3Button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				JFileChooser fChooser = new JFileChooser();
+				fChooser.setAcceptAllFileFilterUsed(false);
+				FileFilter filter = new FileNameExtensionFilter("mp3 files", "mp3"); //JFileChooser allows user to find and select any .mp3 files
+				fChooser.addChoosableFileFilter(filter);
+				int number = fChooser.showDialog(null, "Choose mp3 File");
+				
+				if(number == fChooser.APPROVE_OPTION) {
+					String audio = fChooser.getSelectedFile().getAbsolutePath();
+					MP3.setMP3Name(audio);
+				}	
+			}
+		});
+		mp3Button.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		mp3Button.setBounds(100, 0, 150, 20);
+		mp3Button.setEnabled(false);
+		add(mp3Button);
+		
+		JPopupMenu mp3Popup = new JPopupMenu();
+		JCheckBoxMenuItem mp3Check = new JCheckBoxMenuItem("Keep original audio");
+		mp3Popup.add(mp3Check);
+		mp3Timing = new JMenuItem("00:00");
+		mp3Popup.add(mp3Timing);
+		mp3Button.setComponentPopupMenu(mp3Popup);
+		
+		//This button imports the mp3 file to be played
+		speechButton = new JButton("Speech Settings");
+		speechButton.setBackground(Color.WHITE);
+		speechButton.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		speechButton.setBounds(250, 0, 150, 20);
+		speechButton.setEnabled(false);
+		add(speechButton);
+		
+		JPopupMenu speechPopup = new JPopupMenu();
+		JCheckBoxMenuItem speechCheck = new JCheckBoxMenuItem("Keep original audio");
+		speechPopup.add(speechCheck);
+		speechTiming = new JMenuItem("00:00");
+		speechPopup.add(speechTiming);
+		mp3Button.setComponentPopupMenu(speechPopup);		
+		
 		//This button imports the video file to be played
 		final JButton btnNewButton = new JButton("Video");
 		btnNewButton.setBackground(Color.WHITE);
@@ -56,35 +101,6 @@ public class MenuPanel extends JPanel {
 		btnNewButton.setBounds(0, 0, 100, 20);
 		add(btnNewButton);
 		
-		//This button imports the mp3 file to be played
-		final JButton mp3Button = new JButton("MP3");
-		mp3Button.setBackground(Color.WHITE);
-		mp3Button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				JFileChooser fChooser = new JFileChooser();
-				fChooser.setAcceptAllFileFilterUsed(false);
-				FileFilter filter = new FileNameExtensionFilter("mp3 files", "mp3"); //JFileChooser allows user to find and select any .mp3 files
-				fChooser.addChoosableFileFilter(filter);
-				int number = fChooser.showDialog(null, "Choose mp3 File");
-				
-				if(number == fChooser.APPROVE_OPTION) {
-					String audio = fChooser.getSelectedFile().getAbsolutePath();
-					MP3.setMP3Name(audio);
-				}	
-			}
-		});
-		mp3Button.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		mp3Button.setBounds(100, 0, 100, 20);
-		mp3Button.setEnabled(false);
-		add(mp3Button);
-		
-		JPopupMenu popup = new JPopupMenu();
-		JCheckBoxMenuItem check = new JCheckBoxMenuItem("Keep original audio");
-		popup.add(check);
-		timing = new JMenuItem("Start: 00:00");
-		popup.add(timing);
-		mp3Button.setComponentPopupMenu(popup);
-		
 		//This button imports the video file to be played
 		final JButton tnNewButton = new JButton("File");
 		tnNewButton.setBackground(Color.WHITE);
@@ -103,12 +119,21 @@ public class MenuPanel extends JPanel {
 			}
 		});
 		tnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		tnNewButton.setBounds(200, 0, 100, 20);
+		tnNewButton.setBounds(400, 0, 100, 20);
 		add(tnNewButton);
 	}
 	
-	public void MP3Start(String time) {
-		timing.setText(time);
+	public void timing(float time) {
+		if(time != -1) {
+			float timeInSeconds = time / 1000;
+			int sec = (int)timeInSeconds % 60;
+			int min = (int)(timeInSeconds / 60) % 60;
+			mp3Timing.setText(String.format("%02d:%02d", min, sec));
+		}
+	}
+	
+	public String getTiming() {
+		return mp3Timing.getText();
 	}
 	
 	public void attachButtonObserver(ButtonPanel observer) {

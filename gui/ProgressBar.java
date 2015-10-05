@@ -1,5 +1,6 @@
 package gui;
 
+import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 import javax.swing.SwingWorker;
 
@@ -9,10 +10,12 @@ public class ProgressBar extends SwingWorker<Void,Void>{
 	
 	JProgressBar progressBar;
 	EmbeddedMediaPlayer mediaPlayer;
+	JLabel timeStamp;
 
-	public ProgressBar(JProgressBar progressBar, EmbeddedMediaPlayer mediaPlayer) {
+	public ProgressBar(JProgressBar progressBar, JLabel timeStamp, EmbeddedMediaPlayer mediaPlayer) {
 		this.progressBar = progressBar;
 		this.mediaPlayer = mediaPlayer;
+		this.timeStamp = timeStamp;
 	}
 	
 	@Override
@@ -26,6 +29,8 @@ public class ProgressBar extends SwingWorker<Void,Void>{
 			position = (int)currentPos;
 		
 			progressBar.setValue(position);
+			Long time = mediaPlayer.getTime();
+			timeStamp.setText(time.toString());
 		}
 	}
 }

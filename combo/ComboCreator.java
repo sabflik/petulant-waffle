@@ -12,12 +12,14 @@ public class ComboCreator extends SwingWorker<Void,Void> {
 	private String video;
 	private String name;
 	private EmbeddedMediaPlayer mediaPlayer;
+	private String timing;
 	
-	public ComboCreator(String video, String name, AudioSetting setting, EmbeddedMediaPlayer mediaPlayer) {
+	public ComboCreator(String video, String name, AudioSetting setting, EmbeddedMediaPlayer mediaPlayer, String timing) {
 		this.setting = setting;
 		this.video = video;
 		this.name = name;
 		this.mediaPlayer = mediaPlayer;
+		this.timing = timing;
 	}
 	
 	//Code from http://stackoverflow.com/questions/24804928/singler-line-ffmpeg-cmd-to-merge-video-audio-and-retain-both-audios
@@ -32,7 +34,8 @@ public class ComboCreator extends SwingWorker<Void,Void> {
 					//Convert the wav file to mp3
 					+ "ffmpeg -i .PetulantWaffle/speech.wav -y .PetulantWaffle/audio.mp3;"
 					//Finally combine the new audio with the video file selected and name the created file according to the user's input
-					+ "ffmpeg -i " + video + " -i .PetulantWaffle/audio.mp3 -map 0:v -map 1:a PWNewFiles/" + name + ".avi";
+					+ "ffmpeg -i " + video + " -itsoffset 00:"+timing+" -i .PetulantWaffle/audio.mp3 -map 0:v -map 1:a PWNewFiles/" + name + ".avi";
+			System.out.println(cmd);
 		} else {
 					//Create the wav file from the text in Speech.txt
 			cmd = "text2wave .PetulantWaffle/Speech.txt -o .PetulantWaffle/speech.wav;"
