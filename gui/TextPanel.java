@@ -169,7 +169,7 @@ public class TextPanel extends JPanel{
 		btnNewButton_6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 					try {
-						Combo f = new Combo(frame, "", video, textArea.getText(), mediaPlayer, menu.getTiming());
+						Combo f = new Combo(frame, "", video, textArea.getText(), mediaPlayer, menu.getSpeechTiming(), menu.getMP3Timing());
 						f.setVisible(true);
 						Video.setVideoName(f.getNewFile());
 					} catch (IOException e) {

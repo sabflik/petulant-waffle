@@ -142,8 +142,12 @@ public class MenuPanel extends JPanel {
 	}
 	
 	//Gets the selected time for mp3 placement
-	public String getTiming() {
+	public String getMP3Timing() {
 		return mp3Timing.getText();
+	}
+	
+	public String getSpeechTiming() {
+		return speechTiming.getText();
 	}
 	
 	public void attachButtonObserver(ButtonPanel observer) {
