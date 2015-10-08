@@ -1,4 +1,4 @@
-package gui;
+package video;
 
 public enum VMType {
 	FASTFORWARD, REWIND;

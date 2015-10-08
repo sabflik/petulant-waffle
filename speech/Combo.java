@@ -1,6 +1,5 @@
-package combo;
+package speech;
 
-import gui.Video;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -19,7 +18,9 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
+import video.Video;
 
 import java.awt.event.ActionListener;
 import java.io.FileWriter;
@@ -37,7 +38,7 @@ public class Combo extends JDialog {
 	 * Create the dialog.
 	 * @throws IOException 
 	 */
-	public Combo(JFrame jframe, String title, final Video currentlyPlaying, final String text, final EmbeddedMediaPlayer mediaPlayer, final String speechTiming, final String mp3Timing) throws IOException {
+	public Combo(JFrame jframe, String title, final Video currentlyPlaying, final String text, final EmbeddedMediaPlayer mediaPlayer, final float speechTimeInMS) throws IOException {
 		super(jframe, title, true);
 		setBounds(100, 100, 450, 320);
 		getContentPane().setLayout(new BorderLayout());
@@ -45,56 +46,6 @@ public class Combo extends JDialog {
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 		contentPanel.setBackground(Color.GRAY);
-				
-		//JFileChooser allows user to find and select any files with .avi and .mp4 extension
-		JLabel label = new JLabel("Choose a Different Video");
-		label.setBounds(57, 20, 200, 20);
-		contentPanel.add(label);
-		
-		final JButton chooseVideo = new JButton("Choose");
-		chooseVideo.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				JFileChooser fChooser = new JFileChooser();
-				fChooser.setAcceptAllFileFilterUsed(false);
-				FileFilter filter = new FileNameExtensionFilter("video files", "avi", "mp4");
-				fChooser.addChoosableFileFilter(filter);
-				int number = fChooser.showDialog(null, "Choose a Video File");
-				
-				if(number == fChooser.APPROVE_OPTION) {
-					Video.setVideoName(fChooser.getSelectedFile().getAbsolutePath());
-				}
-				
-			}
-		});
-		chooseVideo.setBounds(250, 20, 100, 20);
-		contentPanel.add(chooseVideo);
-		
-
-		//-------------------------------Check Box Current Video----------------------------
-		//the user can choose whether or not they want to overlay the selected video with an existing audio file (this combination is NOT saved)
-		final JLabel label1 = new JLabel("Select Current Video");
-		label1.setBounds(80, 50, 200, 20);
-		contentPanel.add(label1);
-		
-		final JCheckBox checkBox = new JCheckBox();
-		checkBox.setBounds(57, 50, 20, 20);
-		checkBox.setBackground(Color.GRAY);
-		contentPanel.add(checkBox);
-		checkBox.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if(checkBox.isSelected()) {
-					chooseVideo.setEnabled(false);
-				} else {
-					chooseVideo.setEnabled(true);
-				}
-			}
-		});
-		
-		if(Video.getVideoName() == null) {
-			label1.setEnabled(false);
-			checkBox.setEnabled(false);
-		}
 		
 		//-------------------------------Audio Settings----------------------------
 		final JLabel s_label = new JLabel("Audio Settings");
@@ -143,10 +94,10 @@ public class Combo extends JDialog {
 					}
 					
 					if (checkBox1.isSelected()) {//Convert text to mp3 and merge it with video's audio
-						ComboCreationWorker cc = new ComboCreationWorker(Video.getVideoName(), textField.getText(), AudioSetting.MERGE, mediaPlayer, speechTiming, mp3Timing);
+						ComboCreationWorker cc = new ComboCreationWorker(Video.getVideoName(), textField.getText(), AudioSetting.MERGE, mediaPlayer, speechTimeInMS);
 						cc.execute();
 					} else { //Convert the text to an mp3 file and replace video's audio with it
-						ComboCreationWorker cc = new ComboCreationWorker(Video.getVideoName(), textField.getText(), AudioSetting.REPLACE, mediaPlayer, speechTiming, mp3Timing);
+						ComboCreationWorker cc = new ComboCreationWorker(Video.getVideoName(), textField.getText(), AudioSetting.REPLACE, mediaPlayer, speechTimeInMS);
 						cc.execute();
 					}
 				

@@ -1,4 +1,4 @@
-package gui;
+package video;
 
 public class Video {
 	private static Video theInstance = null;

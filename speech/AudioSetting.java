@@ -1,4 +1,4 @@
-package combo;
+package speech;
 
 public enum AudioSetting {
 	REPLACE, MERGE;

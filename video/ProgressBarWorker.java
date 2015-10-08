@@ -1,4 +1,4 @@
-package gui;
+package video;
 
 import javax.swing.JLabel;
 import javax.swing.JProgressBar;

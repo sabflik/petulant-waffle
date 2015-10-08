@@ -1,4 +1,6 @@
-package gui;
+package video;
+
+import gui.MainClass;
 
 import java.awt.Color;
 import java.awt.GridBagConstraints;
@@ -26,9 +28,9 @@ public class ButtonPanel extends JPanel {
 	private boolean hasFFed = false;
 	private JButton pause_btn;
 
-	public ButtonPanel(final EmbeddedMediaPlayer mediaPlayer, MenuPanel menu) {
+	public ButtonPanel(final EmbeddedMediaPlayer mediaPlayer) {
 		
-		menu.attachButtonObserver(this);
+//		menu.attachButtonObserver(this);
 		
 		setBackground(Color.GRAY);
 		setLayout(new GridBagLayout());
@@ -157,7 +159,7 @@ public class ButtonPanel extends JPanel {
 
 	//gets image that fits the button
 	private ImageIcon getResizedImage(String image) {
-		URL url = GUI.class.getResource("/icons/"+image);
+		URL url = MainClass.class.getResource("/icons/"+image);
 		ImageIcon icon = new ImageIcon(url);
 		Image getImage = icon.getImage().getScaledInstance(29, 23, java.awt.Image.SCALE_SMOOTH);
 		return new ImageIcon(getImage);
