@@ -1,6 +1,9 @@
 package video;
 
 
+import gui.MP3Tools;
+import gui.SpeechTools;
+
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.ComponentOrientation;
@@ -23,7 +26,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 import mp3.MP3;
-import mp3.MP3Tab;
 
 import speech.SpeechTab;
 import uk.co.caprica.vlcj.player.MediaPlayerFactory;
@@ -36,7 +38,7 @@ public class VideoTab extends JPanel {
 	private float time;
 	private VideoTab tab;
 	
-	public VideoTab(final MP3Tab mp3Tab, final SpeechTab sTab, final EmbeddedMediaPlayer mediaPlayer, final Canvas canvas) {
+	public VideoTab(final MP3Tools mTools, final SpeechTab sTab, final SpeechTools sTools, final EmbeddedMediaPlayer mediaPlayer, final Canvas canvas) {
 		tab = this;
 		
 		/*-------------------------This is the Screen---------------------------*/
@@ -90,7 +92,7 @@ public class VideoTab extends JPanel {
 		addSpeech.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				sTab.speechTiming(time);
+				sTools.speechTiming(time);
 			}
 		});
 		popup.add(addSpeech);
@@ -98,7 +100,7 @@ public class VideoTab extends JPanel {
 		addMP3.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				mp3Tab.mp3Timing(time);
+				mTools.mp3Timing(time);
 			}
 		});
 		popup.add(addMP3);

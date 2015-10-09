@@ -32,12 +32,13 @@ public class ComboCreationWorker extends SwingWorker<Void,Void> {
 					+ "ffmpeg -i .PetulantWaffle/speech.wav -y .PetulantWaffle/audio.mp3;";
 			
 		if(setting == AudioSetting.REPLACE) {
+//			System.out.println("Replace!");
 			//Remove video's audio if user chose replace
-			cmd = cmd + "ffmpeg -i "+ video + " -an -y .PetulantWaffle/tempVideo.avi;";
-		} 
-		
-		//Replace with merged audio and create file specified by the user
-		cmd = cmd + "ffmpeg -i "+video+" -i .PetulantWaffle/audio.mp3 -filter_complex '[1:a]adelay="+speechTimeInMS+"[aud2];[0:a][aud2]amix=inputs=2' -map 0:v -map 1:a PWNewFiles/" + name + ".avi";
+			cmd = cmd + "ffmpeg -i " + video + " -i .PetulantWaffle/audio.mp3 -filter_complex '[1:a]adelay="+speechTimeInMS+"[aud2];[0:a][aud2]amix=inputs=2' -map 0:v -map 1:a PWNewFiles/" + name + ".avi";
+		} else {
+			//Replace with merged audio and create file specified by the user
+			cmd = cmd + "ffmpeg -i "+video+" -i .PetulantWaffle/audio.mp3 -filter_complex '[1:a]adelay="+speechTimeInMS+"[aud2];[0:a][aud2]amix=inputs=2' -map 0:v -map 1:a PWNewFiles/" + name + ".avi";
+		}
 		
 		ProcessBuilder makeWav = new ProcessBuilder("/bin/bash", "-c", cmd);
  		Process processMW;
@@ -50,7 +51,7 @@ public class ComboCreationWorker extends SwingWorker<Void,Void> {
 	@Override
 	protected void done() {
 		String newFile = "PWNewFiles/" + name + ".avi";
-		mediaPlayer.playMedia(newFile);
+//		mediaPlayer.playMedia(newFile);
 	}
 	
 }

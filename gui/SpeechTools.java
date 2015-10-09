@@ -24,16 +24,17 @@ import video.Video;
 
 public class SpeechTools extends JPanel {
 	
-	private JButton btnNewButton_6;
-	private JButton btnNewButton_7;
+	private JButton speechCombo;
+	private JButton createMP3;
 	private JButton speak;
 	private JButton speechButton;	
 	private float speechTimeInMS;
 	private JMenuItem speechTiming;
+	private SpeechTab speechTab;
 
-	public SpeechTools(final SpeechTab speechTab, final JFrame frame, final EmbeddedMediaPlayer mediaPlayer) {
+	public SpeechTools(final JFrame frame, final EmbeddedMediaPlayer mediaPlayer) {
 		
-		setBackground(Color.ORANGE);
+		setBackground(Color.DARK_GRAY);
 		setLayout(new GridBagLayout());
 		
 		GridBagConstraints gb = new GridBagConstraints();
@@ -57,8 +58,8 @@ public class SpeechTools extends JPanel {
 
 		// CREATE MP3 BUTTON
 		gb.gridy = 1;
-		btnNewButton_7 = new JButton("Create mp3");
-		btnNewButton_7.addActionListener(new ActionListener() {
+		createMP3 = new JButton("Create mp3");
+		createMP3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 					CreateAudio f = new CreateAudio(frame, "Please enter a name for your mp3 file", true, speechTab.getText());
@@ -68,16 +69,16 @@ public class SpeechTools extends JPanel {
 				}
 			}
 		});
-		btnNewButton_7.setBackground(Color.WHITE);
-		btnNewButton_7.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		btnNewButton_7.setToolTipText("Press to convert entered text to mp3");
-		btnNewButton_7.setEnabled(false);
-		add(btnNewButton_7, gb);
+		createMP3.setBackground(Color.WHITE);
+		createMP3.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		createMP3.setToolTipText("Press to convert entered text to mp3");
+		createMP3.setEnabled(false);
+		add(createMP3, gb);
 
 		// SPEECH COMBO BUTTON
 		gb.gridy = 2;
-		btnNewButton_6 = new JButton("Combine Speech with Video");
-		btnNewButton_6.addActionListener(new ActionListener() {
+		speechCombo = new JButton("Combine Speech with Video");
+		speechCombo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 					Combo f = new Combo(frame, "", speechTab.getText(), mediaPlayer, speechTimeInMS);
@@ -88,11 +89,11 @@ public class SpeechTools extends JPanel {
 				}
 			}
 		});
-		btnNewButton_6.setBackground(Color.WHITE);
-		btnNewButton_6.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		btnNewButton_6.setToolTipText("Press to create a new video with text dubbed");
-		btnNewButton_6.setEnabled(false);
-		add(btnNewButton_6, gb);
+		speechCombo.setBackground(Color.WHITE);
+		speechCombo.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		speechCombo.setToolTipText("Press to create a new video with text dubbed");
+		speechCombo.setEnabled(false);
+		add(speechCombo, gb);
 
 		// This button contains speech settings
 		gb.gridy = 3;
@@ -117,7 +118,30 @@ public class SpeechTools extends JPanel {
 		return speechTiming.getText();
 	}
 	
+	//Sets the selected time for mp3 placement
+	public void speechTiming(float time) {
+		if(time != -1) {
+			speechTimeInMS = time;
+			float timeInSeconds = time / 1000;
+			int sec = (int)timeInSeconds % 60;
+			int min = (int)(timeInSeconds / 60) % 60;
+			speechTiming.setText(String.format("%02d:%02d", min, sec));
+		}
+	}
+	
+	public void setSpeechTab(SpeechTab speechTab) {
+		this.speechTab = speechTab;
+	}
+	
 	public void setComboEnabled(boolean selection) {
-		btnNewButton_6.setEnabled(selection);
+		speechCombo.setEnabled(selection);
+	}
+	
+	public void setSpeakEnabled(boolean selection) {
+		speak.setEnabled(selection);
+	}
+	
+	public void setMP3Enabled(boolean selection) {
+		createMP3.setEnabled(selection);
 	}
 }

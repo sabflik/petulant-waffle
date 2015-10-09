@@ -28,7 +28,7 @@ public class MenuPanel extends JPanel {
 //	private ButtonPanel button_observer;
 //	private TextPanel text_observer;
 
-	public MenuPanel(final JFrame frame, final EmbeddedMediaPlayer mediaPlayer, final VideoTab vTab, final MP3Tab mTab, final SpeechTab sTab, final JTabbedPane tabPane) {
+	public MenuPanel(final JFrame frame, final EmbeddedMediaPlayer mediaPlayer, final SpeechTab sTab, final SpeechTools sTools, final MP3Tools mTools) {
 		
 		setBackground(Color.GRAY);
 		setLayout(null);
@@ -48,10 +48,10 @@ public class MenuPanel extends JPanel {
 					String video = fChooser.getSelectedFile().getAbsolutePath();
 					Video.setVideoName(video);
 					mediaPlayer.playMedia(video);
-					tabPane.setEnabledAt(1, true);
 					if(sTab.isTextEnabled()) {
-						sTab.setComboEnabled(true);
+						sTools.setComboEnabled(true);
 					}
+					mTools.setChooseMP3Enabled(true);
 //					mp3Button.setEnabled(true);
 //					speechButton.setEnabled(true);
 				}

@@ -54,22 +54,22 @@ public class CreateAudio extends JDialog {
 		okButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				//check whether or not a file with the inputted file name already exists
-				File file = new File("ZQNewFiles/" + textField.getText());
+				File file = new File("PWNewFiles/" + textField.getText());
 				if (file.exists()) {
 					JOptionPane.showMessageDialog(contentPanel, "ERROR: A file with this name already exists, please enter another name");
 				} else {
 					//overwrite the contents of the Speech.txt file
 					PrintWriter out;
 					try {
-						out = new PrintWriter(new FileWriter(".ZealousQuack/Speech.txt"));
+						out = new PrintWriter(new FileWriter(".PetulantWaffle/Speech.txt"));
 						out.println(text);
 						out.close();
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
 					//create the wav file and convert that wav file to mp3
-					cmd = "text2wave .ZealousQuack/Speech.txt -o .ZealousQuack/speech.wav;"
-							+"ffmpeg -i .ZealousQuack/speech.wav ZQNewFiles/" + textField.getText() + ".mp3";
+					cmd = "text2wave .PetulantWaffle/Speech.txt -o .PetulantWaffle/speech.wav;"
+							+"ffmpeg -i .PetulantWaffle/speech.wav PWNewFiles/" + textField.getText() + ".mp3";
 					ProcessBuilder makeWav = new ProcessBuilder("/bin/bash", "-c", cmd);
 					Process processMW;
 					try {

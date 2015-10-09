@@ -1,5 +1,4 @@
-package speech;
-
+package mp3;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -28,7 +27,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.awt.event.ActionEvent;
 
-public class Combo extends JDialog {
+public class MP3Combo extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 	private JTextField textField;
@@ -38,7 +37,7 @@ public class Combo extends JDialog {
 	 * Create the dialog.
 	 * @throws IOException 
 	 */
-	public Combo(JFrame jframe, String title, final String text, final EmbeddedMediaPlayer mediaPlayer, final float speechTimeInMS) throws IOException {
+	public MP3Combo(JFrame jframe, String title, final EmbeddedMediaPlayer mediaPlayer, final float mp3TimeInMS) throws IOException {
 		super(jframe, title, true);
 		setBounds(100, 100, 450, 150);
 		getContentPane().setLayout(new BorderLayout());
@@ -69,22 +68,12 @@ public class Combo extends JDialog {
 			public void actionPerformed(ActionEvent arg0) {
 				if (textField.getText().trim() != null && !textField.getText().trim().equals("") && Video.getVideoName() != null) { //ensure file is selected and text field is not empty
 					//overwrite the contents of the Speech.txt file
-					try {
-						PrintWriter out = new PrintWriter(new FileWriter(".PetulantWaffle/Speech.txt"));
-						out.println(text);
-						out.close();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
+										
+					if ((MP3.getMP3Name() != null) && (Video.getVideoName() != null)) {
+						MP3OverlayWorker overlay = new MP3OverlayWorker(Video.getVideoName(), MP3.getMP3Name(), mediaPlayer, mp3TimeInMS, textField.getText());
+						overlay.execute();
+					} 
 					
-//					if (checkBox1.isSelected()) {//Convert text to mp3 and merge it with video's audio
-						ComboCreationWorker cc = new ComboCreationWorker(Video.getVideoName(), textField.getText(), AudioSetting.MERGE, mediaPlayer, speechTimeInMS);
-						cc.execute();
-//					} else { //Convert the text to an mp3 file and replace video's audio with it
-//						ComboCreationWorker cc = new ComboCreationWorker(Video.getVideoName(), textField.getText(), AudioSetting.REPLACE, mediaPlayer, speechTimeInMS);
-//						cc.execute();
-//					}
-				
 					newFile = "PWNewFiles/" + textField.getText() + ".avi";
 					((JDialog)((java.awt.Component)arg0.getSource()).getParent().getParent().getParent().getParent().getParent()).dispose();
 				} else {
@@ -112,3 +101,4 @@ public class Combo extends JDialog {
 		return newFile;
 	}
 }
+

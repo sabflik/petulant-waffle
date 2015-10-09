@@ -2,32 +2,14 @@ package gui;
 
 import java.awt.Canvas;
 import java.awt.Color;
-import java.awt.ComponentOrientation;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.MouseInfo;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
-import javax.swing.JProgressBar;
 import javax.swing.JTabbedPane;
-import javax.swing.SwingUtilities;
-import javax.swing.Timer;
-import javax.swing.event.PopupMenuEvent;
-import javax.swing.event.PopupMenuListener;
-
-import mp3.MP3Tab;
 
 import speech.SpeechTab;
 import uk.co.caprica.vlcj.discovery.NativeDiscovery;
@@ -35,7 +17,6 @@ import uk.co.caprica.vlcj.player.MediaPlayerFactory;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 import video.VideoTab;
 
-import java.awt.Insets;
 import java.io.File;
 import java.io.IOException;
 
@@ -81,27 +62,26 @@ public class MainClass {
 		mediaPlayer = mediaPlayerFactory.newEmbeddedMediaPlayer();// The video runs on the media player
 		mediaPlayer.setVideoSurface(mediaPlayerFactory.newVideoSurface(canvas));
 		
+		/*-------------------------------MP3 Tools----------------------------*/
+		MP3Tools mp3Tools = new MP3Tools(frame, mediaPlayer);
+		
+		/*--------------------------------Speech Tools-----------------------*/
+		SpeechTools speechTools = new SpeechTools(frame, mediaPlayer);
+		
 		/*-------------------------This is the Tabbed pane---------------------*/
 		JTabbedPane tabPane = new JTabbedPane();
 		
-		MP3Tab mTab = new MP3Tab(mediaPlayer);
-		SpeechTab sTab = new SpeechTab(mediaPlayer, frame);
-		VideoTab vTab = new VideoTab(mTab, sTab, mediaPlayer, canvas);
+		SpeechTab sTab = new SpeechTab();
+		sTab.setSpeechTools(speechTools);
+		speechTools.setSpeechTab(sTab);
+		VideoTab vTab = new VideoTab(mp3Tools, sTab, speechTools, mediaPlayer, canvas);
 		
 		tabPane.addTab("Video", vTab);
-		tabPane.addTab("MP3", mTab);
 		tabPane.addTab("Speech", sTab);
-		tabPane.setEnabledAt(1, false);
-		
-		/*-------------------------------MP3 Tools----------------------------*/
-		MP3Tools mp3Tools = new MP3Tools();
-		
-		/*--------------------------------Speech Tools-----------------------*/
-		SpeechTools speechTools = new SpeechTools(sTab, frame, mediaPlayer);
 		
 		/*-------------------------This is the Menu---------------------------*/
 
-		final MenuPanel menu = new MenuPanel(frame, mediaPlayer, vTab, mTab, sTab, tabPane);
+		final MenuPanel menu = new MenuPanel(frame, mediaPlayer, sTab, speechTools, mp3Tools);
 		menu.setBackground(Color.GRAY);
 
 		/*---------------This is the overall layout-----------------------*/
