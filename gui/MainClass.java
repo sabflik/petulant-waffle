@@ -18,6 +18,7 @@ import java.awt.event.MouseMotionListener;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JProgressBar;
 import javax.swing.JTabbedPane;
@@ -70,7 +71,7 @@ public class MainClass {
 		new NativeDiscovery().discover();
 
 		frame = new JFrame("Media Player");
-		frame.setMinimumSize(new Dimension(650, 600));
+		frame.setMinimumSize(new Dimension(700, 600));
 		
 		final Canvas canvas = new Canvas();// Creates a canvas to display the video
 		canvas.setBackground(Color.black);
@@ -92,24 +93,40 @@ public class MainClass {
 		tabPane.addTab("Speech", sTab);
 		tabPane.setEnabledAt(1, false);
 		
+		/*-------------------------------MP3 Tools----------------------------*/
+		MP3Tools mp3Tools = new MP3Tools();
+		
+		/*--------------------------------Speech Tools-----------------------*/
+		SpeechTools speechTools = new SpeechTools(sTab, frame, mediaPlayer);
+		
 		/*-------------------------This is the Menu---------------------------*/
 
 		final MenuPanel menu = new MenuPanel(frame, mediaPlayer, vTab, mTab, sTab, tabPane);
+		menu.setBackground(Color.GRAY);
 
 		/*---------------This is the overall layout-----------------------*/
 		contentPane = frame.getContentPane();
-		contentPane.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 		contentPane.setBackground(Color.GRAY);
 		contentPane.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
-		c.fill = GridBagConstraints.HORIZONTAL;
+		c.fill = GridBagConstraints.BOTH;
+		
+		//MP3 Tools
+		c.gridy = 1; c.gridx = 0;c.gridwidth = 1;c.weighty = 1;c.weightx = 0;c.ipadx = 90;
+		contentPane.add(mp3Tools, c);
+				
+		//Speech Tools
+		c.gridy = 1;c.gridx = 2;
+		contentPane.add(speechTools, c);
+		
+		//Tabs
+		c.gridy = 1;c.weighty = 1.0;c.gridx = 1;c.weightx = 0.33;
+		c.gridheight = 3;
+		contentPane.add(tabPane, c);	
 		
 		// Menu
-		c.ipady = 18;c.weightx = 0.0;c.gridx = 0;c.gridy = 0;c.gridheight = 1;
+		c.ipady = 18;c.weightx = 0.0;c.gridx = 0;c.gridy = 0;c.gridheight = 1;c.gridwidth = 3;c.weighty = 0;
 		contentPane.add(menu, c);
-		
-		c.gridy = 1;c.weighty = 1.0;c.weightx = 0.5;c.fill = GridBagConstraints.BOTH;
-		contentPane.add(tabPane, c);
 		
 		// Launch the application
 		frame.pack();

@@ -175,7 +175,7 @@ private void setUp() {
 		btnNewButton_6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					Combo f = new Combo(frame, "", video, textArea.getText(), mediaPlayer, speechTimeInMS);
+					Combo f = new Combo(frame, "", textArea.getText(), mediaPlayer, speechTimeInMS);
 					f.setVisible(true);
 					Video.setVideoName(f.getNewFile());
 				} catch (IOException e) {
@@ -224,6 +224,10 @@ private void setUp() {
 	
 	public boolean isTextEnabled() {
 		return (textArea.getText().trim() != null && !textArea.getText().trim().equals(""));
+	}
+	
+	public String getText() {
+		return textArea.getText();
 	}
 	
 	public void setComboEnabled(boolean selection) {

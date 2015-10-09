@@ -38,7 +38,7 @@ public class Combo extends JDialog {
 	 * Create the dialog.
 	 * @throws IOException 
 	 */
-	public Combo(JFrame jframe, String title, final Video currentlyPlaying, final String text, final EmbeddedMediaPlayer mediaPlayer, final float speechTimeInMS) throws IOException {
+	public Combo(JFrame jframe, String title, final String text, final EmbeddedMediaPlayer mediaPlayer, final float speechTimeInMS) throws IOException {
 		super(jframe, title, true);
 		setBounds(100, 100, 450, 320);
 		getContentPane().setLayout(new BorderLayout());
