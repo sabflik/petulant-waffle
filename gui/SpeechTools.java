@@ -11,6 +11,7 @@ import java.io.IOException;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -27,9 +28,9 @@ public class SpeechTools extends JPanel {
 	private JButton speechCombo;
 	private JButton createMP3;
 	private JButton speak;
-	private JButton speechButton;	
+	private JLabel settings;	
 	private float speechTimeInMS;
-	private JMenuItem speechTiming;
+	private JLabel speechTiming;
 	private SpeechTab speechTab;
 
 	public SpeechTools(final JFrame frame, final EmbeddedMediaPlayer mediaPlayer) {
@@ -95,22 +96,32 @@ public class SpeechTools extends JPanel {
 		speechCombo.setEnabled(false);
 		add(speechCombo, gb);
 
-		// This button contains speech settings
+		// Speech settings Label
 		gb.gridy = 3;
-		speechButton = new JButton("Speech Settings");
-		speechButton.setBackground(Color.WHITE);
-		speechButton.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		speechButton.setBounds(250, 0, 150, 20);
-		// speechButton.setEnabled(false);
-		add(speechButton);
-
-		JPopupMenu speechPopup = new JPopupMenu();
-		JCheckBoxMenuItem speechCheck = new JCheckBoxMenuItem("Keep original audio");
-		speechPopup.add(speechCheck);
-		speechTiming = new JMenuItem("00:00");
-		speechPopup.add(speechTiming);
-		speechButton.setComponentPopupMenu(speechPopup);
-		add(speechButton, gb);
+		settings = new JLabel("Speech Settings");
+		settings.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		settings.setForeground(Color.WHITE);
+//		settings.setBackground(Color.WHITE);
+//		settings.setFont(new Font("Tahoma", Font.PLAIN, 12));
+//		settings.setBounds(250, 0, 150, 20);
+//		// speechButton.setEnabled(false);
+//		add(settings);
+//
+//		JPopupMenu speechPopup = new JPopupMenu();
+//		JCheckBoxMenuItem speechCheck = new JCheckBoxMenuItem("Keep original audio");
+//		speechPopup.add(speechCheck);
+//		speechTiming = new JMenuItem("00:00");
+//		speechPopup.add(speechTiming);
+//		settings.setComponentPopupMenu(speechPopup);
+		add(settings, gb);
+		
+		//Speech settings  Options
+		gb.gridy = 4;
+		speechTiming = new JLabel("Add speech at: 00:00");
+		speechTiming.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		speechTiming.setForeground(Color.WHITE);
+		speechTiming.setToolTipText("Right click on progressbar and select 'Add speech here'");
+		add(speechTiming, gb);
 
 	}
 	
@@ -125,7 +136,8 @@ public class SpeechTools extends JPanel {
 			float timeInSeconds = time / 1000;
 			int sec = (int)timeInSeconds % 60;
 			int min = (int)(timeInSeconds / 60) % 60;
-			speechTiming.setText(String.format("%02d:%02d", min, sec));
+			String text = "Add speech at: "+String.format("%02d:%02d", min, sec);
+			speechTiming.setText(text);
 		}
 	}
 	

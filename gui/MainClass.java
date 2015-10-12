@@ -85,6 +85,7 @@ public class MainClass {
 		menu.setBackground(Color.GRAY);
 
 		/*---------------This is the overall layout-----------------------*/
+		//The content pane uses GridBagLayout
 		contentPane = frame.getContentPane();
 		contentPane.setBackground(Color.GRAY);
 		contentPane.setLayout(new GridBagLayout());

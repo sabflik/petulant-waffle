@@ -72,11 +72,11 @@ public class ButtonPanel extends JPanel {
 				if(hasRewinded) {
 					vRewind.cancel(true);
 				}
-				if(mediaPlayer.isPlaying()) { //toggle image of button depending on whether video is playing or not
-					pause_btn.setIcon(getResizedImage("play.png"));
-				} else {
-					pause_btn.setIcon(getResizedImage("pause.png"));
-				}
+//				if(mediaPlayer.isPlaying()) { //toggle image of button depending on whether video is playing or not
+//					pause_btn.setIcon(getResizedImage("play.png"));
+//				} else {
+//					pause_btn.setIcon(getResizedImage("pause.png"));
+//				}
 				mediaPlayer.pause();
 			}
 		});
@@ -86,6 +86,7 @@ public class ButtonPanel extends JPanel {
 		} else {
 			pause_btn.setIcon(getResizedImage("play.png"));
 		}
+		pause_btn.setIcon(getResizedImage("pause.png"));
 		add(pause_btn, gbc);
 
 		//FASTFORWARD BUTTON
@@ -127,11 +128,11 @@ public class ButtonPanel extends JPanel {
 		mute_btn.setBackground(Color.WHITE);
 		mute_btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {	
-				if(mediaPlayer.isMute()) { //toggle image of button depending on whether video is playing or not
-					mute_btn.setIcon(getResizedImage("mute.png"));
-				} else {
-					mute_btn.setIcon(getResizedImage("sound.png"));
-				}
+//				if(mediaPlayer.isMute()) { //toggle image of button depending on whether video is playing or not
+//					mute_btn.setIcon(getResizedImage("mute.png"));
+//				} else {
+//					mute_btn.setIcon(getResizedImage("sound.png"));
+//				}
 				mediaPlayer.mute();
 			}
 		});
@@ -141,6 +142,7 @@ public class ButtonPanel extends JPanel {
 		} else {
 			mute_btn.setIcon(getResizedImage("mute.png"));
 		}
+		mute_btn.setIcon(getResizedImage("mute.png"));
 		add(mute_btn, gbc);
 
 		//VOLUME SLIDER

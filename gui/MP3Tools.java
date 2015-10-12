@@ -32,7 +32,7 @@ public class MP3Tools extends JPanel {
 
 	private JButton mp3Button;
 	private JButton chooseMP3;
-	private JMenuItem mp3Timing;
+	private JLabel mp3Timing;
 	private MP3Tools tools;
 	private float mp3TimeInMS;
 
@@ -73,21 +73,8 @@ public class MP3Tools extends JPanel {
 		chooseMP3.setEnabled(false);
 		add(chooseMP3, gb);
 
-		// This button does settings stuff
-		gb.gridx = 1;
-		gb.gridy = 1;
-		JButton settingB = new JButton("Settings");
-		settingB.setBackground(Color.WHITE);
-		JPopupMenu mp3Popup = new JPopupMenu();
-		JCheckBoxMenuItem mp3Check = new JCheckBoxMenuItem("Keep original audio");
-		mp3Popup.add(mp3Check);
-		mp3Timing = new JMenuItem("00:00");
-		mp3Popup.add(mp3Timing);
-		settingB.setComponentPopupMenu(mp3Popup);
-		add(settingB, gb);
-
 		// MP3 COMBO BUTTON
-		gb.gridy = 3;
+		gb.gridy = 1;
 		mp3Button = new JButton("Combine MP3 with Video");
 		mp3Button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -113,6 +100,29 @@ public class MP3Tools extends JPanel {
 				.setToolTipText("Press to create a new video with text dubbed");
 		mp3Button.setEnabled(false);
 		add(mp3Button, gb);
+		
+		// Settings label
+		gb.gridx = 1;
+		gb.gridy = 2;
+		JLabel settingB = new JLabel("MP3 Settings");
+		settingB.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		settingB.setForeground(Color.WHITE);
+//		settingB.setBackground(Color.WHITE);
+//		JPopupMenu mp3Popup = new JPopupMenu();
+//		JCheckBoxMenuItem mp3Check = new JCheckBoxMenuItem("Keep original audio");
+//		mp3Popup.add(mp3Check);
+//		mp3Timing = new JMenuItem("00:00");
+//		mp3Popup.add(mp3Timing);
+//		settingB.setComponentPopupMenu(mp3Popup);
+		add(settingB, gb);
+		
+		//Settings options
+		gb.gridy = 3;
+		mp3Timing = new JLabel("Add mp3 at: 00:00");
+		mp3Timing.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		mp3Timing.setForeground(Color.WHITE);
+		mp3Timing.setToolTipText("Right click on progressbar and select 'Add mp3 here'");
+		add(mp3Timing, gb);
 
 	}
 
@@ -123,7 +133,8 @@ public class MP3Tools extends JPanel {
 			float timeInSeconds = time / 1000;
 			int sec = (int) timeInSeconds % 60;
 			int min = (int) (timeInSeconds / 60) % 60;
-			mp3Timing.setText(String.format("%02d:%02d", min, sec));
+			String text = "Add mp3 at: "+String.format("%02d:%02d", min, sec);
+			mp3Timing.setText(text);
 		}
 	}
 

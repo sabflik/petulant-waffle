@@ -30,7 +30,20 @@ public class ProgressBarWorker extends SwingWorker<Void,Void>{
 		
 			progressBar.setValue(position);
 			Long time = mediaPlayer.getTime();
-			timeStamp.setText(time.toString());
+			timeStamp.setText(speechTiming(time));
 		}
 	}
+	
+	//Sets the selected time for mp3 placement
+	public String speechTiming(float time) {
+		if(time != -1) {
+			float timeInSeconds = time / 1000;
+			int sec = (int)timeInSeconds % 60;
+			int min = (int)(timeInSeconds / 60) % 60;
+			return String.format("%02d:%02d", min, sec);
+		} else {
+			return "00:00";
+		}
+	}
+	
 }

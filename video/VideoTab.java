@@ -52,28 +52,29 @@ public class VideoTab extends JPanel {
 		final ButtonPanel pane = new ButtonPanel(mediaPlayer);
 //		pane.setVisible(false);
 
-		final MouseMotionListener listener = new MouseMotionListener() {
-			@Override
-			public void mouseDragged(MouseEvent arg0) {
-			}
-
-			@Override
-			public void mouseMoved(MouseEvent arg0) {
-//				pane.setVisible(true);
-
-				Timer timer = new Timer(5000, new ActionListener() {
-
-					@Override
-					public void actionPerformed(ActionEvent e) {
-//						pane.setVisible(false);
-					}
-				});
-				timer.setRepeats(false);
-				timer.start();
-			}
-		};
-
-		canvas.addMouseMotionListener(listener);
+		//This is meant to allow button hiding
+//		final MouseMotionListener listener = new MouseMotionListener() {
+//			@Override
+//			public void mouseDragged(MouseEvent arg0) {
+//			}
+//
+//			@Override
+//			public void mouseMoved(MouseEvent arg0) {
+////				pane.setVisible(true);
+//
+//				Timer timer = new Timer(5000, new ActionListener() {
+//
+//					@Override
+//					public void actionPerformed(ActionEvent e) {
+////						pane.setVisible(false);
+//					}
+//				});
+//				timer.setRepeats(false);
+//				timer.start();
+//			}
+//		};
+//
+//		canvas.addMouseMotionListener(listener);
 		
 		/*------------------This is the overall layout---------------*/
 		setBackground(Color.GRAY);
