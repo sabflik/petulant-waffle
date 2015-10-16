@@ -14,11 +14,13 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.text.AbstractDocument;
 
 import video.Video;
 
 public class SpeechTab extends JPanel {
 
+	private static final long serialVersionUID = 1L;
 	private JMenuItem speechTiming;
 	private JTextArea textArea;
 	private SpeechTools sTools;
@@ -55,6 +57,7 @@ public class SpeechTab extends JPanel {
 		gb.gridwidth = 10;
 		
 		textArea = new JTextArea();
+		textArea.setFont(new Font("Verdana", Font.PLAIN, 20));
 		// Buttons are disabled if text isn't entered into the text area
 		DocumentListener documentListener = new DocumentListener() {
 			public void changedUpdate(DocumentEvent documentEvent) {
@@ -89,8 +92,13 @@ public class SpeechTab extends JPanel {
 			}
 		};
 		textArea.getDocument().addDocumentListener(documentListener);
-		textArea.setToolTipText("Enter up to 30 words for each screen"); 
-		textArea.setRows(20);// Sets the height of text area
+		
+		//Set max char limit
+		CharLimitFilter limitFilter = new CharLimitFilter(200);
+	    ((AbstractDocument) textArea.getDocument()).setDocumentFilter(limitFilter);
+
+	    textArea.setToolTipText("Enter text to be spoken here"); 
+		textArea.setRows(15);// Sets the height of text area
 		textArea.setLineWrap(true); // Ensure that the text wraps
 		textArea.setWrapStyleWord(true); // Ensure that when wrapping, it splits
 											// at words
