@@ -4,20 +4,13 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-
 import javax.swing.JButton;
-import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
-import javax.swing.JTabbedPane;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import mp3.*;
 import speech.*;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 import video.*;
@@ -28,6 +21,8 @@ public class MenuPanel extends JPanel {
 //	private ButtonPanel button_observer;
 //	private TextPanel text_observer;
 
+	private static final long serialVersionUID = 1L;
+
 	public MenuPanel(final JFrame frame, final EmbeddedMediaPlayer mediaPlayer, final SpeechTab sTab, final SpeechTools sTools, final MP3Tools mTools) {
 		
 		setBackground(Color.GRAY);
@@ -37,6 +32,7 @@ public class MenuPanel extends JPanel {
 		final JButton btnNewButton = new JButton("Select Video");
 		btnNewButton.setBackground(Color.WHITE);
 		btnNewButton.addActionListener(new ActionListener() {
+			@SuppressWarnings("static-access")
 			public void actionPerformed(ActionEvent arg0) {
 				JFileChooser fChooser = new JFileChooser();
 				fChooser.setAcceptAllFileFilterUsed(false);
@@ -60,6 +56,9 @@ public class MenuPanel extends JPanel {
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		btnNewButton.setBounds(0, 0, 150, 20);
 		add(btnNewButton);
+		
+		//JMenuBar select_video = new JMenuBar();
+		
 		
 //	public void attachButtonObserver(ButtonPanel observer) {
 //		button_observer = observer;

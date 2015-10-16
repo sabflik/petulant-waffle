@@ -22,6 +22,7 @@ import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 
 public class ButtonPanel extends JPanel {
 	
+	private static final long serialVersionUID = 1L;
 	private VideoManipulationWorker vFF;
 	private VideoManipulationWorker vRewind;
 	private boolean hasRewinded = false;
@@ -72,11 +73,11 @@ public class ButtonPanel extends JPanel {
 				if(hasRewinded) {
 					vRewind.cancel(true);
 				}
-//				if(mediaPlayer.isPlaying()) { //toggle image of button depending on whether video is playing or not
-//					pause_btn.setIcon(getResizedImage("play.png"));
-//				} else {
-//					pause_btn.setIcon(getResizedImage("pause.png"));
-//				}
+				if(mediaPlayer.isPlaying()) { //toggle image of button depending on whether video is playing or not
+					pause_btn.setIcon(getResizedImage("play.png"));
+				} else {
+					pause_btn.setIcon(getResizedImage("pause.png"));
+				}
 				mediaPlayer.pause();
 			}
 		});
@@ -128,11 +129,11 @@ public class ButtonPanel extends JPanel {
 		mute_btn.setBackground(Color.WHITE);
 		mute_btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {	
-//				if(mediaPlayer.isMute()) { //toggle image of button depending on whether video is playing or not
-//					mute_btn.setIcon(getResizedImage("mute.png"));
-//				} else {
-//					mute_btn.setIcon(getResizedImage("sound.png"));
-//				}
+				if(mediaPlayer.isMute()) { //toggle image of button depending on whether video is playing or not
+					mute_btn.setIcon(getResizedImage("mute.png"));
+				} else {
+					mute_btn.setIcon(getResizedImage("sound.png"));
+				}
 				mediaPlayer.mute();
 			}
 		});

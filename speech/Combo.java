@@ -67,29 +67,26 @@ public class Combo extends JDialog {
 		JButton okButton = new JButton("OK");
 		okButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (textField.getText().trim() != null && !textField.getText().trim().equals("") && Video.getVideoName() != null) { //ensure file is selected and text field is not empty
-					//overwrite the contents of the Speech.txt file
-					try {
-						PrintWriter out = new PrintWriter(new FileWriter(".PetulantWaffle/Speech.txt"));
-						out.println(text);
-						out.close();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-					
-//					if (checkBox1.isSelected()) {//Convert text to mp3 and merge it with video's audio
-						ComboCreationWorker cc = new ComboCreationWorker(Video.getVideoName(), textField.getText(), AudioSetting.MERGE, mediaPlayer, speechTimeInMS);
-						cc.execute();
-//					} else { //Convert the text to an mp3 file and replace video's audio with it
-//						ComboCreationWorker cc = new ComboCreationWorker(Video.getVideoName(), textField.getText(), AudioSetting.REPLACE, mediaPlayer, speechTimeInMS);
-//						cc.execute();
-//					}
 				
-					newFile = "PWNewFiles/" + textField.getText() + ".avi";
-					((JDialog)((java.awt.Component)arg0.getSource()).getParent().getParent().getParent().getParent().getParent()).dispose();
-				} else {
-					JOptionPane.showMessageDialog(contentPanel, "ERROR: Please enter the name you want to give the new file");
-				}
+			//overwrite the contents of the Speech.txt file
+			try {
+				PrintWriter out = new PrintWriter(new FileWriter(".PetulantWaffle/Speech.txt"));
+				out.println(text);
+				out.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+					
+//			if (checkBox1.isSelected()) {//Convert text to mp3 and merge it with video's audio
+				ComboCreationWorker cc = new ComboCreationWorker(Video.getVideoName(), textField.getText(), AudioSetting.MERGE, mediaPlayer, speechTimeInMS);
+				cc.execute();
+//			} else { //Convert the text to an mp3 file and replace video's audio with it
+//				ComboCreationWorker cc = new ComboCreationWorker(Video.getVideoName(), textField.getText(), AudioSetting.REPLACE, mediaPlayer, speechTimeInMS);
+//				cc.execute();
+//			}
+				
+			newFile = "PWNewFiles/" + textField.getText() + ".avi";
+			((JDialog)((java.awt.Component)arg0.getSource()).getParent().getParent().getParent().getParent().getParent()).dispose();
 			}
 		});
 		okButton.setActionCommand("OK");

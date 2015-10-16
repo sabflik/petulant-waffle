@@ -9,27 +9,23 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 
 import javax.swing.JButton;
-import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import speech.Combo;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 import video.Video;
 
 import mp3.MP3;
 import mp3.MP3Combo;
-import mp3.MP3OverlayWorker;
 
 public class MP3Tools extends JPanel {
 
+	private static final long serialVersionUID = 1L;
 	private JButton mp3Button;
 	private JButton chooseMP3;
 	private JLabel mp3Timing;
@@ -51,6 +47,7 @@ public class MP3Tools extends JPanel {
 		chooseMP3 = new JButton("Choose MP3");
 		chooseMP3.setBackground(Color.WHITE);
 		chooseMP3.addActionListener(new ActionListener() {
+			@SuppressWarnings("static-access")
 			public void actionPerformed(ActionEvent arg0) {
 				JFileChooser fChooser = new JFileChooser();
 				fChooser.setAcceptAllFileFilterUsed(false);
@@ -85,7 +82,6 @@ public class MP3Tools extends JPanel {
 						f = new MP3Combo(frame, "", mediaPlayer, mp3TimeInMS);
 						f.setVisible(true);
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				} else {

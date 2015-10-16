@@ -8,13 +8,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
-import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
+import javax.swing.JRadioButton;
+import javax.swing.JToggleButton;
 
 import speech.Combo;
 import speech.CreateAudio;
@@ -25,13 +25,15 @@ import video.Video;
 
 public class SpeechTools extends JPanel {
 	
+	private static final long serialVersionUID = 1L;
 	private JButton speechCombo;
 	private JButton createMP3;
-	private JButton speak;
+	private JToggleButton speak;
 	private JLabel settings;	
 	private float speechTimeInMS;
 	private JLabel speechTiming;
 	private SpeechTab speechTab;
+	private Speech helper;
 
 	public SpeechTools(final JFrame frame, final EmbeddedMediaPlayer mediaPlayer) {
 		
@@ -40,15 +42,38 @@ public class SpeechTools extends JPanel {
 		
 		GridBagConstraints gb = new GridBagConstraints();
 		gb.fill = GridBagConstraints.HORIZONTAL;
-
+		
+		//VOICE SELECTION
+		gb.gridy = 0;gb.gridx = 0;
+		JRadioButton male = new JRadioButton("Male");
+		male.setBackground(Color.DARK_GRAY);
+		male.setForeground(Color.blue);
+	    JRadioButton female = new JRadioButton("Female");
+	    female.setBackground(Color.DARK_GRAY);
+	    female.setForeground(Color.pink);
+	    ButtonGroup genderGroup = new ButtonGroup();
+	    genderGroup.add(male);
+	    genderGroup.add(female);
+	    male.setSelected(true);
+	    add(male, gb);
+	    gb.gridx = 1;
+	    add(female, gb);
+	    
 		// SPEAK BUTTON
-		gb.gridy = 0;gb.weightx = 0;gb.gridwidth = 2;gb.weighty = 0;
-		speak = new JButton("Speak");
+		gb.gridx = 0;gb.gridy = 1;gb.weightx = 0;gb.gridwidth = 2;gb.weighty = 0;
+		
+		speak = new JToggleButton("Speak");
 		speak.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				String speech = speechTab.getText();
-				Speech helper = new Speech(speech);
-				helper.execute();
+				if(speak.isSelected()) {
+					speak.setText("Cancel");
+					String speech = speechTab.getText();
+					helper = new Speech(speech, speak);
+					helper.execute();
+				} else {
+					speak.setText("Speak");
+					helper.cancel(true);
+				}
 			}
 		});
 		speak.setBackground(new Color(255, 255, 255));
@@ -56,9 +81,15 @@ public class SpeechTools extends JPanel {
 		speak.setToolTipText("Press for Festival to speak the text entered");
 		speak.setEnabled(false);
 		add(speak, gb);
+		
+		
+		
+		
+		
+		
 
 		// CREATE MP3 BUTTON
-		gb.gridy = 1;
+		gb.gridy = 2;
 		createMP3 = new JButton("Create mp3");
 		createMP3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -77,7 +108,7 @@ public class SpeechTools extends JPanel {
 		add(createMP3, gb);
 
 		// SPEECH COMBO BUTTON
-		gb.gridy = 2;
+		gb.gridy = 3;
 		speechCombo = new JButton("Combine Speech with Video");
 		speechCombo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -97,7 +128,7 @@ public class SpeechTools extends JPanel {
 		add(speechCombo, gb);
 
 		// Speech settings Label
-		gb.gridy = 3;
+		gb.gridy = 4;
 		settings = new JLabel("Speech Settings");
 		settings.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		settings.setForeground(Color.WHITE);
@@ -116,7 +147,7 @@ public class SpeechTools extends JPanel {
 		add(settings, gb);
 		
 		//Speech settings  Options
-		gb.gridy = 4;
+		gb.gridy = 5;
 		speechTiming = new JLabel("Add speech at: 00:00");
 		speechTiming.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		speechTiming.setForeground(Color.WHITE);
