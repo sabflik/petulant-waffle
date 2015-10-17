@@ -6,17 +6,21 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JToggleButton;
 
-import speech.Combo;
+import speech.AudioSetting;
+import speech.ComboCreationWorker;
 import speech.CreateAudio;
 import speech.Speech;
 import speech.SpeechTab;
@@ -24,51 +28,49 @@ import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 import video.Video;
 
 public class SpeechTools extends JPanel {
-	
+
 	private static final long serialVersionUID = 1L;
 	private JButton speechCombo;
 	private JButton createMP3;
 	private JToggleButton speak;
-	private JLabel settings;	
+	private JLabel settings;
 	private float speechTimeInMS;
 	private JLabel speechTiming;
 	private SpeechTab speechTab;
 	private Speech helper;
 
 	public SpeechTools(final JFrame frame, final EmbeddedMediaPlayer mediaPlayer) {
-		
+
 		setBackground(Color.DARK_GRAY);
 		setLayout(new GridBagLayout());
-		
+
 		GridBagConstraints gb = new GridBagConstraints();
 		gb.fill = GridBagConstraints.HORIZONTAL;
-		
-		//VOICE SELECTION
+
+		// VOICE SELECTION
 		gb.gridy = 0;gb.gridx = 0;
 		JRadioButton male = new JRadioButton("Male");
 		male.setBackground(Color.DARK_GRAY);
 		male.setForeground(Color.blue);
-	    JRadioButton female = new JRadioButton("Female");
-	    female.setBackground(Color.DARK_GRAY);
-	    female.setForeground(Color.pink);
-	    ButtonGroup genderGroup = new ButtonGroup();
-	    genderGroup.add(male);
-	    genderGroup.add(female);
-	    male.setSelected(true);
-	    add(male, gb);
-	    gb.gridx = 1;
-	    add(female, gb);
-	    
+		JRadioButton female = new JRadioButton("Female");
+		female.setBackground(Color.DARK_GRAY);
+		female.setForeground(Color.pink);
+		ButtonGroup genderGroup = new ButtonGroup();
+		genderGroup.add(male);
+		genderGroup.add(female);
+		male.setSelected(true);
+		add(male, gb);
+		gb.gridx = 1;
+		add(female, gb);
+
 		// SPEAK BUTTON
 		gb.gridx = 0;gb.gridy = 1;gb.weightx = 0;gb.gridwidth = 2;gb.weighty = 0;
-		
 		speak = new JToggleButton("Speak");
 		speak.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(speak.isSelected()) {
+				if (speak.isSelected()) {
 					speak.setText("Cancel");
-					String speech = speechTab.getText();
-					helper = new Speech(speech, speak);
+					helper = new Speech(speechTab.getText(), speak);
 					helper.execute();
 				} else {
 					speak.setText("Speak");
@@ -81,23 +83,22 @@ public class SpeechTools extends JPanel {
 		speak.setToolTipText("Press for Festival to speak the text entered");
 		speak.setEnabled(false);
 		add(speak, gb);
-		
-		
-		
-		
-		
-		
 
 		// CREATE MP3 BUTTON
 		gb.gridy = 2;
 		createMP3 = new JButton("Create mp3");
 		createMP3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				try {
-					CreateAudio f = new CreateAudio(frame, "Please enter a name for your mp3 file", true, speechTab.getText());
-					f.setVisible(true);
-				} catch (IOException e) {
-					e.printStackTrace();
+
+				JFileChooser chooser = new JFileChooser();
+				int returnVal = chooser.showSaveDialog(null);
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
+					try {
+						CreateAudio createMP3 = new CreateAudio(speechTab.getText(), chooser);
+						createMP3.execute();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 				}
 			}
 		});
@@ -112,12 +113,20 @@ public class SpeechTools extends JPanel {
 		speechCombo = new JButton("Combine Speech with Video");
 		speechCombo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				try {
-					Combo f = new Combo(frame, "", speechTab.getText(), mediaPlayer, speechTimeInMS);
-					f.setVisible(true);
-					Video.setVideoName(f.getNewFile());
-				} catch (IOException e) {
-					e.printStackTrace();
+				
+				JFileChooser chooser = new JFileChooser();
+				int returnVal = chooser.showSaveDialog(null);
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
+					try {
+						PrintWriter out = new PrintWriter(new FileWriter(".PetulantWaffle/Speech.txt"));
+						out.println(speechTab.getText());
+						out.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					
+					ComboCreationWorker cc = new ComboCreationWorker(Video.getVideoName(), chooser.getSelectedFile().getAbsolutePath(), AudioSetting.MERGE, mediaPlayer, speechTimeInMS);
+					cc.execute();
 				}
 			}
 		});
@@ -132,58 +141,45 @@ public class SpeechTools extends JPanel {
 		settings = new JLabel("Speech Settings");
 		settings.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		settings.setForeground(Color.WHITE);
-//		settings.setBackground(Color.WHITE);
-//		settings.setFont(new Font("Tahoma", Font.PLAIN, 12));
-//		settings.setBounds(250, 0, 150, 20);
-//		// speechButton.setEnabled(false);
-//		add(settings);
-//
-//		JPopupMenu speechPopup = new JPopupMenu();
-//		JCheckBoxMenuItem speechCheck = new JCheckBoxMenuItem("Keep original audio");
-//		speechPopup.add(speechCheck);
-//		speechTiming = new JMenuItem("00:00");
-//		speechPopup.add(speechTiming);
-//		settings.setComponentPopupMenu(speechPopup);
 		add(settings, gb);
-		
-		//Speech settings  Options
+
+		// Speech settings Options
 		gb.gridy = 5;
 		speechTiming = new JLabel("Add speech at: 00:00");
 		speechTiming.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		speechTiming.setForeground(Color.WHITE);
 		speechTiming.setToolTipText("Right click on progressbar and select 'Add speech here'");
 		add(speechTiming, gb);
-
 	}
-	
+
 	public String getSpeechTiming() {
 		return speechTiming.getText();
 	}
-	
-	//Sets the selected time for mp3 placement
+
+	// Sets the selected time for mp3 placement
 	public void speechTiming(float time) {
-		if(time != -1) {
+		if (time != -1) {
 			speechTimeInMS = time;
 			float timeInSeconds = time / 1000;
-			int sec = (int)timeInSeconds % 60;
-			int min = (int)(timeInSeconds / 60) % 60;
-			String text = "Add speech at: "+String.format("%02d:%02d", min, sec);
+			int sec = (int) timeInSeconds % 60;
+			int min = (int) (timeInSeconds / 60) % 60;
+			String text = "Add speech at: " + String.format("%02d:%02d", min, sec);
 			speechTiming.setText(text);
 		}
 	}
-	
+
 	public void setSpeechTab(SpeechTab speechTab) {
 		this.speechTab = speechTab;
 	}
-	
+
 	public void setComboEnabled(boolean selection) {
 		speechCombo.setEnabled(selection);
 	}
-	
+
 	public void setSpeakEnabled(boolean selection) {
 		speak.setEnabled(selection);
 	}
-	
+
 	public void setMP3Enabled(boolean selection) {
 		createMP3.setEnabled(selection);
 	}

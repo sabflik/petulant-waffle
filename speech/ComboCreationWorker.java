@@ -4,21 +4,18 @@ package speech;
 import javax.swing.SwingWorker;
 
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
-import video.Video;
 
 public class ComboCreationWorker extends SwingWorker<Void,Void> {
 
 	private AudioSetting setting;
 	private String video;
 	private String name;
-	private EmbeddedMediaPlayer mediaPlayer;
 	private float speechTimeInMS;
 	
 	public ComboCreationWorker(String video, String name, AudioSetting setting, EmbeddedMediaPlayer mediaPlayer, float speechTimeInMS) {
 		this.setting = setting;
 		this.video = video;
 		this.name = name;
-		this.mediaPlayer = mediaPlayer;
 		this.speechTimeInMS = speechTimeInMS;
 	}
 	
@@ -34,10 +31,10 @@ public class ComboCreationWorker extends SwingWorker<Void,Void> {
 		if(setting == AudioSetting.REPLACE) {
 //			System.out.println("Replace!");
 			//Remove video's audio if user chose replace
-			cmd = cmd + "ffmpeg -i " + video + " -i .PetulantWaffle/audio.mp3 -filter_complex '[1:a]adelay="+speechTimeInMS+"[aud2];[0:a][aud2]amix=inputs=2' -map 0:v -map 1:a PWNewFiles/" + name + ".avi";
+			cmd = cmd + "ffmpeg -i " + video + " -i .PetulantWaffle/audio.mp3 -filter_complex '[1:a]adelay="+speechTimeInMS+"[aud2];[0:a][aud2]amix=inputs=2' -map 0:v -map 1:a " + name + ".avi";
 		} else {
 			//Replace with merged audio and create file specified by the user
-			cmd = cmd + "ffmpeg -i "+video+" -i .PetulantWaffle/audio.mp3 -filter_complex '[1:a]adelay="+speechTimeInMS+"[aud2];[0:a][aud2]amix=inputs=2' -map 0:v -map 1:a PWNewFiles/" + name + ".avi";
+			cmd = cmd + "ffmpeg -i "+video+" -i .PetulantWaffle/audio.mp3 -filter_complex '[1:a]adelay="+speechTimeInMS+"[aud2];[0:a][aud2]amix=inputs=2' -map 0:v -map 1:a " + name + ".avi";
 		}
 		
 		ProcessBuilder makeWav = new ProcessBuilder("/bin/bash", "-c", cmd);
@@ -50,7 +47,6 @@ public class ComboCreationWorker extends SwingWorker<Void,Void> {
 	
 	@Override
 	protected void done() {
-		String newFile = "PWNewFiles/" + name + ".avi";
 //		mediaPlayer.playMedia(newFile);
 	}
 	

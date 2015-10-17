@@ -6,13 +6,10 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -21,7 +18,7 @@ import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 import video.Video;
 
 import mp3.MP3;
-import mp3.MP3Combo;
+import mp3.MP3OverlayWorker;
 
 public class MP3Tools extends JPanel {
 
@@ -29,12 +26,9 @@ public class MP3Tools extends JPanel {
 	private JButton mp3Button;
 	private JButton chooseMP3;
 	private JLabel mp3Timing;
-	private MP3Tools tools;
 	private float mp3TimeInMS;
 
 	public MP3Tools(final JFrame frame, final EmbeddedMediaPlayer mediaPlayer) {
-		tools = this;
-
 		setBackground(Color.DARK_GRAY);
 		setLayout(new GridBagLayout());
 
@@ -75,18 +69,12 @@ public class MP3Tools extends JPanel {
 		mp3Button = new JButton("Combine MP3 with Video");
 		mp3Button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if ((MP3.getMP3Name() != null)
-						&& (Video.getVideoName() != null)) {
-					MP3Combo f;
-					try {
-						f = new MP3Combo(frame, "", mediaPlayer, mp3TimeInMS);
-						f.setVisible(true);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				} else {
-					JOptionPane.showMessageDialog(tools,
-							"ERROR: Please select a file");
+				
+				JFileChooser chooser = new JFileChooser();
+				int returnVal = chooser.showSaveDialog(null);
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
+					MP3OverlayWorker overlay = new MP3OverlayWorker(Video.getVideoName(), MP3.getMP3Name(), mediaPlayer, mp3TimeInMS, chooser.getSelectedFile().getAbsolutePath());
+					overlay.execute();
 				}
 			}
 		});
@@ -103,13 +91,6 @@ public class MP3Tools extends JPanel {
 		JLabel settingB = new JLabel("MP3 Settings");
 		settingB.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		settingB.setForeground(Color.WHITE);
-//		settingB.setBackground(Color.WHITE);
-//		JPopupMenu mp3Popup = new JPopupMenu();
-//		JCheckBoxMenuItem mp3Check = new JCheckBoxMenuItem("Keep original audio");
-//		mp3Popup.add(mp3Check);
-//		mp3Timing = new JMenuItem("00:00");
-//		mp3Popup.add(mp3Timing);
-//		settingB.setComponentPopupMenu(mp3Popup);
 		add(settingB, gb);
 		
 		//Settings options

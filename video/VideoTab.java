@@ -3,7 +3,6 @@ package video;
 
 import gui.MP3Tools;
 import gui.SpeechTools;
-
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.ComponentOrientation;
@@ -14,25 +13,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
-
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
-import javax.swing.Timer;
-
 import mp3.MP3;
-
 import speech.SpeechTab;
-import uk.co.caprica.vlcj.player.MediaPlayerFactory;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 
 public class VideoTab extends JPanel {
 
+	private static final long serialVersionUID = 1L;
 	private EmbeddedMediaPlayer mediaPlayer;
 	private final JProgressBar progressBar;
 	private float time;
