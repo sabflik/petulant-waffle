@@ -90,14 +90,14 @@ public class MP3Tools extends JPanel {
 		gb.gridy = 2;
 		JLabel settingB = new JLabel("MP3 Settings");
 		settingB.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		settingB.setForeground(Color.WHITE);
+		settingB.setForeground(Color.orange);
 		add(settingB, gb);
 		
 		//Settings options
 		gb.gridy = 3;
 		mp3Timing = new JLabel("Add mp3 at: 00:00");
 		mp3Timing.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		mp3Timing.setForeground(Color.WHITE);
+		mp3Timing.setForeground(Color.orange);
 		mp3Timing.setToolTipText("Right click on progressbar and select 'Add mp3 here'");
 		add(mp3Timing, gb);
 

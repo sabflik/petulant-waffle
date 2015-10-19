@@ -51,7 +51,7 @@ public class SpeechTools extends JPanel {
 		gb.gridy = 0;gb.gridx = 0;
 		JRadioButton male = new JRadioButton("Male");
 		male.setBackground(Color.DARK_GRAY);
-		male.setForeground(Color.blue);
+		male.setForeground(Color.cyan);
 		JRadioButton female = new JRadioButton("Female");
 		female.setBackground(Color.DARK_GRAY);
 		female.setForeground(Color.pink);
@@ -140,14 +140,14 @@ public class SpeechTools extends JPanel {
 		gb.gridy = 4;
 		settings = new JLabel("Speech Settings");
 		settings.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		settings.setForeground(Color.WHITE);
+		settings.setForeground(Color.orange);
 		add(settings, gb);
 
 		// Speech settings Options
 		gb.gridy = 5;
 		speechTiming = new JLabel("Add speech at: 00:00");
 		speechTiming.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		speechTiming.setForeground(Color.WHITE);
+		speechTiming.setForeground(Color.orange);
 		speechTiming.setToolTipText("Right click on progressbar and select 'Add speech here'");
 		add(speechTiming, gb);
 	}

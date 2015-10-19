@@ -22,8 +22,18 @@ public class MP3OverlayWorker extends SwingWorker<Void,Void>{
 	
 	@Override
 	protected Void doInBackground() throws Exception {
+		
 		if (!isCancelled()) {
-			String cmd = "ffmpeg -i "+video+" -i "+audio+" -filter_complex '[1:a]adelay="+mp3TimeInMS+"[aud2];[0:a][aud2]amix=inputs=2' -map 0:v -map 1:a -y "+name+".avi";
+			
+			String cmd;
+			
+			if(mp3TimeInMS != 0.0) {
+				cmd = "ffmpeg -i "+video+" -i "+audio+" -filter_complex '[1:a]adelay="+mp3TimeInMS+"[aud2];[0:a][aud2]amix=inputs=2' -map 0:v -map 1:a "+name+".avi";
+			} else {
+				cmd = "ffmpeg -i "+video+" -i "+audio+" -filter_complex '[1:a][0:a]amix=inputs=2' -map 0:v -map 1:a "+name+".avi";
+				System.out.println(cmd);
+			}
+			
 			ProcessBuilder builder = new ProcessBuilder("/bin/bash", "-c", cmd);
 			Process process;
 			try {
