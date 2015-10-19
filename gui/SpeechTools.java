@@ -19,14 +19,12 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JToggleButton;
 
-import speech.AudioSetting;
 import speech.ComboCreationWorker;
 import speech.CreateAudio;
 import speech.Speech;
 import speech.SpeechTab;
 import gui.ProgressLoader;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
-import video.Video;
 
 public class SpeechTools extends JPanel {
 
@@ -48,12 +46,12 @@ public class SpeechTools extends JPanel {
 		GridBagConstraints gb = new GridBagConstraints();
 		gb.fill = GridBagConstraints.HORIZONTAL;
 
-		// VOICE SELECTION
+		// VOICE SELECTION - Can select Male or Female voice with JRadioButton
 		gb.gridy = 0;gb.gridx = 0;
-		JRadioButton male = new JRadioButton("Male");
+		final JRadioButton male = new JRadioButton("Male");
 		male.setBackground(Color.DARK_GRAY);
 		male.setForeground(Color.cyan);
-		JRadioButton female = new JRadioButton("Female");
+		final JRadioButton female = new JRadioButton("Female (Robot)");
 		female.setBackground(Color.DARK_GRAY);
 		female.setForeground(Color.pink);
 		ButtonGroup genderGroup = new ButtonGroup();
@@ -64,14 +62,18 @@ public class SpeechTools extends JPanel {
 		gb.gridx = 1;
 		add(female, gb);
 
-		// SPEAK BUTTON
+		// SPEAK BUTTON - Calls SwingWorker process to speak entered text
 		gb.gridx = 0;gb.gridy = 1;gb.weightx = 0;gb.gridwidth = 2;gb.weighty = 0;
 		speak = new JToggleButton("Speak");
 		speak.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (speak.isSelected()) {
 					speak.setText("Cancel");
-					helper = new Speech(speechTab.getText(), speak);
+					if(male.isSelected()) {
+						helper = new Speech(speechTab.getText(), speak, "male");
+					} else {
+						helper = new Speech(speechTab.getText(), speak, "female");
+					}
 					helper.execute();
 				} else {
 					speak.setText("Speak");
@@ -85,7 +87,7 @@ public class SpeechTools extends JPanel {
 		speak.setEnabled(false);
 		add(speak, gb);
 
-		// CREATE MP3 BUTTON
+		// CREATE MP3 BUTTON - Creates mp3 from entered text
 		gb.gridy = 2;
 		createMP3 = new JButton("Create mp3");
 		createMP3.addActionListener(new ActionListener() {
@@ -95,13 +97,15 @@ public class SpeechTools extends JPanel {
 				int returnVal = chooser.showSaveDialog(null);
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
 					try {
-						
 						ProgressLoader progress = new ProgressLoader(frame);
 						progress.execute();
-						
-						CreateAudio createMP3 = new CreateAudio(speechTab.getText(), chooser, progress);
+						CreateAudio createMP3;
+						if(male.isSelected()) {
+							createMP3 = new CreateAudio(speechTab.getText(), chooser, progress, "male");
+						} else {
+							createMP3 = new CreateAudio(speechTab.getText(), chooser, progress, "female");
+						}
 						createMP3.execute();
-						
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -131,7 +135,10 @@ public class SpeechTools extends JPanel {
 						e.printStackTrace();
 					}
 					
-					ComboCreationWorker cc = new ComboCreationWorker(Video.getVideoName(), chooser.getSelectedFile().getAbsolutePath(), AudioSetting.MERGE, mediaPlayer, speechTimeInMS);
+					ProgressLoader progress = new ProgressLoader(frame);
+					progress.execute();
+					
+					ComboCreationWorker cc = new ComboCreationWorker(chooser.getSelectedFile().getAbsolutePath(), speechTimeInMS, progress);
 					cc.execute();
 				}
 			}

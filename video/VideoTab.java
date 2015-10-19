@@ -70,7 +70,7 @@ public class VideoTab extends JPanel {
 //		canvas.addMouseMotionListener(listener);
 		
 		/*------------------This is the overall layout---------------*/
-		setBackground(Color.GRAY);
+		setBackground(Color.black);
 		setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 		setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
@@ -78,6 +78,7 @@ public class VideoTab extends JPanel {
 		// Time Label
 		c.gridy = 3;
 		JLabel timeStamp = new JLabel("00:00");
+		timeStamp.setForeground(Color.orange);
 		add(timeStamp, c);
 
 		// Popup

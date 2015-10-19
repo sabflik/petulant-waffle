@@ -33,7 +33,7 @@ public class ButtonPanel extends JPanel {
 		
 //		menu.attachButtonObserver(this);
 		
-		setBackground(Color.GRAY);
+		setBackground(Color.black);
 		setLayout(new GridBagLayout());
 		
 		GridBagConstraints gbc = new GridBagConstraints();
@@ -44,7 +44,7 @@ public class ButtonPanel extends JPanel {
 		gbc.gridx = 0;gbc.gridy = 1;gbc.gridwidth = 3;
 		gbc.insets = new Insets(5,0,5,0);  //vertical padding
 		final JButton rewind_btn = new JButton();
-		rewind_btn.setBackground(Color.WHITE);
+		rewind_btn.setBackground(Color.black);
 		rewind_btn.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
 			if(hasRewinded) {
@@ -64,7 +64,7 @@ public class ButtonPanel extends JPanel {
 		//PAUSE AND PLAY BUTTON
 		gbc.gridx = 3;
 		pause_btn = new JButton();
-		pause_btn.setBackground(Color.WHITE);
+		pause_btn.setBackground(Color.black);
 		pause_btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(hasFFed) {
@@ -93,7 +93,7 @@ public class ButtonPanel extends JPanel {
 		//FASTFORWARD BUTTON
 		gbc.gridx = 6;
 		final JButton fastforward_btn = new JButton();
-		fastforward_btn.setBackground(Color.WHITE);
+		fastforward_btn.setBackground(Color.black);
 		fastforward_btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(hasRewinded) {
@@ -113,11 +113,13 @@ public class ButtonPanel extends JPanel {
 		//REPLAY BUTTON
 		gbc.gridx = 9;
 		final JButton replay_btn = new JButton();
-		replay_btn.setBackground(Color.WHITE);
+		replay_btn.setBackground(Color.black);
 		replay_btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				mediaPlayer.playMedia(Video.getVideoName());
-				pause_btn.setIcon(getResizedImage("pause.png"));
+				if(Video.getVideoName() != null) {
+					mediaPlayer.playMedia(Video.getVideoName());
+					pause_btn.setIcon(getResizedImage("pause.png"));
+				}
 			}
 		});
 		replay_btn.setIcon(getResizedImage("replay.png"));
@@ -126,7 +128,7 @@ public class ButtonPanel extends JPanel {
 		//MUTE BUTTON
 		gbc.gridx = 12;
 		final JButton mute_btn = new JButton();
-		mute_btn.setBackground(Color.WHITE);
+		mute_btn.setBackground(Color.black);
 		mute_btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {	
 				if(mediaPlayer.isMute()) { //toggle image of button depending on whether video is playing or not
@@ -156,7 +158,7 @@ public class ButtonPanel extends JPanel {
 				mediaPlayer.setVolume(sliderPos*2);
 			}	
 		});
-		slider.setBackground(Color.GRAY);
+		slider.setBackground(Color.black);
 		add(slider, gbc);	
 	}
 
@@ -171,8 +173,4 @@ public class ButtonPanel extends JPanel {
 //	public void setPauseImage() {
 //		pause_btn.setIcon(getResizedImage("pause.png"));
 //	}
-	
-	public void update() {
-		
-	}
 }

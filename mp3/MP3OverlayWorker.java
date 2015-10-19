@@ -1,23 +1,20 @@
 package mp3;
 
+import gui.ProgressLoader;
 import java.io.IOException;
-
 import javax.swing.SwingWorker;
-
-import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
+import video.Video;
 
 public class MP3OverlayWorker extends SwingWorker<Void,Void>{
 
-	private String video;
-	private String audio;
 	private float mp3TimeInMS;
 	private String name;
+	private ProgressLoader progress;
 	
-	public MP3OverlayWorker(String video, String audio, EmbeddedMediaPlayer mediaPlayer, float mp3TimeInMS, String name) {
-		this.video = video;
-		this.audio = audio;
+	public MP3OverlayWorker(float mp3TimeInMS, String name, ProgressLoader progress) {
 		this.mp3TimeInMS = mp3TimeInMS;
 		this.name = name;
+		this.progress = progress;
 	}
 	
 	@Override
@@ -28,9 +25,9 @@ public class MP3OverlayWorker extends SwingWorker<Void,Void>{
 			String cmd;
 			
 			if(mp3TimeInMS != 0.0) {
-				cmd = "ffmpeg -i "+video+" -i "+audio+" -filter_complex '[1:a]adelay="+mp3TimeInMS+"[aud2];[0:a][aud2]amix=inputs=2' -map 0:v -map 1:a "+name+".avi";
+				cmd = "ffmpeg -i "+Video.getVideoName()+" -i "+MP3.getMP3Name()+" -filter_complex '[1:a]adelay="+mp3TimeInMS+"[aud2];[0:a][aud2]amix=inputs=2' -map 0:v -map 1:a "+name+".avi";
 			} else {
-				cmd = "ffmpeg -i "+video+" -i "+audio+" -filter_complex '[1:a][0:a]amix=inputs=2' -map 0:v -map 1:a "+name+".avi";
+				cmd = "ffmpeg -i "+Video.getVideoName()+" -i "+MP3.getMP3Name()+" -filter_complex '[1:a][0:a]amix=inputs=2' -map 0:v -map 1:a "+name+".avi";
 				System.out.println(cmd);
 			}
 			
@@ -48,10 +45,7 @@ public class MP3OverlayWorker extends SwingWorker<Void,Void>{
 	}
 	
 	protected void done() {
-		if (!isCancelled()) {
-			video = ".PetulantWaffle/out.avi";
-//			mediaPlayer.playMedia(video);
-		}
+		progress.disposeProgress();
 	}
 
 }

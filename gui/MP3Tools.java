@@ -13,9 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
-
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
-import video.Video;
 
 import mp3.MP3;
 import mp3.MP3OverlayWorker;
@@ -45,9 +43,8 @@ public class MP3Tools extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				JFileChooser fChooser = new JFileChooser();
 				fChooser.setAcceptAllFileFilterUsed(false);
-				FileFilter filter = new FileNameExtensionFilter("mp3 files",
-						"mp3"); // JFileChooser allows user to find and select
-								// any .mp3 files
+				FileFilter filter = new FileNameExtensionFilter("mp3 files","mp3");
+				// JFileChooser allows user to find and select any .mp3 files
 				fChooser.addChoosableFileFilter(filter);
 				int number = fChooser.showDialog(null, "Choose mp3 File");
 
@@ -69,11 +66,15 @@ public class MP3Tools extends JPanel {
 		mp3Button = new JButton("Combine MP3 with Video");
 		mp3Button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
+
 				JFileChooser chooser = new JFileChooser();
 				int returnVal = chooser.showSaveDialog(null);
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
-					MP3OverlayWorker overlay = new MP3OverlayWorker(Video.getVideoName(), MP3.getMP3Name(), mediaPlayer, mp3TimeInMS, chooser.getSelectedFile().getAbsolutePath());
+					ProgressLoader progress = new ProgressLoader(frame);
+					progress.execute();
+
+					MP3OverlayWorker overlay = new MP3OverlayWorker(
+							mp3TimeInMS, chooser.getSelectedFile().getAbsolutePath(), progress);
 					overlay.execute();
 				}
 			}
@@ -84,7 +85,7 @@ public class MP3Tools extends JPanel {
 				.setToolTipText("Press to create a new video with text dubbed");
 		mp3Button.setEnabled(false);
 		add(mp3Button, gb);
-		
+
 		// Settings label
 		gb.gridx = 1;
 		gb.gridy = 2;
@@ -92,13 +93,14 @@ public class MP3Tools extends JPanel {
 		settingB.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		settingB.setForeground(Color.orange);
 		add(settingB, gb);
-		
-		//Settings options
+
+		// Settings options
 		gb.gridy = 3;
 		mp3Timing = new JLabel("Add mp3 at: 00:00");
 		mp3Timing.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		mp3Timing.setForeground(Color.orange);
-		mp3Timing.setToolTipText("Right click on progressbar and select 'Add mp3 here'");
+		mp3Timing
+				.setToolTipText("Right click on progressbar and select 'Add mp3 here'");
 		add(mp3Timing, gb);
 
 	}
@@ -110,7 +112,7 @@ public class MP3Tools extends JPanel {
 			float timeInSeconds = time / 1000;
 			int sec = (int) timeInSeconds % 60;
 			int min = (int) (timeInSeconds / 60) % 60;
-			String text = "Add mp3 at: "+String.format("%02d:%02d", min, sec);
+			String text = "Add mp3 at: " + String.format("%02d:%02d", min, sec);
 			mp3Timing.setText(text);
 		}
 	}
@@ -119,7 +121,7 @@ public class MP3Tools extends JPanel {
 	public String getMP3Timing() {
 		return mp3Timing.getText();
 	}
-	
+
 	public void setChooseMP3Enabled(boolean selection) {
 		chooseMP3.setEnabled(selection);
 	}

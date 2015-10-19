@@ -28,7 +28,7 @@ public class SpeechTab extends JPanel {
 	public SpeechTab() {
 		// menu.attachTextObserver(this);
 
-		setBackground(Color.GRAY);
+		setBackground(Color.black);
 		setLayout(new GridBagLayout());
 
 		GridBagConstraints gb = new GridBagConstraints();
