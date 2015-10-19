@@ -49,11 +49,7 @@ public class SpeechTab extends JPanel {
 		add(cl_label, gb);
 
 		// TEXTAREA
-		gb.fill = GridBagConstraints.BOTH;
-		gb.gridy = 1;
-		gb.gridx = 0;
-		gb.weightx = 1.00;
-		gb.gridwidth = 10;
+		gb.fill = GridBagConstraints.BOTH;gb.gridy = 1;gb.gridx = 0;gb.weightx = 1.00;gb.gridwidth = 10;
 		
 		textArea = new JTextArea();
 		textArea.setFont(new Font("Verdana", Font.PLAIN, 20));

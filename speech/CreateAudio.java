@@ -1,5 +1,7 @@
 package speech;
 
+import gui.ProgressLoader;
+
 import javax.swing.JFileChooser;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -13,10 +15,12 @@ public class CreateAudio extends SwingWorker<Void, Void> {
 
 	private JFileChooser chooser;
 	private String text;
+	private ProgressLoader progress;
 
-	public CreateAudio(final String text, final JFileChooser chooser) throws IOException {
+	public CreateAudio(final String text, final JFileChooser chooser, ProgressLoader progress) throws IOException {
 		this.text = text;
 		this.chooser = chooser;
+		this.progress = progress;
 	}
 
 	@Override
@@ -37,9 +41,14 @@ public class CreateAudio extends SwingWorker<Void, Void> {
 			
 			processMW = makeWav.start();
 			processMW.waitFor();
+			
 		} catch (IOException | InterruptedException e) {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public void done() {
+		progress.disposeProgress();
 	}
 }

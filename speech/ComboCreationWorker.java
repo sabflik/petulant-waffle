@@ -7,13 +7,11 @@ import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 
 public class ComboCreationWorker extends SwingWorker<Void,Void> {
 
-	private AudioSetting setting;
 	private String video;
 	private String name;
 	private float speechTimeInMS;
 	
 	public ComboCreationWorker(String video, String name, AudioSetting setting, EmbeddedMediaPlayer mediaPlayer, float speechTimeInMS) {
-		this.setting = setting;
 		this.video = video;
 		this.name = name;
 		this.speechTimeInMS = speechTimeInMS;

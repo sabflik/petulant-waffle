@@ -24,6 +24,7 @@ import speech.ComboCreationWorker;
 import speech.CreateAudio;
 import speech.Speech;
 import speech.SpeechTab;
+import gui.ProgressLoader;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 import video.Video;
 
@@ -94,8 +95,13 @@ public class SpeechTools extends JPanel {
 				int returnVal = chooser.showSaveDialog(null);
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
 					try {
-						CreateAudio createMP3 = new CreateAudio(speechTab.getText(), chooser);
+						
+						ProgressLoader progress = new ProgressLoader(frame);
+						progress.execute();
+						
+						CreateAudio createMP3 = new CreateAudio(speechTab.getText(), chooser, progress);
 						createMP3.execute();
+						
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -163,7 +169,8 @@ public class SpeechTools extends JPanel {
 			float timeInSeconds = time / 1000;
 			int sec = (int) timeInSeconds % 60;
 			int min = (int) (timeInSeconds / 60) % 60;
-			String text = "Add speech at: " + String.format("%02d:%02d", min, sec);
+			String text = "Add speech at: "
+					+ String.format("%02d:%02d", min, sec);
 			speechTiming.setText(text);
 		}
 	}
