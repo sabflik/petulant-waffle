@@ -36,14 +36,13 @@ public class CreateAudio extends SwingWorker<Void, Void> {
 			cmd = "text2wave .PetulantWaffle/Speech.txt -o .PetulantWaffle/speech.wav;"
 					+ "ffmpeg -i .PetulantWaffle/speech.wav "
 					+ chooser.getSelectedFile().getAbsolutePath() + ".mp3";
-			System.out.println(cmd);
 		} else {
 			SchemeCreator scheme = new SchemeCreator(text);
 			scheme.createMP3Scheme();
 			
-			cmd = "ffmpeg -i .PetulantWaffle/speech.wav "
+			cmd = "festival -b .PetulantWaffle/Scheme.scm;"
+					+ "ffmpeg -i .PetulantWaffle/speech.wav "
 					+ chooser.getSelectedFile().getAbsolutePath() + ".mp3";
-			System.out.println(cmd);
 		}
 		
 		ProcessBuilder makeWav = new ProcessBuilder("/bin/bash", "-c", cmd);

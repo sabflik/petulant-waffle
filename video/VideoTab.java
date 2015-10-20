@@ -43,31 +43,6 @@ public class VideoTab extends JPanel {
 		/*-------------------------This is the Panel with all the buttons------------------------*/
 
 		final ButtonPanel pane = new ButtonPanel(mediaPlayer);
-//		pane.setVisible(false);
-
-		//This is meant to allow button hiding
-//		final MouseMotionListener listener = new MouseMotionListener() {
-//			@Override
-//			public void mouseDragged(MouseEvent arg0) {
-//			}
-//
-//			@Override
-//			public void mouseMoved(MouseEvent arg0) {
-////				pane.setVisible(true);
-//
-//				Timer timer = new Timer(5000, new ActionListener() {
-//
-//					@Override
-//					public void actionPerformed(ActionEvent e) {
-////						pane.setVisible(false);
-//					}
-//				});
-//				timer.setRepeats(false);
-//				timer.start();
-//			}
-//		};
-//
-//		canvas.addMouseMotionListener(listener);
 		
 		/*------------------This is the overall layout---------------*/
 		setBackground(Color.black);
@@ -101,9 +76,8 @@ public class VideoTab extends JPanel {
 		popup.add(addMP3);
 			
 		// Progress Bar
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		gbc.gridy = 2;gbc.ipady = 0;gbc.insets = new Insets(0, 0, 0, 0);
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.gridy = 2;c.ipady = 0;c.insets = new Insets(0, 0, 0, 0);
 		progressBar = new JProgressBar(0, 100);
 		progressBar.addMouseListener(new MouseAdapter() {
 			@Override
@@ -122,7 +96,7 @@ public class VideoTab extends JPanel {
 		progressBar.setValue(0);
 		ProgressBarWorker pbHelper = new ProgressBarWorker(progressBar, timeStamp, mediaPlayer);
 		pbHelper.execute();
-		add(progressBar, gbc);		
+		add(progressBar, c);		
 		
 		// Pane
 		c.gridy = 4;

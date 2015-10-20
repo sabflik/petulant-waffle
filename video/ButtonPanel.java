@@ -3,6 +3,7 @@ package video;
 import gui.MainClass;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
@@ -13,6 +14,7 @@ import java.net.URL;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
@@ -30,8 +32,6 @@ public class ButtonPanel extends JPanel {
 	private JButton pause_btn;
 
 	public ButtonPanel(final EmbeddedMediaPlayer mediaPlayer) {
-		
-//		menu.attachButtonObserver(this);
 		
 		setBackground(Color.black);
 		setLayout(new GridBagLayout());
@@ -160,6 +160,13 @@ public class ButtonPanel extends JPanel {
 		});
 		slider.setBackground(Color.black);
 		add(slider, gbc);	
+		
+		//VOLUME LABEL
+		gbc.gridx = 18;gbc.gridwidth = 1;
+		JLabel volumeLabel = new JLabel("Volume");
+		volumeLabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		volumeLabel.setForeground(Color.orange);
+		add(volumeLabel, gbc);
 	}
 
 	//gets image that fits the button
@@ -169,8 +176,4 @@ public class ButtonPanel extends JPanel {
 		Image getImage = icon.getImage().getScaledInstance(29, 23, java.awt.Image.SCALE_SMOOTH);
 		return new ImageIcon(getImage);
 	}
-//	
-//	public void setPauseImage() {
-//		pause_btn.setIcon(getResizedImage("pause.png"));
-//	}
 }

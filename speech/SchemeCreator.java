@@ -34,7 +34,8 @@ public class SchemeCreator {
 	}
 	//Saves the text as a wave file
 	public void createMP3Scheme() {
-		out.println("(utt.save.wave (Saytext \"" + speech + "\") \".PetulantWaffle/speech.wav\" 'riff)");
+		String currentDirectory = System.getProperty("user.dir");
+		out.println("(utt.save.wave (SayText \"" + speech + "\") \""+currentDirectory+"/.PetulantWaffle/speech.wav\" 'riff)");
 		out.close();
 	}
 }
