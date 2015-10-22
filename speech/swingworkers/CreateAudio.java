@@ -1,6 +1,5 @@
 package speech.swingworkers;
 
-import gui.swingworkers.ProgressLoader;
 
 import javax.swing.JFileChooser;
 import java.io.FileWriter;
@@ -9,6 +8,7 @@ import java.io.PrintWriter;
 import javax.swing.SwingWorker;
 
 import speech.SchemeCreator;
+import vidivox.swingworkers.ProgressLoader;
 
 /**
  * This SwingWorker class converts the text entered into an mp3 file.

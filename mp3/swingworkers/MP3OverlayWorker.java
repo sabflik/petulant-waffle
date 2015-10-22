@@ -1,12 +1,12 @@
 package mp3.swingworkers;
 
-import gui.swingworkers.ProgressLoader;
 
 import java.io.IOException;
 import javax.swing.SwingWorker;
 
 import mp3.MP3;
 import video.Video;
+import vidivox.swingworkers.ProgressLoader;
 
 public class MP3OverlayWorker extends SwingWorker<Void,Void>{
 

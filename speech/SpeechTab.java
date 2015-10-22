@@ -1,6 +1,5 @@
 package speech;
 
-import gui.SpeechTools;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -17,6 +16,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.AbstractDocument;
 
 import video.Video;
+import vidivox.guicomponents.SpeechTools;
 
 public class SpeechTab extends JPanel {
 

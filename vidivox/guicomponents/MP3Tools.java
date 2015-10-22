@@ -1,6 +1,5 @@
-package gui;
+package vidivox.guicomponents;
 
-import gui.swingworkers.ProgressLoader;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -24,6 +23,7 @@ import mp3.MP3;
 import mp3.swingworkers.MP3OverlayWorker;
 import uk.co.caprica.vlcj.component.AudioMediaPlayerComponent;
 import video.Video;
+import vidivox.swingworkers.ProgressLoader;
 
 public class MP3Tools extends JPanel {
 

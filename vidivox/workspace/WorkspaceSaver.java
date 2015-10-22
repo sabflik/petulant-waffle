@@ -1,4 +1,5 @@
-package gui;
+package vidivox.workspace;
+
 
 import java.io.File;
 import java.io.FileWriter;
@@ -10,6 +11,8 @@ import javax.swing.JOptionPane;
 import mp3.MP3;
 import speech.SpeechTab;
 import video.Video;
+import vidivox.guicomponents.MP3Tools;
+import vidivox.guicomponents.SpeechTools;
 
 /**
  * This class saves the current workspace by writing to files inside a folder

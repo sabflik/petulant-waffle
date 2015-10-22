@@ -1,6 +1,5 @@
 package video;
 
-import gui.MainClass;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -22,6 +21,7 @@ import javax.swing.event.ChangeListener;
 
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 import video.swingworkers.VideoManipulationWorker;
+import vidivox.MainClass;
 
 public class ButtonPanel extends JPanel {
 	

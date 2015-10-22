@@ -1,6 +1,5 @@
 package speech.swingworkers;
 
-import gui.swingworkers.ProgressLoader;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -10,6 +9,7 @@ import javax.swing.SwingWorker;
 
 import speech.SchemeCreator;
 import video.Video;
+import vidivox.swingworkers.ProgressLoader;
 
 public class ComboCreationWorker extends SwingWorker<Void, Void> {
 

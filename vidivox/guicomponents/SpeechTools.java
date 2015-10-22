@@ -1,4 +1,4 @@
-package gui;
+package vidivox.guicomponents;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -20,7 +20,7 @@ import speech.SpeechTab;
 import speech.swingworkers.ComboCreationWorker;
 import speech.swingworkers.CreateAudio;
 import speech.swingworkers.Speech;
-import gui.swingworkers.ProgressLoader;
+import vidivox.swingworkers.ProgressLoader;
 
 public class SpeechTools extends JPanel {
 

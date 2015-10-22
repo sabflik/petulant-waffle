@@ -1,4 +1,5 @@
-package gui;
+package vidivox.guicomponents;
+
 
 import java.awt.Color;
 import java.awt.Font;
@@ -16,6 +17,8 @@ import mp3.MP3;
 import speech.*;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 import video.*;
+import vidivox.workspace.WorkspaceLoader;
+import vidivox.workspace.WorkspaceSaver;
 
 public class MenuPanel extends JPanel {
 

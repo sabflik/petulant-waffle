@@ -1,4 +1,5 @@
-package gui;
+package vidivox.workspace;
+
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -8,6 +9,8 @@ import mp3.MP3;
 import speech.SpeechTab;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 import video.Video;
+import vidivox.guicomponents.MP3Tools;
+import vidivox.guicomponents.SpeechTools;
 
 /**
  * This class loads the previous workspace by accessing a folder called "Workspace"

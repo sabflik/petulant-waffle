@@ -1,4 +1,4 @@
-package gui;
+package vidivox;
 
 import java.awt.Canvas;
 import java.awt.Color;
@@ -11,12 +11,18 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
+
 import history.HistoryTab;
 import speech.SpeechTab;
 import uk.co.caprica.vlcj.discovery.NativeDiscovery;
 import uk.co.caprica.vlcj.player.MediaPlayerFactory;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 import video.VideoTab;
+import vidivox.guicomponents.MP3Tools;
+import vidivox.guicomponents.MenuPanel;
+import vidivox.guicomponents.SpeechTools;
+import vidivox.workspace.WorkspaceSaver;
+
 import java.io.File;
 import java.io.IOException;
 

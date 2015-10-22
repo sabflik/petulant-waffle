@@ -1,4 +1,4 @@
-package gui.swingworkers;
+package vidivox.swingworkers;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
