@@ -1,6 +1,11 @@
 package speech;
 
 import gui.ProgressLoader;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+
 import javax.swing.SwingWorker;
 import video.Video;
 
@@ -25,10 +30,20 @@ public class ComboCreationWorker extends SwingWorker<Void, Void> {
 	// http://stackoverflow.com/questions/24804928/singler-line-ffmpeg-cmd-to-merge-video-audio-and-retain-both-audios
 	@Override
 	protected Void doInBackground() throws Exception {
-
+		
 		String cmd = null;
 
 		if (gender.equals("male")) {
+			
+			try {// Writes speech to text file
+				PrintWriter out = new PrintWriter(new FileWriter(
+						".PetulantWaffle/Speech.txt"));
+				out.println(speech);
+				out.close();
+			} catch (IOException e) {
+				System.out.println("Couldn't write to Speech.txt");
+			}
+			
 			// Create the wav file from the text in Speech.txt
 			cmd = "text2wave .PetulantWaffle/Speech.txt -o .PetulantWaffle/speech.wav;";
 		} else {
@@ -43,17 +58,11 @@ public class ComboCreationWorker extends SwingWorker<Void, Void> {
 
 		if (speechTimeInMS != 0.0) {
 			// Replace with merged audio and create file specified by the user
-			cmd = cmd
-					+ "ffmpeg -i "
-					+ Video.getVideoName()
-					+ " -i .PetulantWaffle/audio.mp3 -filter_complex '[1:a]adelay="
-					+ speechTimeInMS
-					+ "[aud2];[0:a][aud2]amix=inputs=2' -map 0:v -map 1:a "
-					+ name + ".avi";
+			cmd = cmd + "ffmpeg -i " + Video.getVideoName()
+					+ " -i .PetulantWaffle/audio.mp3 -filter_complex '[1:a]adelay=" + speechTimeInMS
+					+ "[aud2];[0:a][aud2]amix=inputs=2' -map 0:v -map 1:a "	+ name + ".avi";
 		} else {
-			cmd = cmd
-					+ "ffmpeg -i "
-					+ Video.getVideoName()
+			cmd = cmd + "ffmpeg -i " + Video.getVideoName()
 					+ " -i .PetulantWaffle/audio.mp3 -filter_complex '[0:a][1:a]amix=inputs=2' -map 0:v -map 1:a "
 					+ name + ".avi";
 		}
@@ -70,5 +79,4 @@ public class ComboCreationWorker extends SwingWorker<Void, Void> {
 	protected void done() {
 		progress.disposeProgress();
 	}
-
 }

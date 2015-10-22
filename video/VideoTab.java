@@ -1,11 +1,9 @@
 package video;
 
-
 import gui.MP3Tools;
 import gui.SpeechTools;
 import java.awt.Canvas;
 import java.awt.Color;
-import java.awt.ComponentOrientation;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -26,7 +24,6 @@ import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 public class VideoTab extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private EmbeddedMediaPlayer mediaPlayer;
 	private final JProgressBar progressBar;
 	private float time;
 	private VideoTab tab;
@@ -46,15 +43,21 @@ public class VideoTab extends JPanel {
 		
 		/*------------------This is the overall layout---------------*/
 		setBackground(Color.black);
-		setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+		
 		setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		
-		// Time Label
-		c.gridy = 3;
+		// TIME LABEL
+		c.gridy = 3;c.gridx = 0;
 		JLabel timeStamp = new JLabel("00:00");
 		timeStamp.setForeground(Color.orange);
 		add(timeStamp, c);
+		
+		//ANOTHER LABEL
+		c.gridx = 1;c.anchor = GridBagConstraints.EAST;
+		JLabel lengthStamp = new JLabel("00:00");
+		lengthStamp.setForeground(Color.orange);
+		add(lengthStamp, c);
 
 		// Popup
 		final JPopupMenu popup = new JPopupMenu();
@@ -75,8 +78,8 @@ public class VideoTab extends JPanel {
 		});
 		popup.add(addMP3);
 			
-		// Progress Bar
-		c.fill = GridBagConstraints.HORIZONTAL;
+		// PROGRESS BAR
+		c.fill = GridBagConstraints.HORIZONTAL;c.gridwidth = 2;c.gridx = 0;
 		c.gridy = 2;c.ipady = 0;c.insets = new Insets(0, 0, 0, 0);
 		progressBar = new JProgressBar(0, 100);
 		progressBar.addMouseListener(new MouseAdapter() {
@@ -94,7 +97,7 @@ public class VideoTab extends JPanel {
 		});
 		progressBar.setForeground(Color.orange);
 		progressBar.setValue(0);
-		ProgressBarWorker pbHelper = new ProgressBarWorker(progressBar, timeStamp, mediaPlayer);
+		ProgressBarWorker pbHelper = new ProgressBarWorker(progressBar, timeStamp, lengthStamp, mediaPlayer);
 		pbHelper.execute();
 		add(progressBar, c);		
 		
@@ -105,9 +108,5 @@ public class VideoTab extends JPanel {
 		// Screen
 		c.weightx = 0.5;c.fill = GridBagConstraints.BOTH;c.gridx = 0;c.gridy = 1;c.weighty = 1.0;
 		add(canvas, c);
-	}
-
-	public EmbeddedMediaPlayer getMediaPlayer() {
-		return mediaPlayer;
 	}
 }

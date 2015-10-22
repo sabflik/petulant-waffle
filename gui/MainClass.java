@@ -7,10 +7,14 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 
+import history.HistoryTab;
 import speech.SpeechTab;
 import uk.co.caprica.vlcj.discovery.NativeDiscovery;
 import uk.co.caprica.vlcj.player.MediaPlayerFactory;
@@ -33,7 +37,7 @@ public class MainClass {
 				try {
 					new MainClass();
 				} catch (IOException e) {
-					e.printStackTrace();
+					System.out.println("Couldn't run VIDIVOX");
 				}
 			}
 		});
@@ -51,8 +55,7 @@ public class MainClass {
 			dir.mkdir();
 		}
 		this.dir = dir;
-		// create file for saving text to turn into speech if it doesn't already
-		// exist
+		// create file for saving text to turn into speech
 		File speechFile = new File(".PetulantWaffle/Speech.txt");
 		speechFile.createNewFile();
 	}
@@ -76,25 +79,26 @@ public class MainClass {
 		mediaPlayer.setVideoSurface(mediaPlayerFactory.newVideoSurface(canvas));
 
 		/*-------------------------------MP3 Tools----------------------------*/
-		MP3Tools mp3Tools = new MP3Tools(frame, dir); // The panel on the left
+		final MP3Tools mp3Tools = new MP3Tools(frame, dir); // The panel on the left
 
 		/*--------------------------------Speech Tools-----------------------*/
-		SpeechTools speechTools = new SpeechTools(frame, dir);// The panel on the right
+		final SpeechTools speechTools = new SpeechTools(frame, dir);// The panel on the right
 
 		/*-------------------------This is the Tabbed pane---------------------*/
 		JTabbedPane tabPane = new JTabbedPane();// The tabs in the center
 
-		SpeechTab sTab = new SpeechTab();
+		final SpeechTab sTab = new SpeechTab();
 		sTab.setSpeechTools(speechTools);
 		speechTools.setSpeechTab(sTab);
 		VideoTab vTab = new VideoTab(mp3Tools, sTab, speechTools, mediaPlayer,
 				canvas);
-
+		HistoryTab hTab = new HistoryTab();
 		tabPane.addTab("Video", vTab);
 		tabPane.addTab("Speech", sTab);
+		tabPane.addTab("History", hTab);
 
 		/*-------------------------This is the Menu---------------------------*/
-		final MenuPanel menu = new MenuPanel(mediaPlayer, sTab,// The menu ribbon
+		final MenuPanel menu = new MenuPanel(mediaPlayer, sTab, vTab,// The menu ribbon
 				speechTools, mp3Tools, dir);
 		menu.setBackground(Color.GRAY);
 
@@ -125,7 +129,29 @@ public class MainClass {
 
 		// Launch the application
 		frame.pack();
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		// Prompts before closing. 
+		//Code from: http://stackoverflow.com/questions/15449022/show-prompt-before-closing-jframe
+		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		frame.addWindowListener(new WindowAdapter() {
+		    public void windowClosing(WindowEvent we)
+		    { 
+		        String ObjButtons[] = {"Yes","No","Cancel"};
+		        int PromptResult = JOptionPane.showOptionDialog(
+		        		null,"Do you want to save this workspace?","Confirm Save",
+		        		JOptionPane.DEFAULT_OPTION,JOptionPane.QUESTION_MESSAGE,null,ObjButtons,ObjButtons[1]);
+		        if (PromptResult==JOptionPane.NO_OPTION) {
+		            System.exit(0);
+		        } else if (PromptResult==JOptionPane.YES_OPTION) {
+		        	WorkspaceSaver saver = new WorkspaceSaver(sTab, speechTools, mp3Tools);
+		        	try {
+						saver.save();
+						System.exit(0);
+					} catch (IOException e) {
+						System.out.println("Couldn't save workspace, sorry :(");
+					}
+		        }
+		    }
+		});
 		frame.setVisible(true);
 	}
 }

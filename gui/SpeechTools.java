@@ -7,10 +7,7 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
-
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -19,7 +16,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JToggleButton;
-
 import speech.ComboCreationWorker;
 import speech.CreateAudio;
 import speech.Speech;
@@ -37,6 +33,7 @@ public class SpeechTools extends JPanel {
 	private JLabel speechTiming;
 	private SpeechTab speechTab;
 	private Speech helper;
+	private JRadioButton male;
 
 	public SpeechTools(final JFrame frame, final File directory) {
 
@@ -58,7 +55,7 @@ public class SpeechTools extends JPanel {
 		gb.gridy = 1;
 		gb.gridx = 0;
 		gb.gridwidth = 1;
-		final JRadioButton male = new JRadioButton("Male");
+		male = new JRadioButton("Male");
 		male.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		male.setBackground(Color.DARK_GRAY);
 		male.setForeground(Color.cyan);
@@ -75,11 +72,7 @@ public class SpeechTools extends JPanel {
 		add(female, gb);
 
 		// SPEAK BUTTON - Calls SwingWorker process to speak entered text
-		gb.gridx = 0;
-		gb.gridy = 2;
-		gb.weightx = 0;
-		gb.gridwidth = 2;
-		gb.weighty = 0;
+		gb.gridx = 0;gb.gridy = 2;gb.weightx = 0;gb.gridwidth = 2;gb.weighty = 0;
 		speak = new JToggleButton("Speak");
 		speak.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -148,14 +141,6 @@ public class SpeechTools extends JPanel {
 				chooser.setCurrentDirectory(directory);
 				int returnVal = chooser.showSaveDialog(null);
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
-					try {
-						PrintWriter out = new PrintWriter(new FileWriter(
-								".PetulantWaffle/Speech.txt"));
-						out.println(speechTab.getText());
-						out.close();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
 
 					ProgressLoader progress = new ProgressLoader(frame);
 					progress.execute();
@@ -233,5 +218,9 @@ public class SpeechTools extends JPanel {
 
 	public void setMP3Enabled(boolean selection) {
 		createMP3.setEnabled(selection);
+	}
+	
+	public boolean isMaleSelected() {
+		return male.isSelected();
 	}
 }

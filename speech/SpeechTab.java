@@ -26,7 +26,6 @@ public class SpeechTab extends JPanel {
 	private SpeechTools sTools;
 	
 	public SpeechTab() {
-		// menu.attachTextObserver(this);
 
 		setBackground(Color.black);
 		setLayout(new GridBagLayout());
@@ -36,15 +35,15 @@ public class SpeechTab extends JPanel {
 
 		// TEXT LABEL
 		gb.gridy = 0;gb.insets = new Insets(0, 10, 0, 10);
-		JLabel t_label = new JLabel("Enter Commentary Here");
-		t_label.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		JLabel t_label = new JLabel("Type Your Commentary In Text Box Below");
+		t_label.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		t_label.setForeground(Color.orange);
 		add(t_label, gb);
 
 		// CHAR LIMIT LABEL
 		gb.gridy = 2;
 		final JLabel cl_label = new JLabel("Characters Remaining: 200");
-		cl_label.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		cl_label.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		cl_label.setForeground(Color.orange);
 		add(cl_label, gb);
 
@@ -97,6 +96,8 @@ public class SpeechTab extends JPanel {
 		textArea.setLineWrap(true); // Ensure that the text wraps
 		textArea.setWrapStyleWord(true); // Ensure that when wrapping, it splits
 											// at words
+		textArea.setForeground(Color.white);
+		textArea.setBackground(Color.GRAY);
 		add(textArea, gb);
 	}
 
@@ -116,7 +117,7 @@ public class SpeechTab extends JPanel {
 		return textArea.getText();
 	}
 
-	public void update() {
-
+	public void setText(String speech) {
+		textArea.setText(speech);
 	}
 }
