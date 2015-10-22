@@ -1,12 +1,14 @@
-package speech;
+package speech.swingworkers;
 
-import gui.ProgressLoader;
+import gui.swingworkers.ProgressLoader;
 
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
 import javax.swing.SwingWorker;
+
+import speech.SchemeCreator;
 import video.Video;
 
 public class ComboCreationWorker extends SwingWorker<Void, Void> {
@@ -14,15 +16,15 @@ public class ComboCreationWorker extends SwingWorker<Void, Void> {
 	private String name;
 	private float speechTimeInMS;
 	private ProgressLoader progress;
-	private String gender;
+	private boolean isMale;
 	private String speech;
 
 	public ComboCreationWorker(String name, float speechTimeInMS,
-			ProgressLoader progress, String speech, String gender) {
+			ProgressLoader progress, String speech, boolean isMale) {
 		this.name = name;
 		this.speechTimeInMS = speechTimeInMS;
 		this.progress = progress;
-		this.gender = gender;
+		this.isMale = isMale;
 		this.speech = speech;
 	}
 
@@ -33,7 +35,7 @@ public class ComboCreationWorker extends SwingWorker<Void, Void> {
 		
 		String cmd = null;
 
-		if (gender.equals("male")) {
+		if (isMale) {
 			
 			try {// Writes speech to text file
 				PrintWriter out = new PrintWriter(new FileWriter(

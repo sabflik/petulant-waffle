@@ -1,4 +1,4 @@
-package gui;
+package gui.swingworkers;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

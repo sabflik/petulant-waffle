@@ -5,23 +5,55 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.swing.JOptionPane;
+
 import mp3.MP3;
 import speech.SpeechTab;
 import video.Video;
 
+/**
+ * This class saves the current workspace by writing to files inside a folder
+ * called "Workspace" in side the ".PetulantWaffle" hidden folder.
+ * **/
 public class WorkspaceSaver {
-	
+
 	private SpeechTab sTab;
 	private SpeechTools sTools;
 	private MP3Tools mTools;
+	private boolean exit;
 
-	public WorkspaceSaver(SpeechTab sTab, SpeechTools sTools, MP3Tools mTools) {
+	public WorkspaceSaver(SpeechTab sTab, SpeechTools sTools, MP3Tools mTools,
+			boolean exit) {
 		this.mTools = mTools;
 		this.sTab = sTab;
 		this.sTools = sTools;
+		this.exit = exit;
 	}
 	
+	//Code from:
+	// http://stackoverflow.com/questions/15449022/show-prompt-before-closing-jframe
+	public void promptSave() {
+		String ObjButtons[] = { "Yes", "No", "Cancel" };
+		int PromptResult = JOptionPane.showOptionDialog(null,
+				"Do you want to save this workspace?", "Confirm Save",
+				JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null,
+				ObjButtons, ObjButtons[1]);
+		if (exit && (PromptResult == JOptionPane.NO_OPTION)) {
+			System.exit(0);
+		} else if (PromptResult == JOptionPane.YES_OPTION) {
+			try {
+				save();
+			} catch (IOException e) {
+				System.out.println("Couldn't save workspace, sorry :(");
+			}
+			if(exit) {
+				System.exit(0);
+			}
+		}
+	}
+
 	public void save() throws IOException {
+
 		// Creates file to store workspace information
 		File dir = new File(".PetulantWaffle/Workspace");
 		if (!dir.exists()) {
@@ -30,7 +62,7 @@ public class WorkspaceSaver {
 		// Stores the speech entered
 		File speechFile = new File(".PetulantWaffle/Workspace/speech.txt");
 		speechFile.createNewFile();
-		
+
 		try {// Writes speech to text file
 			PrintWriter out = new PrintWriter(new FileWriter(
 					".PetulantWaffle/Workspace/speech.txt"));
@@ -39,11 +71,11 @@ public class WorkspaceSaver {
 		} catch (IOException e) {
 			System.out.println("Couldn't save speech to workspace");
 		}
-		
+
 		// Stores the settings
 		File settingsFile = new File(".PetulantWaffle/Workspace/settings.txt");
 		settingsFile.createNewFile();
-		
+
 		try {// Writes settings to text file
 			PrintWriter out = new PrintWriter(new FileWriter(
 					".PetulantWaffle/Workspace/settings.txt"));

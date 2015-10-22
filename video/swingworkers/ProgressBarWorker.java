@@ -1,4 +1,4 @@
-package video;
+package video.swingworkers;
 
 import javax.swing.JLabel;
 import javax.swing.JProgressBar;

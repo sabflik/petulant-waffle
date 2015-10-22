@@ -1,12 +1,14 @@
-package speech;
+package speech.swingworkers;
 
-import gui.ProgressLoader;
+import gui.swingworkers.ProgressLoader;
 
 import javax.swing.JFileChooser;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.swing.SwingWorker;
+
+import speech.SchemeCreator;
 
 /**
  * This SwingWorker class converts the text entered into an mp3 file.
@@ -16,14 +18,14 @@ public class CreateAudio extends SwingWorker<Void, Void> {
 	private JFileChooser chooser;
 	private String text;
 	private ProgressLoader progress;
-	private String gender;
+	private boolean isMale;
 
 	public CreateAudio(String text, JFileChooser chooser,
-			ProgressLoader progress, String gender) throws IOException {
+			ProgressLoader progress, boolean isMale) throws IOException {
 		this.text = text;
 		this.chooser = chooser;
 		this.progress = progress;
-		this.gender = gender;
+		this.isMale= isMale;
 	}
 
 	@Override
@@ -31,7 +33,7 @@ public class CreateAudio extends SwingWorker<Void, Void> {
 
 		String cmd;
 		
-		if (gender.equals("male")) {
+		if (isMale) {
 			// create the wav file and convert that wav file to mp3
 			cmd = "text2wave .PetulantWaffle/Speech.txt -o .PetulantWaffle/speech.wav;"
 					+ "ffmpeg -i .PetulantWaffle/speech.wav "

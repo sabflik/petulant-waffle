@@ -20,6 +20,7 @@ import javax.swing.SwingUtilities;
 import mp3.MP3;
 import speech.SpeechTab;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
+import video.swingworkers.ProgressBarWorker;
 
 public class VideoTab extends JPanel {
 

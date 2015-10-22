@@ -16,11 +16,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JToggleButton;
-import speech.ComboCreationWorker;
-import speech.CreateAudio;
-import speech.Speech;
 import speech.SpeechTab;
-import gui.ProgressLoader;
+import speech.swingworkers.ComboCreationWorker;
+import speech.swingworkers.CreateAudio;
+import speech.swingworkers.Speech;
+import gui.swingworkers.ProgressLoader;
 
 public class SpeechTools extends JPanel {
 
@@ -34,6 +34,7 @@ public class SpeechTools extends JPanel {
 	private SpeechTab speechTab;
 	private Speech helper;
 	private JRadioButton male;
+	private JRadioButton female;
 
 	public SpeechTools(final JFrame frame, final File directory) {
 
@@ -55,11 +56,11 @@ public class SpeechTools extends JPanel {
 		gb.gridy = 1;
 		gb.gridx = 0;
 		gb.gridwidth = 1;
-		male = new JRadioButton("Male");
+		male = new JRadioButton("Male");// Male button
 		male.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		male.setBackground(Color.DARK_GRAY);
 		male.setForeground(Color.cyan);
-		final JRadioButton female = new JRadioButton("Female (Robot)");
+		female = new JRadioButton("Female (Robot)");// Female button
 		female.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		female.setBackground(Color.DARK_GRAY);
 		female.setForeground(Color.pink);
@@ -78,12 +79,7 @@ public class SpeechTools extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				if (speak.isSelected()) {
 					speak.setText("Cancel");
-					if (male.isSelected()) {
-						helper = new Speech(speechTab.getText(), speak, "male");
-					} else {
-						helper = new Speech(speechTab.getText(), speak,
-								"female");
-					}
+					helper = new Speech(speechTab.getText(), speak, male.isSelected());
 					helper.execute();
 				} else {
 					speak.setText("Speak");
@@ -111,13 +107,8 @@ public class SpeechTools extends JPanel {
 						ProgressLoader progress = new ProgressLoader(frame);
 						progress.execute();
 						CreateAudio createMP3;
-						if (male.isSelected()) {
-							createMP3 = new CreateAudio(speechTab.getText(),
-									chooser, progress, "male");
-						} else {
-							createMP3 = new CreateAudio(speechTab.getText(),
-									chooser, progress, "female");
-						}
+						createMP3 = new CreateAudio(speechTab.getText(),
+								chooser, progress, male.isSelected());
 						createMP3.execute();
 					} catch (IOException e) {
 						e.printStackTrace();
@@ -145,15 +136,9 @@ public class SpeechTools extends JPanel {
 					ProgressLoader progress = new ProgressLoader(frame);
 					progress.execute();
 					ComboCreationWorker cc;
-					if (male.isSelected()) {
-						cc = new ComboCreationWorker(chooser.getSelectedFile()
-								.getAbsolutePath(), speechTimeInMS, progress,
-								speechTab.getText(), "male");
-					} else {
-						cc = new ComboCreationWorker(chooser.getSelectedFile()
-								.getAbsolutePath(), speechTimeInMS, progress,
-								speechTab.getText(), "female");
-					}
+					cc = new ComboCreationWorker(chooser.getSelectedFile()
+							.getAbsolutePath(), speechTimeInMS, progress,
+							speechTab.getText(), male.isSelected());
 					cc.execute();
 				}
 			}
@@ -187,8 +172,8 @@ public class SpeechTools extends JPanel {
 		add(disclaimer2, gb);
 	}
 
-	public String getSpeechTiming() {
-		return speechTiming.getText();
+	public float getSpeechTiming() {
+		return speechTimeInMS;
 	}
 
 	// Sets the selected time for mp3 placement
@@ -222,5 +207,11 @@ public class SpeechTools extends JPanel {
 	
 	public boolean isMaleSelected() {
 		return male.isSelected();
+	}
+	
+	public void setMaleSelected(boolean selection) {
+		if(!selection) {
+			female.doClick();
+		}
 	}
 }

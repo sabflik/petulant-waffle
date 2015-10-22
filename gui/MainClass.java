@@ -9,18 +9,14 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
-
 import history.HistoryTab;
 import speech.SpeechTab;
 import uk.co.caprica.vlcj.discovery.NativeDiscovery;
 import uk.co.caprica.vlcj.player.MediaPlayerFactory;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 import video.VideoTab;
-
 import java.io.File;
 import java.io.IOException;
 
@@ -30,6 +26,7 @@ public class MainClass {
 	private Container contentPane;
 	private EmbeddedMediaPlayer mediaPlayer;
 	private File dir;
+	private Canvas canvas;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -42,6 +39,7 @@ public class MainClass {
 			}
 		});
 	}
+
 	// This method creates all necessary files before executing the gui
 	private void createFiles() throws IOException {
 		// create hidden directory to store intermediate files
@@ -60,6 +58,17 @@ public class MainClass {
 		speechFile.createNewFile();
 	}
 
+	private void setUpCanvas() {
+		final Canvas canvas = new Canvas();// Creates a canvas to display the video
+		canvas.setBackground(Color.black);
+		this.canvas = canvas;
+		// Create the media player to be placed on the canvas
+		MediaPlayerFactory mediaPlayerFactory = new MediaPlayerFactory();
+		mediaPlayer = mediaPlayerFactory.newEmbeddedMediaPlayer();
+		// The video runs on the media player
+		mediaPlayer.setVideoSurface(mediaPlayerFactory.newVideoSurface(canvas));
+	}
+
 	public MainClass() throws IOException {
 
 		createFiles(); // Create files
@@ -67,22 +76,15 @@ public class MainClass {
 
 		frame = new JFrame("Media Player");
 		frame.setMinimumSize(new Dimension(700, 600));
-
-		final Canvas canvas = new Canvas();// Creates a canvas to display the
-											// video
-		canvas.setBackground(Color.black);
-
-		MediaPlayerFactory mediaPlayerFactory = new MediaPlayerFactory();// Creates the media player
-																			// to be placed on the canvas
-		mediaPlayer = mediaPlayerFactory.newEmbeddedMediaPlayer();// The video runs on
-																	// the media player
-		mediaPlayer.setVideoSurface(mediaPlayerFactory.newVideoSurface(canvas));
+		setUpCanvas();
 
 		/*-------------------------------MP3 Tools----------------------------*/
-		final MP3Tools mp3Tools = new MP3Tools(frame, dir); // The panel on the left
+		// The panel on the left
+		final MP3Tools mp3Tools = new MP3Tools(frame, dir); 
 
 		/*--------------------------------Speech Tools-----------------------*/
-		final SpeechTools speechTools = new SpeechTools(frame, dir);// The panel on the right
+		// The panel on the right
+		final SpeechTools speechTools = new SpeechTools(frame, dir);
 
 		/*-------------------------This is the Tabbed pane---------------------*/
 		JTabbedPane tabPane = new JTabbedPane();// The tabs in the center
@@ -98,7 +100,7 @@ public class MainClass {
 		tabPane.addTab("History", hTab);
 
 		/*-------------------------This is the Menu---------------------------*/
-		final MenuPanel menu = new MenuPanel(mediaPlayer, sTab, vTab,// The menu ribbon
+		final MenuPanel menu = new MenuPanel(frame, mediaPlayer, sTab, vTab,
 				speechTools, mp3Tools, dir);
 		menu.setBackground(Color.GRAY);
 
@@ -129,28 +131,14 @@ public class MainClass {
 
 		// Launch the application
 		frame.pack();
-		// Prompts before closing. 
-		//Code from: http://stackoverflow.com/questions/15449022/show-prompt-before-closing-jframe
+		// Prompts to save before closing. 
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		frame.addWindowListener(new WindowAdapter() {
-		    public void windowClosing(WindowEvent we)
-		    { 
-		        String ObjButtons[] = {"Yes","No","Cancel"};
-		        int PromptResult = JOptionPane.showOptionDialog(
-		        		null,"Do you want to save this workspace?","Confirm Save",
-		        		JOptionPane.DEFAULT_OPTION,JOptionPane.QUESTION_MESSAGE,null,ObjButtons,ObjButtons[1]);
-		        if (PromptResult==JOptionPane.NO_OPTION) {
-		            System.exit(0);
-		        } else if (PromptResult==JOptionPane.YES_OPTION) {
-		        	WorkspaceSaver saver = new WorkspaceSaver(sTab, speechTools, mp3Tools);
-		        	try {
-						saver.save();
-						System.exit(0);
-					} catch (IOException e) {
-						System.out.println("Couldn't save workspace, sorry :(");
-					}
-		        }
-		    }
+			public void windowClosing(WindowEvent we) {
+				WorkspaceSaver saver = new WorkspaceSaver(sTab, speechTools,
+						mp3Tools, true);
+				saver.promptSave();
+			}
 		});
 		frame.setVisible(true);
 	}

@@ -1,5 +1,7 @@
 package gui;
 
+import gui.swingworkers.ProgressLoader;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -19,7 +21,7 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import mp3.MP3;
-import mp3.MP3OverlayWorker;
+import mp3.swingworkers.MP3OverlayWorker;
 import uk.co.caprica.vlcj.component.AudioMediaPlayerComponent;
 import video.Video;
 
@@ -156,6 +158,7 @@ public class MP3Tools extends JPanel {
 	// Sets the selected time for mp3 placement
 	public void mp3Timing(float time) {
 		if (time != -1) {
+			mp3TimeInMS = time;
 			float timeInSeconds = time / 1000;
 			int sec = (int) timeInSeconds % 60;
 			int min = (int) (timeInSeconds / 60) % 60;
@@ -165,8 +168,8 @@ public class MP3Tools extends JPanel {
 	}
 
 	// Gets the selected time for mp3 placement
-	public String getMP3Timing() {
-		return mp3Timing.getText();
+	public float getMP3Timing() {
+		return mp3TimeInMS;
 	}
 
 	public void setChooseMP3Enabled(boolean selection) {
@@ -176,5 +179,13 @@ public class MP3Tools extends JPanel {
 	public void setMP3Selected() {
 		File mp3File = new File(MP3.getMP3Name());
 		mp3.setText("Chosen MP3: " + mp3File.getName());
+	}
+	
+	public void setMP3PlayEnabled(boolean selection) {
+		mp3Play.setEnabled(selection);
+	}
+	
+	public void setMP3ComboEnabled(boolean selection) {
+		mp3Button.setEnabled(selection);
 	}
 }

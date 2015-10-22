@@ -1,10 +1,12 @@
-package speech;
+package speech.swingworkers;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import javax.swing.JToggleButton;
 import javax.swing.SwingWorker;
+
+import speech.SchemeCreator;
 
 public class Speech extends SwingWorker<Void, Void> { // this class calls festival in the
 														// background for the speech button in the
@@ -13,13 +15,13 @@ public class Speech extends SwingWorker<Void, Void> { // this class calls festiv
 	private Process process;
 	private String pID;
 	private JToggleButton speak;
-	private String gender;
+	private boolean isMale;
 
-	public Speech(String speech, JToggleButton speak, String gender) {
+	public Speech(String speech, JToggleButton speak, boolean isMale) {
 		this.speak = speak;
 		this.speech = speech.replace("\n", " "); // if new lines have been entered these are
 													// replaced with spaces so festival will run
-		this.gender = gender;
+		this.isMale = isMale;
 	}
 
 	@Override
@@ -27,7 +29,7 @@ public class Speech extends SwingWorker<Void, Void> { // this class calls festiv
 
 		String cmd;
 		
-		if (gender.equals("male")) {
+		if (isMale) {
 			cmd = "echo $$;echo " + speech+ " | festival --tts; echo 'done'";
 		} else {
 			SchemeCreator scheme = new SchemeCreator(speech);

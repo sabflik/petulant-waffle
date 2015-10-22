@@ -21,6 +21,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
+import video.swingworkers.VideoManipulationWorker;
 
 public class ButtonPanel extends JPanel {
 	
