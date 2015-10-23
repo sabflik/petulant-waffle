@@ -120,8 +120,8 @@ public class MP3Tools extends JPanel {
 					ProgressLoader progress = new ProgressLoader(frame);
 					progress.execute();
 
-					MP3OverlayWorker overlay = new MP3OverlayWorker(
-							mp3TimeInMS, chooser.getSelectedFile().getAbsolutePath(), progress);
+					MP3OverlayWorker overlay = new MP3OverlayWorker(frame, 
+							mp3TimeInMS, chooser, progress);
 					overlay.execute();
 				}
 			}

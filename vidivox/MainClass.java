@@ -11,8 +11,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
-
-import history.HistoryTab;
 import speech.SpeechTab;
 import uk.co.caprica.vlcj.discovery.NativeDiscovery;
 import uk.co.caprica.vlcj.player.MediaPlayerFactory;
@@ -100,10 +98,8 @@ public class MainClass {
 		speechTools.setSpeechTab(sTab);
 		VideoTab vTab = new VideoTab(mp3Tools, sTab, speechTools, mediaPlayer,
 				canvas);
-		HistoryTab hTab = new HistoryTab();
 		tabPane.addTab("Video", vTab);
 		tabPane.addTab("Speech", sTab);
-		tabPane.addTab("History", hTab);
 
 		/*-------------------------This is the Menu---------------------------*/
 		final MenuPanel menu = new MenuPanel(frame, mediaPlayer, sTab, vTab,

@@ -1,7 +1,9 @@
 package speech.swingworkers;
 
-
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -19,42 +21,41 @@ public class CreateAudio extends SwingWorker<Void, Void> {
 	private String text;
 	private ProgressLoader progress;
 	private boolean isMale;
+	private JFrame frame;
 
-	public CreateAudio(String text, JFileChooser chooser,
-			ProgressLoader progress, boolean isMale) throws IOException {
+	public CreateAudio(JFrame frame, String text, JFileChooser chooser, ProgressLoader progress, boolean isMale)
+			throws IOException {
 		this.text = text;
 		this.chooser = chooser;
 		this.progress = progress;
-		this.isMale= isMale;
+		this.isMale = isMale;
+		this.frame = frame;
 	}
 
 	@Override
 	protected Void doInBackground() throws Exception {
 
 		String cmd;
-		
+
 		if (isMale) {
 			// create the wav file and convert that wav file to mp3
 			cmd = "text2wave .PetulantWaffle/Speech.txt -o .PetulantWaffle/speech.wav;"
-					+ "ffmpeg -i .PetulantWaffle/speech.wav "
-					+ chooser.getSelectedFile().getAbsolutePath() + ".mp3";
+					+ "ffmpeg -i .PetulantWaffle/speech.wav " + chooser.getSelectedFile().getAbsolutePath() + ".mp3";
 		} else {
 			SchemeCreator scheme = new SchemeCreator(text);
 			scheme.createMP3Scheme();
-			
-			cmd = "festival -b .PetulantWaffle/Scheme.scm;"
-					+ "ffmpeg -i .PetulantWaffle/speech.wav "
+
+			cmd = "festival -b .PetulantWaffle/Scheme.scm;" + "ffmpeg -i .PetulantWaffle/speech.wav "
 					+ chooser.getSelectedFile().getAbsolutePath() + ".mp3";
 		}
-		
+
 		ProcessBuilder makeWav = new ProcessBuilder("/bin/bash", "-c", cmd);
 
 		PrintWriter out;
 		Process processMW;
 
 		try {
-			out = new PrintWriter(new FileWriter(
-					".PetulantWaffle/Speech.txt"));
+			out = new PrintWriter(new FileWriter(".PetulantWaffle/Speech.txt"));
 			out.println(text);
 			out.close();
 
@@ -69,5 +70,6 @@ public class CreateAudio extends SwingWorker<Void, Void> {
 
 	public void done() {
 		progress.disposeProgress();
+		JOptionPane.showMessageDialog(frame, chooser.getSelectedFile().getName() + " was successfully saved");
 	}
 }

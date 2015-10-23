@@ -5,6 +5,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 
 import speech.SchemeCreator;
@@ -13,19 +16,21 @@ import vidivox.swingworkers.ProgressLoader;
 
 public class ComboCreationWorker extends SwingWorker<Void, Void> {
 
-	private String name;
+	private JFileChooser chooser;
 	private float speechTimeInMS;
 	private ProgressLoader progress;
 	private boolean isMale;
 	private String speech;
+	private JFrame frame;
 
-	public ComboCreationWorker(String name, float speechTimeInMS,
+	public ComboCreationWorker(JFrame frame, JFileChooser chooser, float speechTimeInMS,
 			ProgressLoader progress, String speech, boolean isMale) {
-		this.name = name;
+		this.chooser = chooser;
 		this.speechTimeInMS = speechTimeInMS;
 		this.progress = progress;
 		this.isMale = isMale;
 		this.speech = speech;
+		this.frame = frame;
 	}
 
 	// Code from
@@ -62,11 +67,12 @@ public class ComboCreationWorker extends SwingWorker<Void, Void> {
 			// Replace with merged audio and create file specified by the user
 			cmd = cmd + "ffmpeg -i " + Video.getVideoName()
 					+ " -i .PetulantWaffle/audio.mp3 -filter_complex '[1:a]adelay=" + speechTimeInMS
-					+ "[aud2];[0:a][aud2]amix=inputs=2' -map 0:v -map 1:a "	+ name + ".avi";
+					+ "[aud2];[0:a][aud2]amix=inputs=2' -map 0:v -map 1:a "	+ chooser.getSelectedFile()
+					.getAbsolutePath() + ".avi";
 		} else {
 			cmd = cmd + "ffmpeg -i " + Video.getVideoName()
 					+ " -i .PetulantWaffle/audio.mp3 -filter_complex '[0:a][1:a]amix=inputs=2' -map 0:v -map 1:a "
-					+ name + ".avi";
+					+ chooser.getSelectedFile().getAbsolutePath() + ".avi";
 		}
 
 		ProcessBuilder makeWav = new ProcessBuilder("/bin/bash", "-c", cmd);
@@ -80,5 +86,6 @@ public class ComboCreationWorker extends SwingWorker<Void, Void> {
 	@Override
 	protected void done() {
 		progress.disposeProgress();
+		JOptionPane.showMessageDialog(frame, chooser.getSelectedFile().getName() + " was successfully saved");
 	}
 }

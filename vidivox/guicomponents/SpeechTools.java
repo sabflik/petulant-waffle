@@ -107,7 +107,7 @@ public class SpeechTools extends JPanel {
 						ProgressLoader progress = new ProgressLoader(frame);
 						progress.execute();
 						CreateAudio createMP3;
-						createMP3 = new CreateAudio(speechTab.getText(),
+						createMP3 = new CreateAudio(frame, speechTab.getText(),
 								chooser, progress, male.isSelected());
 						createMP3.execute();
 					} catch (IOException e) {
@@ -136,8 +136,7 @@ public class SpeechTools extends JPanel {
 					ProgressLoader progress = new ProgressLoader(frame);
 					progress.execute();
 					ComboCreationWorker cc;
-					cc = new ComboCreationWorker(chooser.getSelectedFile()
-							.getAbsolutePath(), speechTimeInMS, progress,
+					cc = new ComboCreationWorker(frame, chooser, speechTimeInMS, progress,
 							speechTab.getText(), male.isSelected());
 					cc.execute();
 				}
