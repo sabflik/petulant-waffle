@@ -28,6 +28,7 @@ public class VideoTab extends JPanel {
 	private final JProgressBar progressBar;
 	private float time;
 	private VideoTab tab;
+	private ButtonPanel buttonPane;
 	
 	public VideoTab(final MP3Tools mTools, final SpeechTab sTab, final SpeechTools sTools, final EmbeddedMediaPlayer mediaPlayer, final Canvas canvas) {
 		tab = this;
@@ -40,7 +41,7 @@ public class VideoTab extends JPanel {
 		
 		/*-------------------------This is the Panel with all the buttons------------------------*/
 
-		final ButtonPanel pane = new ButtonPanel(mediaPlayer);
+		buttonPane = new ButtonPanel(mediaPlayer);
 		
 		/*------------------This is the overall layout---------------*/
 		setBackground(Color.black);
@@ -104,10 +105,14 @@ public class VideoTab extends JPanel {
 		
 		// Pane
 		c.gridy = 4;
-		add(pane, c);
+		add(buttonPane, c);
 		
 		// Screen
 		c.weightx = 0.5;c.fill = GridBagConstraints.BOTH;c.gridx = 0;c.gridy = 1;c.weighty = 1.0;
 		add(canvas, c);
+	}
+	
+	public ButtonPanel getButtonPane() {
+		return buttonPane;
 	}
 }

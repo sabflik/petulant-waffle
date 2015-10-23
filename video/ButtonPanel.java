@@ -177,4 +177,8 @@ public class ButtonPanel extends JPanel {
 		Image getImage = icon.getImage().getScaledInstance(29, 23, java.awt.Image.SCALE_SMOOTH);
 		return new ImageIcon(getImage);
 	}
+	
+	public void clickPlayPause() {
+		pause_btn.doClick();
+	}
 }

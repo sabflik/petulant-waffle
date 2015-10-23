@@ -53,18 +53,18 @@ public class SpeechTools extends JPanel {
 		add(settings, gb);
 
 		// VOICE SELECTION - Can select Male or Female voice with JRadioButton
-		gb.gridy = 1;
-		gb.gridx = 0;
-		gb.gridwidth = 1;
+		gb.gridy = 1;gb.gridx = 0;gb.gridwidth = 1;
 		male = new JRadioButton("Male");// Male button
 		male.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		male.setBackground(Color.DARK_GRAY);
 		male.setForeground(Color.cyan);
+		
 		female = new JRadioButton("Female (Robot)");// Female button
 		female.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		female.setBackground(Color.DARK_GRAY);
 		female.setForeground(Color.pink);
-		ButtonGroup genderGroup = new ButtonGroup();
+		
+		ButtonGroup genderGroup = new ButtonGroup();// Button group
 		genderGroup.add(male);
 		genderGroup.add(female);
 		male.setSelected(true);
@@ -212,5 +212,9 @@ public class SpeechTools extends JPanel {
 		if(!selection) {
 			female.doClick();
 		}
+	}
+	
+	public void clickSpeakCancel() {
+		speak.doClick();
 	}
 }

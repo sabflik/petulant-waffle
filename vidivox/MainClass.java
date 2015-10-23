@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
@@ -16,9 +17,8 @@ import uk.co.caprica.vlcj.discovery.NativeDiscovery;
 import uk.co.caprica.vlcj.player.MediaPlayerFactory;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 import video.VideoTab;
-import vidivox.guicomponents.MP3Tools;
-import vidivox.guicomponents.MenuPanel;
-import vidivox.guicomponents.SpeechTools;
+import vidivox.guicomponents.*;
+import vidivox.keyshortcuts.*;
 import vidivox.workspace.WorkspaceSaver;
 
 import java.io.File;
@@ -100,9 +100,13 @@ public class MainClass {
 				canvas);
 		tabPane.addTab("Video", vTab);
 		tabPane.addTab("Speech", sTab);
-
+		
+		/*-----------------------This is the Current Video Name-------------------*/
+		VideoLabel videoName = new VideoLabel();
+		videoName.setBackground(Color.GRAY);
+		
 		/*-------------------------This is the Menu---------------------------*/
-		final MenuPanel menu = new MenuPanel(frame, mediaPlayer, sTab, vTab,
+		final MenuPanel menu = new MenuPanel(videoName, frame, mediaPlayer, sTab, vTab,
 				speechTools, mp3Tools, dir);
 		menu.setBackground(Color.GRAY);
 
@@ -115,21 +119,25 @@ public class MainClass {
 		c.fill = GridBagConstraints.BOTH;
 
 		// MP3 Tools
-		c.gridy = 1;c.gridx = 0;c.gridwidth = 1;c.weighty = 1;c.weightx = 0;c.ipadx = 90;
+		c.gridy = 2;c.gridx = 0;c.gridwidth = 1;c.weighty = 1;c.weightx = 0;c.ipadx = 90;
 		contentPane.add(mp3Tools, c);
 
 		// Speech Tools
-		c.gridy = 1;c.gridx = 2;
+		c.gridy = 2;c.gridx = 2;
 		contentPane.add(speechTools, c);
 
 		// Tabs
-		c.gridy = 1;c.weighty = 1.0;c.gridx = 1;c.weightx = 0.33;c.gridheight = 3;
+		c.gridy = 2;c.weighty = 1.0;c.gridx = 1;c.weightx = 0.33;c.gridheight = 3;
 		contentPane.add(tabPane, c);
 
 		// Menu
 		c.ipady = 18;c.weightx = 0.0;c.gridx = 0;c.gridy = 0;
 		c.gridheight = 1;c.gridwidth = 3;c.weighty = 0;
 		contentPane.add(menu, c);
+		
+		// CURRENT VIDEO CHOSEN
+		c.gridy = 1;c.ipady = 2;c.insets = new Insets(0,20,0,0);
+		contentPane.add(videoName, c);
 
 		// Launch the application
 		frame.pack();
@@ -142,6 +150,10 @@ public class MainClass {
 				saver.promptSave();
 			}
 		});
+
+		Shortcut msc = new Shortcut(vTab, mp3Tools, speechTools);
+		msc.addShortcut(frame);
+		
 		frame.setVisible(true);
 	}
 }

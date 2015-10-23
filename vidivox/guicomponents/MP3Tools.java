@@ -41,9 +41,9 @@ public class MP3Tools extends JPanel {
 
 		GridBagConstraints gb = new GridBagConstraints();
 		gb.fill = GridBagConstraints.HORIZONTAL;
-
+		
 		// SETTINGS LABEL
-		gb.gridx = 1;gb.gridy = 0;
+		gb.gridy = 1;
 		JLabel settingB = new JLabel("MP3 Settings");
 		settingB.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		settingB.setForeground(Color.orange);
@@ -51,7 +51,7 @@ public class MP3Tools extends JPanel {
 		
 		// CHOOSE MP3 FILE BUTTON 
 		// This button imports the mp3 file to be played
-		gb.gridx = 1;gb.gridy = 1;
+		gb.gridy = 2;
 		chooseMP3 = new JButton("Choose MP3");
 		chooseMP3.setBackground(Color.WHITE);
 		chooseMP3.addActionListener(new ActionListener() {
@@ -80,7 +80,7 @@ public class MP3Tools extends JPanel {
 		add(chooseMP3, gb);
 		
 		// CURRENT MP3 CHOSEN
-		gb.gridy = 2;
+		gb.gridy = 3;
 		mp3 = new JLabel("No MP3 chosen");
 		mp3.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		mp3.setForeground(Color.orange);
@@ -88,7 +88,7 @@ public class MP3Tools extends JPanel {
 		add(mp3, gb);
 
 		// PLAY SELECTED MP3
-		gb.gridy = 3;
+		gb.gridy = 4;
 		mp3Play = new JToggleButton("Play MP3");
 		final AudioMediaPlayerComponent playMP3 = new AudioMediaPlayerComponent();
 		mp3Play.addActionListener(new ActionListener() {
@@ -108,7 +108,7 @@ public class MP3Tools extends JPanel {
 		add(mp3Play, gb);
 		
 		// MP3 COMBO BUTTON
-		gb.gridy = 4;
+		gb.gridy = 5;
 		mp3Button = new JButton("Combine MP3 & Video");
 		mp3Button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -134,7 +134,7 @@ public class MP3Tools extends JPanel {
 		add(mp3Button, gb);
 
 		// MP3 TIMING LABEL
-		gb.gridy = 5;
+		gb.gridy = 6;
 		mp3Timing = new JLabel("Add mp3 at: 00:00");
 		mp3Timing.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		mp3Timing.setForeground(Color.orange);
@@ -143,12 +143,12 @@ public class MP3Tools extends JPanel {
 		add(mp3Timing, gb);
 		
 		// INFORMATIVE LABEL
-		gb.gridy = 6;
+		gb.gridy = 7;
 		JLabel disclaimer1 = new JLabel("Right click on the progress bar");
 		disclaimer1.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		disclaimer1.setForeground(Color.white);
 		add(disclaimer1, gb);
-		gb.gridy = 7;
+		gb.gridy = 8;
 		JLabel disclaimer2 = new JLabel("to change the time");
 		disclaimer2.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		disclaimer2.setForeground(Color.white);
@@ -187,5 +187,9 @@ public class MP3Tools extends JPanel {
 	
 	public void setMP3ComboEnabled(boolean selection) {
 		mp3Button.setEnabled(selection);
+	}
+	
+	public void clickMP3Cancel() {
+		mp3Play.doClick();
 	}
 }

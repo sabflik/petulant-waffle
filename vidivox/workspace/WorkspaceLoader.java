@@ -1,16 +1,14 @@
 package vidivox.workspace;
 
-
 import java.io.BufferedReader;
 import java.io.FileReader;
-
 import mp3.MP3;
-
 import speech.SpeechTab;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 import video.Video;
 import vidivox.guicomponents.MP3Tools;
 import vidivox.guicomponents.SpeechTools;
+import vidivox.guicomponents.VideoLabel;
 
 /**
  * This class loads the previous workspace by accessing a folder called "Workspace"
@@ -22,13 +20,15 @@ public class WorkspaceLoader {
 	private SpeechTools sTools;
 	private MP3Tools mTools;
 	private EmbeddedMediaPlayer mediaPlayer;
+	private VideoLabel vLabel;
 
-	public WorkspaceLoader(SpeechTab sTab, SpeechTools sTools, MP3Tools mTools, 
-			EmbeddedMediaPlayer mediaPlayer) {
+	public WorkspaceLoader(VideoLabel vLabel, SpeechTab sTab, SpeechTools sTools, 
+			MP3Tools mTools, EmbeddedMediaPlayer mediaPlayer) {
 		this.mTools = mTools;
 		this.sTab = sTab;
 		this.sTools = sTools;
 		this.mediaPlayer = mediaPlayer;
+		this.vLabel = vLabel;
 	}
 	
 	public void load() throws Exception {
@@ -49,6 +49,8 @@ public class WorkspaceLoader {
 	    if(!line.equals("null")) {
 	    	Video.setVideoName(line);
 	    	mediaPlayer.playMedia(Video.getVideoName());
+	    	vLabel.setCurrentVideo();
+	    	
 	    	if (sTab.isTextEnabled()) {
 				sTools.setComboEnabled(true);
 			}

@@ -114,7 +114,13 @@ public class SpeechTab extends JPanel {
 	}
 
 	public String getText() {
-		return textArea.getText();
+		String speech = textArea.getText();
+		// Remove all characters that would interfere with commands 
+		// (newline, apostrophe and quotation)
+		speech = speech.replace("\n", " ");
+		speech = speech.replace("'", "");
+		speech = speech.replace("\"", "");
+		return speech;
 	}
 
 	public void setText(String speech) {

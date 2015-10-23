@@ -1,6 +1,5 @@
 package vidivox.guicomponents;
 
-
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -24,7 +23,8 @@ public class MenuPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
-	public MenuPanel(final JFrame frame, final EmbeddedMediaPlayer mediaPlayer,
+	public MenuPanel(final VideoLabel vLabel, final JFrame frame, 
+			final EmbeddedMediaPlayer mediaPlayer,
 			final SpeechTab sTab, final VideoTab vTab,
 			final SpeechTools sTools, final MP3Tools mTools,
 			final File directory) {
@@ -52,6 +52,8 @@ public class MenuPanel extends JPanel {
 					String video = fChooser.getSelectedFile().getAbsolutePath();
 					Video.setVideoName(video);
 					mediaPlayer.playMedia(video);
+					vLabel.setCurrentVideo();
+					
 					if (sTab.isTextEnabled()) {
 						sTools.setComboEnabled(true);
 					}
@@ -80,7 +82,7 @@ public class MenuPanel extends JPanel {
 							JOptionPane.QUESTION_MESSAGE, null, ObjButtons,
 							ObjButtons[1]);
 					if (PromptResult == JOptionPane.YES_OPTION) {
-						WorkspaceLoader loader = new WorkspaceLoader(sTab,
+						WorkspaceLoader loader = new WorkspaceLoader(vLabel, sTab,
 								sTools, mTools, mediaPlayer);
 						try {
 							loader.load();
