@@ -79,5 +79,4 @@ public class MP3OverlayWorker extends SwingWorker<Void, Void> {
 			label.setCurrentVideo();
 		}
 	}
-
 }

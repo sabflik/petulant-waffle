@@ -22,6 +22,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import mp3.MP3;
 import mp3.swingworkers.MP3OverlayWorker;
 import uk.co.caprica.vlcj.component.AudioMediaPlayerComponent;
+import uk.co.caprica.vlcj.player.MediaPlayer;
+import uk.co.caprica.vlcj.player.MediaPlayerEventAdapter;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 import video.Video;
 import vidivox.swingworkers.ProgressLoader;
@@ -98,6 +100,15 @@ public class MP3Tools extends JPanel {
 				if(mp3Play.isSelected()) {
 					mp3Play.setText("Cancel");
 					playMP3.getMediaPlayer().playMedia(MP3.getMP3Name());
+		// Reset button when done playing. 
+    //Code from: http://stackoverflow.com/questions/26909772/vlcj-mediaplayer-how-to-detect-when-video-has-finished-playing
+					playMP3.getMediaPlayer().addMediaPlayerEventListener(new MediaPlayerEventAdapter() {
+					    @Override
+					    public void finished(MediaPlayer mediaPlayer) {
+					    	mp3Play.setText("Play MP3");
+					    	mp3Play.setSelected(false);
+					    }
+					});
 				} else {
 					mp3Play.setText("Play MP3");
 					playMP3.getMediaPlayer().stop();

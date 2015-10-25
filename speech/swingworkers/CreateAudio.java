@@ -11,6 +11,7 @@ import javax.swing.SwingWorker;
 
 import mp3.MP3;
 import speech.SchemeCreator;
+import video.Video;
 import vidivox.guicomponents.MP3Tools;
 import vidivox.swingworkers.ProgressLoader;
 
@@ -26,7 +27,7 @@ public class CreateAudio extends SwingWorker<Void, Void> {
 	private JFrame frame;
 	private MP3Tools mTools;
 
-	public CreateAudio(JFrame frame, MP3Tools mTools, 
+	public CreateAudio(JFrame frame, MP3Tools mTools,
 			String text, JFileChooser chooser, ProgressLoader progress, boolean isMale)
 			throws IOException {
 		this.text = text;
@@ -86,6 +87,10 @@ public class CreateAudio extends SwingWorker<Void, Void> {
 		if (PromptResult == JOptionPane.YES_OPTION) {
 			MP3.setMP3Name(chooser.getSelectedFile().getAbsolutePath()+".mp3");
 			mTools.setMP3Selected();
+			mTools.setMP3PlayEnabled(true);
+		}
+		if(Video.getVideoName() != null) {
+			mTools.setMP3ComboEnabled(true);
 		}
 	}
 }
