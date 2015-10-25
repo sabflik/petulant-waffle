@@ -81,14 +81,18 @@ public class MainClass {
 		frame = new JFrame("Media Player");
 		frame.setMinimumSize(new Dimension(700, 600));
 		setUpCanvas();
+		
+		/*-----------------------This is the Current Video Name-------------------*/
+		VideoLabel videoName = new VideoLabel();
+		videoName.setBackground(Color.GRAY);
 
 		/*-------------------------------MP3 Tools----------------------------*/
 		// The panel on the left
-		final MP3Tools mp3Tools = new MP3Tools(frame, dir); 
+		final MP3Tools mp3Tools = new MP3Tools(frame, dir, mediaPlayer, videoName); 
 
 		/*--------------------------------Speech Tools-----------------------*/
 		// The panel on the right
-		final SpeechTools speechTools = new SpeechTools(frame, dir);
+		final SpeechTools speechTools = new SpeechTools(frame, dir, mediaPlayer, mp3Tools, videoName);
 
 		/*-------------------------This is the Tabbed pane---------------------*/
 		JTabbedPane tabPane = new JTabbedPane();// The tabs in the center
@@ -100,10 +104,6 @@ public class MainClass {
 				canvas);
 		tabPane.addTab("Video", vTab);
 		tabPane.addTab("Speech", sTab);
-		
-		/*-----------------------This is the Current Video Name-------------------*/
-		VideoLabel videoName = new VideoLabel();
-		videoName.setBackground(Color.GRAY);
 		
 		/*-------------------------This is the Menu---------------------------*/
 		final MenuPanel menu = new MenuPanel(videoName, frame, mediaPlayer, sTab, vTab,

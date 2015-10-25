@@ -11,7 +11,9 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 
 import speech.SchemeCreator;
+import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 import video.Video;
+import vidivox.guicomponents.VideoLabel;
 import vidivox.swingworkers.ProgressLoader;
 
 public class ComboCreationWorker extends SwingWorker<Void, Void> {
@@ -22,8 +24,11 @@ public class ComboCreationWorker extends SwingWorker<Void, Void> {
 	private boolean isMale;
 	private String speech;
 	private JFrame frame;
+	private EmbeddedMediaPlayer mediaPlayer;
+	private VideoLabel label;
 
-	public ComboCreationWorker(JFrame frame, JFileChooser chooser, float speechTimeInMS,
+	public ComboCreationWorker(EmbeddedMediaPlayer mediaPlayer, VideoLabel label,
+			JFrame frame, JFileChooser chooser, float speechTimeInMS,
 			ProgressLoader progress, String speech, boolean isMale) {
 		this.chooser = chooser;
 		this.speechTimeInMS = speechTimeInMS;
@@ -31,6 +36,8 @@ public class ComboCreationWorker extends SwingWorker<Void, Void> {
 		this.isMale = isMale;
 		this.speech = speech;
 		this.frame = frame;
+		this.mediaPlayer = mediaPlayer;
+		this.label = label;
 	}
 
 	// Code from
@@ -86,6 +93,18 @@ public class ComboCreationWorker extends SwingWorker<Void, Void> {
 	@Override
 	protected void done() {
 		progress.disposeProgress();
-		JOptionPane.showMessageDialog(frame, chooser.getSelectedFile().getName() + " was successfully saved");
+		JOptionPane.showMessageDialog(frame, chooser.getSelectedFile().getName() 
+				+ " was successfully saved in "+chooser.getSelectedFile().getPath());
+		
+		String ObjButtons[] = { "Yes", "No" };
+		int PromptResult = JOptionPane.showOptionDialog(null,
+				"Do you want to open this file?", "Open created file",
+				JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null,
+				ObjButtons, ObjButtons[1]);
+		if (PromptResult == JOptionPane.YES_OPTION) {
+			Video.setVideoName(chooser.getSelectedFile().getAbsolutePath()+".avi");
+			mediaPlayer.playMedia(Video.getVideoName());
+			label.setCurrentVideo();
+		}
 	}
 }

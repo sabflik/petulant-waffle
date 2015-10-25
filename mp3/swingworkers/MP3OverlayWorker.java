@@ -8,7 +8,9 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 
 import mp3.MP3;
+import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 import video.Video;
+import vidivox.guicomponents.VideoLabel;
 import vidivox.swingworkers.ProgressLoader;
 
 public class MP3OverlayWorker extends SwingWorker<Void, Void> {
@@ -17,12 +19,17 @@ public class MP3OverlayWorker extends SwingWorker<Void, Void> {
 	private JFileChooser chooser;
 	private ProgressLoader progress;
 	private JFrame frame;
+	private EmbeddedMediaPlayer mediaPlayer;
+	private VideoLabel label;
 
-	public MP3OverlayWorker(JFrame frame, float mp3TimeInMS, JFileChooser chooser, ProgressLoader progress) {
+	public MP3OverlayWorker(EmbeddedMediaPlayer mediaPlayer, VideoLabel label,
+			JFrame frame, float mp3TimeInMS, JFileChooser chooser, ProgressLoader progress) {
 		this.mp3TimeInMS = mp3TimeInMS;
 		this.chooser = chooser;
 		this.progress = progress;
 		this.frame = frame;
+		this.mediaPlayer = mediaPlayer;
+		this.label = label;
 	}
 
 	@Override
@@ -58,7 +65,19 @@ public class MP3OverlayWorker extends SwingWorker<Void, Void> {
 
 	protected void done() {
 		progress.disposeProgress();
-		JOptionPane.showMessageDialog(frame, chooser.getSelectedFile().getName() + " was successfully saved");
+		JOptionPane.showMessageDialog(frame, chooser.getSelectedFile().getName() 
+				+ " was successfully saved in "+chooser.getSelectedFile().getPath());
+		
+		String ObjButtons[] = { "Yes", "No" };
+		int PromptResult = JOptionPane.showOptionDialog(null,
+				"Do you want to open this file?", "Open created file",
+				JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null,
+				ObjButtons, ObjButtons[1]);
+		if (PromptResult == JOptionPane.YES_OPTION) {
+			Video.setVideoName(chooser.getSelectedFile().getAbsolutePath()+".avi");
+			mediaPlayer.playMedia(Video.getVideoName());
+			label.setCurrentVideo();
+		}
 	}
 
 }

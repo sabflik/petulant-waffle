@@ -22,6 +22,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import mp3.MP3;
 import mp3.swingworkers.MP3OverlayWorker;
 import uk.co.caprica.vlcj.component.AudioMediaPlayerComponent;
+import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 import video.Video;
 import vidivox.swingworkers.ProgressLoader;
 
@@ -35,7 +36,8 @@ public class MP3Tools extends JPanel {
 	private JLabel mp3;
 	private JToggleButton mp3Play;
 
-	public MP3Tools(final JFrame frame, final File directory) {
+	public MP3Tools(final JFrame frame, final File directory, 
+			final EmbeddedMediaPlayer mediaPlayer, final VideoLabel label) {
 		setBackground(Color.DARK_GRAY);
 		setLayout(new GridBagLayout());
 
@@ -120,7 +122,7 @@ public class MP3Tools extends JPanel {
 					ProgressLoader progress = new ProgressLoader(frame);
 					progress.execute();
 
-					MP3OverlayWorker overlay = new MP3OverlayWorker(frame, 
+					MP3OverlayWorker overlay = new MP3OverlayWorker(mediaPlayer, label, frame, 
 							mp3TimeInMS, chooser, progress);
 					overlay.execute();
 				}

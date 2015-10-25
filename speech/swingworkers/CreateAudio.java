@@ -9,7 +9,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import javax.swing.SwingWorker;
 
+import mp3.MP3;
 import speech.SchemeCreator;
+import vidivox.guicomponents.MP3Tools;
 import vidivox.swingworkers.ProgressLoader;
 
 /**
@@ -22,14 +24,17 @@ public class CreateAudio extends SwingWorker<Void, Void> {
 	private ProgressLoader progress;
 	private boolean isMale;
 	private JFrame frame;
+	private MP3Tools mTools;
 
-	public CreateAudio(JFrame frame, String text, JFileChooser chooser, ProgressLoader progress, boolean isMale)
+	public CreateAudio(JFrame frame, MP3Tools mTools, 
+			String text, JFileChooser chooser, ProgressLoader progress, boolean isMale)
 			throws IOException {
 		this.text = text;
 		this.chooser = chooser;
 		this.progress = progress;
 		this.isMale = isMale;
 		this.frame = frame;
+		this.mTools = mTools;
 	}
 
 	@Override
@@ -70,6 +75,17 @@ public class CreateAudio extends SwingWorker<Void, Void> {
 
 	public void done() {
 		progress.disposeProgress();
-		JOptionPane.showMessageDialog(frame, chooser.getSelectedFile().getName() + " was successfully saved");
+		JOptionPane.showMessageDialog(frame, chooser.getSelectedFile().getName() 
+				+ " was successfully saved in "+ chooser.getSelectedFile().getPath());
+		
+		String ObjButtons[] = { "Yes", "No" };
+		int PromptResult = JOptionPane.showOptionDialog(null,
+				"Do you want to open this file?", "Open created file",
+				JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null,
+				ObjButtons, ObjButtons[1]);
+		if (PromptResult == JOptionPane.YES_OPTION) {
+			MP3.setMP3Name(chooser.getSelectedFile().getAbsolutePath()+".mp3");
+			mTools.setMP3Selected();
+		}
 	}
 }

@@ -20,6 +20,7 @@ import speech.SpeechTab;
 import speech.swingworkers.ComboCreationWorker;
 import speech.swingworkers.CreateAudio;
 import speech.swingworkers.Speech;
+import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 import vidivox.swingworkers.ProgressLoader;
 
 public class SpeechTools extends JPanel {
@@ -36,7 +37,8 @@ public class SpeechTools extends JPanel {
 	private JRadioButton male;
 	private JRadioButton female;
 
-	public SpeechTools(final JFrame frame, final File directory) {
+	public SpeechTools(final JFrame frame, final File directory, final EmbeddedMediaPlayer mediaPlayer, 
+			final MP3Tools mTools, final VideoLabel label) {
 
 		setBackground(Color.DARK_GRAY);
 		setLayout(new GridBagLayout());
@@ -45,8 +47,7 @@ public class SpeechTools extends JPanel {
 		gb.fill = GridBagConstraints.HORIZONTAL;
 
 		// Speech settings Label
-		gb.gridy = 0;
-		gb.gridwidth = 2;
+		gb.gridy = 0;gb.gridwidth = 2;
 		settings = new JLabel("Speech Settings");
 		settings.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		settings.setForeground(Color.orange);
@@ -107,7 +108,7 @@ public class SpeechTools extends JPanel {
 						ProgressLoader progress = new ProgressLoader(frame);
 						progress.execute();
 						CreateAudio createMP3;
-						createMP3 = new CreateAudio(frame, speechTab.getText(),
+						createMP3 = new CreateAudio(frame, mTools, speechTab.getText(),
 								chooser, progress, male.isSelected());
 						createMP3.execute();
 					} catch (IOException e) {
@@ -136,8 +137,8 @@ public class SpeechTools extends JPanel {
 					ProgressLoader progress = new ProgressLoader(frame);
 					progress.execute();
 					ComboCreationWorker cc;
-					cc = new ComboCreationWorker(frame, chooser, speechTimeInMS, progress,
-							speechTab.getText(), male.isSelected());
+					cc = new ComboCreationWorker(mediaPlayer, label, frame, chooser, speechTimeInMS,
+							progress, speechTab.getText(), male.isSelected());
 					cc.execute();
 				}
 			}
