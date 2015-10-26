@@ -1,10 +1,13 @@
 package vidivox.guicomponents;
 
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
+
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -91,8 +94,8 @@ public class MenuPanel extends JPanel {
 						}
 					}
 				} else {
-					JOptionPane.showMessageDialog(frame,
-							"There are no saved workspaces");
+					JOptionPane.showMessageDialog(frame, "There are no saved workspaces", 
+							"Workspace error", JOptionPane.ERROR_MESSAGE);
 				}
 
 			}
@@ -120,7 +123,18 @@ public class MenuPanel extends JPanel {
 		help.setBackground(Color.WHITE);
 		help.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-
+				String currentDirectory = System.getProperty("user.dir");
+				//Opens User Manual for Help
+// Code from: http://stackoverflow.com/questions/2546968/open-pdf-file-on-fly-from-java-application
+				if (Desktop.isDesktopSupported()) {
+				    try {
+				        File myFile = new File(currentDirectory+"/UserManual.pdf");
+				        Desktop.getDesktop().open(myFile);
+				    } catch (IOException | IllegalArgumentException ex) {
+				    	JOptionPane.showMessageDialog(frame, "User Manual not found", 
+								"User Manual error", JOptionPane.ERROR_MESSAGE);
+				    }
+				}
 			}
 		});
 		help.setFont(new Font("Tahoma", Font.PLAIN, 12));

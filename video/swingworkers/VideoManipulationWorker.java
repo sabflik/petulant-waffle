@@ -22,19 +22,19 @@ public class VideoManipulationWorker extends SwingWorker<Void, Void>{
 		
 		if(type == VMType.FASTFORWARD) { //if fast forward button is pressed
 			if(mediaPlayer.isPlaying()) {
-				while(!isCancelled() && (mediaPlayer.getTime() < (mediaPlayer.getLength() - 50))) {
-					mediaPlayer.skip(50); //continue skipping forwards by 50 frames until another video manipulator button is clicked
+				while(!isCancelled() && (mediaPlayer.getTime() < (mediaPlayer.getLength() - 10))) {
+					mediaPlayer.skip(10); //continue skipping forwards by 50 frames until another video manipulator button is clicked
 				}
-				if(!isCancelled() && mediaPlayer.getTime() >= (mediaPlayer.getLength() - 50)) {
+				if(!isCancelled() && mediaPlayer.getTime() >= (mediaPlayer.getLength() - 10)) {
 					mediaPlayer.setTime(mediaPlayer.getLength());//If cannot fast forward anymore, skip to the end
 				}
 			}
 		} else if(type == VMType.REWIND) { //if rewind button is pressed
 			if(mediaPlayer.isPlaying()) {
-				while(!isCancelled() && (mediaPlayer.getTime() > 50)) {
-					mediaPlayer.skip(-50); //continue skipping backwards by 50 frames until another video manipulator button is clicked
+				while(!isCancelled() && (mediaPlayer.getTime() > 10)) {
+					mediaPlayer.skip(-10); //continue skipping backwards by 50 frames until another video manipulator button is clicked
 				}
-				if(!isCancelled() && mediaPlayer.getTime() <= 50) {
+				if(!isCancelled() && mediaPlayer.getTime() <= 10) {
 					mediaPlayer.setTime(0);//If cannot rewind anymore, skip to the beginning
 				}
 			}

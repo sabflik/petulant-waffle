@@ -13,6 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JToggleButton;
@@ -21,6 +22,7 @@ import speech.swingworkers.ComboCreationWorker;
 import speech.swingworkers.CreateAudio;
 import speech.swingworkers.Speech;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
+import vidivox.FileNameFilter;
 import vidivox.swingworkers.ProgressLoader;
 
 public class SpeechTools extends JPanel {
@@ -104,15 +106,23 @@ public class SpeechTools extends JPanel {
 				chooser.setCurrentDirectory(directory);
 				int returnVal = chooser.showSaveDialog(null);
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
-					try {
-						ProgressLoader progress = new ProgressLoader(frame);
-						progress.execute();
-						CreateAudio createMP3;
-						createMP3 = new CreateAudio(frame, mTools, speechTab.getText(),
-								chooser, progress, male.isSelected());
-						createMP3.execute();
-					} catch (IOException e) {
-						e.printStackTrace();
+					// Make sure file name is valid
+					FileNameFilter filter = new FileNameFilter();
+					if(!filter.isValid(chooser.getSelectedFile().getAbsolutePath())){ 
+				        JOptionPane.showMessageDialog(null, "The filename " 
+				        		+ chooser.getSelectedFile().getAbsolutePath() + ".avi is invalid.", 
+				        		"Save As Error", JOptionPane.ERROR_MESSAGE); 
+					} else {
+						try {
+							ProgressLoader progress = new ProgressLoader(frame);
+							progress.execute();
+							CreateAudio createMP3;
+							createMP3 = new CreateAudio(frame, mTools, speechTab.getText(),
+									chooser, progress, male.isSelected());
+							createMP3.execute();
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
 					}
 				}
 			}
@@ -133,13 +143,20 @@ public class SpeechTools extends JPanel {
 				chooser.setCurrentDirectory(directory);
 				int returnVal = chooser.showSaveDialog(null);
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
-
-					ProgressLoader progress = new ProgressLoader(frame);
-					progress.execute();
-					ComboCreationWorker cc;
-					cc = new ComboCreationWorker(mediaPlayer, label, frame, chooser, speechTimeInMS,
-							progress, speechTab.getText(), male.isSelected());
-					cc.execute();
+					// Make sure file name is valid
+					FileNameFilter filter = new FileNameFilter();
+					if(!filter.isValid(chooser.getSelectedFile().getAbsolutePath())){ 
+				        JOptionPane.showMessageDialog(null, "The filename " 
+				        		+ chooser.getSelectedFile().getAbsolutePath() + ".avi is invalid.", 
+				        		"Save As Error", JOptionPane.ERROR_MESSAGE); 
+					} else {
+						ProgressLoader progress = new ProgressLoader(frame);
+						progress.execute();
+						ComboCreationWorker cc;
+						cc = new ComboCreationWorker(mediaPlayer, label, frame, chooser, speechTimeInMS,
+								progress, speechTab.getText(), male.isSelected());
+						cc.execute();
+					}
 				}
 			}
 		});

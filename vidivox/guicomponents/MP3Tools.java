@@ -14,6 +14,7 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.filechooser.FileFilter;
@@ -26,6 +27,7 @@ import uk.co.caprica.vlcj.player.MediaPlayer;
 import uk.co.caprica.vlcj.player.MediaPlayerEventAdapter;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 import video.Video;
+import vidivox.FileNameFilter;
 import vidivox.swingworkers.ProgressLoader;
 
 public class MP3Tools extends JPanel {
@@ -130,12 +132,21 @@ public class MP3Tools extends JPanel {
 				chooser.setCurrentDirectory(directory);
 				int returnVal = chooser.showSaveDialog(null);
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
-					ProgressLoader progress = new ProgressLoader(frame);
-					progress.execute();
+					// Make sure file name is valid
+					// Code from: https://community.oracle.com/message/5491217
+					FileNameFilter filter = new FileNameFilter();
+					if(!filter.isValid(chooser.getSelectedFile().getAbsolutePath())){ 
+				        JOptionPane.showMessageDialog(null, "The filename " 
+				        		+ chooser.getSelectedFile().getAbsolutePath() + ".mp3 is invalid.", 
+				        		"Save As Error", JOptionPane.ERROR_MESSAGE); 
+					} else {
+						ProgressLoader progress = new ProgressLoader(frame);
+						progress.execute();
 
-					MP3OverlayWorker overlay = new MP3OverlayWorker(mediaPlayer, label, frame, 
-							mp3TimeInMS, chooser, progress);
-					overlay.execute();
+						MP3OverlayWorker overlay = new MP3OverlayWorker(mediaPlayer, label, frame, 
+								mp3TimeInMS, chooser, progress);
+						overlay.execute();
+					}
 				}
 			}
 		});
