@@ -5,14 +5,18 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-/**
- * This class creates a scheme file that alters the pitch of festival to sound more like a female
- * **/
+/**This class creates a scheme file that alters the pitch of festival to sound more like a female
+ * @author Sabrina
+ */
 public class SchemeCreator {
 
 	private String speech;
 	private PrintWriter out;
 
+	/**
+	 * @param speech		The text entered in text area to convert to speech
+	 * @throws IOException	Writing to file might incur IOException
+	 */
 	public SchemeCreator(String speech) throws IOException {
 		this.speech = speech;
 

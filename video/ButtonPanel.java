@@ -23,6 +23,10 @@ import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 import video.swingworkers.VideoManipulationWorker;
 import vidivox.MainClass;
 
+/**This class represents the button pane inside the video tab. It contains
+ * all the video manipulation buttons.
+ * @author Sabrina
+ */
 public class ButtonPanel extends JPanel {
 	
 	private static final long serialVersionUID = 1L;
@@ -32,6 +36,9 @@ public class ButtonPanel extends JPanel {
 	private boolean hasFFed = false;
 	private JButton pause_btn;
 
+	/**
+	 * @param mediaPlayer	The media player instance
+	 */
 	public ButtonPanel(final EmbeddedMediaPlayer mediaPlayer) {
 		
 		setBackground(Color.black);

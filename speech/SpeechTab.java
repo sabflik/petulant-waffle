@@ -18,6 +18,9 @@ import javax.swing.text.AbstractDocument;
 import video.Video;
 import vidivox.guicomponents.SpeechTools;
 
+/**This class represents the Speech Tab Panel that contains the Text area
+ * @author Sabrina
+ */
 public class SpeechTab extends JPanel {
 
 	private static final long serialVersionUID = 1L;
@@ -78,7 +81,7 @@ public class SpeechTab extends JPanel {
 					sTools.setMP3Enabled(false);
 					sTools.setSpeakEnabled(false);
 					sTools.setComboEnabled(false);
-				}
+				} // Characters remaining updated
 				int chars = textArea.getDocument().getLength();
 				if (200 - chars >= 0) {
 					cl_label.setText("Characters Remaining: " + (200 - chars));
@@ -101,18 +104,30 @@ public class SpeechTab extends JPanel {
 		add(textArea, gb);
 	}
 
+	/**
+	 * @param sTools	This class requires access to the SpeechTools object
+	 */
 	public void setSpeechTools(SpeechTools sTools) {
 		this.sTools = sTools;
 	}
 
+	/**
+	 * @return	The time set for the addition of speech
+	 */
 	public String getSpeechTiming() {
 		return speechTiming.getText();
 	}
 
+	/**
+	 * @return	whether or not text is entered into text area
+	 */
 	public boolean isTextEnabled() {
 		return (textArea.getText().trim() != null && !textArea.getText().trim().equals(""));
 	}
 
+	/**
+	 * @return	the speech that's entered in the text area
+	 */
 	public String getText() {
 		String speech = textArea.getText();
 		// Remove all characters that would interfere with commands 

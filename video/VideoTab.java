@@ -22,6 +22,10 @@ import video.swingworkers.ProgressBarWorker;
 import vidivox.guicomponents.MP3Tools;
 import vidivox.guicomponents.SpeechTools;
 
+/**This class represents the Video Tab that contains the media player, progress bar
+ * and button panel.
+ * @author Sabrina
+ */
 public class VideoTab extends JPanel {
 
 	private static final long serialVersionUID = 1L;
@@ -30,6 +34,13 @@ public class VideoTab extends JPanel {
 	private VideoTab tab;
 	private ButtonPanel buttonPane;
 	
+	/**
+	 * @param mTools		the mp3 Tools panel
+	 * @param sTab			the speech tab
+	 * @param sTools		the speech Tools panel
+	 * @param mediaPlayer	The media player instance
+	 * @param canvas		the area on which the media player is displayed
+	 */
 	public VideoTab(final MP3Tools mTools, final SpeechTab sTab, final SpeechTools sTools, final EmbeddedMediaPlayer mediaPlayer, final Canvas canvas) {
 		tab = this;
 		
@@ -63,7 +74,7 @@ public class VideoTab extends JPanel {
 
 		// Popup
 		final JPopupMenu popup = new JPopupMenu();
-		JMenuItem addSpeech = new JMenuItem("Add speech here");
+		JMenuItem addSpeech = new JMenuItem("Add speech here");// Speech time setter
 		addSpeech.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -71,7 +82,7 @@ public class VideoTab extends JPanel {
 			}
 		});
 		popup.add(addSpeech);
-		JMenuItem addMP3 = new JMenuItem("Add mp3 here");
+		JMenuItem addMP3 = new JMenuItem("Add mp3 here");// MP3 time setter
 		addMP3.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -88,9 +99,9 @@ public class VideoTab extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 					int pos = (e.getX() * 100) / tab.getWidth();
-					float position = (float) pos / 100;
+					float position = (float) pos / 100;// If left mouse is clicked, go to that position
 					if (Video.getVideoName() != null && (SwingUtilities.isLeftMouseButton(e))) {
-					mediaPlayer.setPosition(position);
+					mediaPlayer.setPosition(position);// If right mouse is clicked, save that time
 				} else if (Video.getVideoName() != null	&& (SwingUtilities.isRightMouseButton(e))) {
 					time = position * mediaPlayer.getLength();
 					popup.show(tab, e.getX(), progressBar.getY());
@@ -98,7 +109,7 @@ public class VideoTab extends JPanel {
 			}
 		});
 		progressBar.setForeground(Color.orange);
-		progressBar.setValue(0);
+		progressBar.setValue(0);// Update progress bar using SwingWorker
 		ProgressBarWorker pbHelper = new ProgressBarWorker(progressBar, timeStamp, lengthStamp, mediaPlayer);
 		pbHelper.execute();
 		add(progressBar, c);		
@@ -112,6 +123,9 @@ public class VideoTab extends JPanel {
 		add(canvas, c);
 	}
 	
+	/**
+	 * @return	The video tab's button pane
+	 */
 	public ButtonPanel getButtonPane() {
 		return buttonPane;
 	}

@@ -8,7 +8,10 @@ import javax.swing.SwingWorker;
 
 import speech.SchemeCreator;
 
-/**This class calls festival in the background for the speech button in the main frame**/
+/**This SwingWorker class calls festival in the background for the speech button 
+ * in the main frame.
+ * @author Sabrina
+ */
 public class Speech extends SwingWorker<Void, Void> { 
 	
 	private String speech;
@@ -17,20 +20,28 @@ public class Speech extends SwingWorker<Void, Void> {
 	private JToggleButton speak;
 	private boolean isMale;
 
+	/**
+	 * @param speech	The text to be converted to speech
+	 * @param speak		Speak button
+	 * @param isMale	Gender selection
+	 */
 	public Speech(String speech, JToggleButton speak, boolean isMale) {
 		this.speak = speak;
 		this.speech = speech; 
 		this.isMale = isMale;
 	}
 
+	/* (non-Javadoc)
+	 * @see javax.swing.SwingWorker#doInBackground()
+	 */
 	@Override
-	protected Void doInBackground() throws Exception { // call festival
+	protected Void doInBackground() throws Exception {
 
 		String cmd;
 		
-		if (isMale) {
+		if (isMale) { // If male
 			cmd = "echo $$;echo " + speech+ " | festival --tts; echo 'done'";
-		} else {
+		} else {// If female, create scheme file
 			SchemeCreator scheme = new SchemeCreator(speech);
 			scheme.createSpeakScheme();
 			
@@ -46,8 +57,8 @@ public class Speech extends SwingWorker<Void, Void> {
 				new InputStreamReader(stdout));
 		pID = br.readLine();
 
-		String finished = "in progress";
-		while (!isCancelled()) {
+		String finished = "in progress";// Determine when festival
+		while (!isCancelled()) {// process ends
 			if (br.ready()) {
 				finished = br.readLine();
 			}
@@ -55,7 +66,7 @@ public class Speech extends SwingWorker<Void, Void> {
 				break;
 			}
 		}
-
+		// Cancel the festival process
 		String cmdKill = "kill -9 $(pstree -p " + pID
 				+ " | grep -P -o '\\([0-9]+\\)' | grep -P -o '[0-9]+')";
 		ProcessBuilder builderK = new ProcessBuilder("/bin/bash", "-c",
@@ -66,10 +77,9 @@ public class Speech extends SwingWorker<Void, Void> {
 
 		return null;
 	}
-
+	// De-select the button when done
 	private void setSpeak() {
 		speak.setSelected(false);
 		speak.setText("Speak");
 	}
-
 }

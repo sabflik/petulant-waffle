@@ -30,6 +30,9 @@ import video.Video;
 import vidivox.FileNameFilter;
 import vidivox.swingworkers.ProgressLoader;
 
+/**This class represents the mp3 tools panel where all the mp3 settings are displayed.
+ * @author Sabrina
+ */
 public class MP3Tools extends JPanel {
 
 	private static final long serialVersionUID = 1L;
@@ -40,11 +43,17 @@ public class MP3Tools extends JPanel {
 	private JLabel mp3;
 	private JToggleButton mp3Play;
 
+	/**
+	 * @param frame			The main JFrame
+	 * @param directory		The default directory
+	 * @param mediaPlayer	The media player instance
+	 * @param label			The label displaying the currently selected video
+	 */
 	public MP3Tools(final JFrame frame, final File directory, 
 			final EmbeddedMediaPlayer mediaPlayer, final VideoLabel label) {
 		setBackground(Color.DARK_GRAY);
 		setLayout(new GridBagLayout());
-
+		//Implements GreidBagLayout
 		GridBagConstraints gb = new GridBagConstraints();
 		gb.fill = GridBagConstraints.HORIZONTAL;
 		
@@ -73,8 +82,8 @@ public class MP3Tools extends JPanel {
 
 				if (number == fChooser.APPROVE_OPTION) {
 					String audio = fChooser.getSelectedFile().getAbsolutePath();
-					MP3.setMP3Name(audio);
-					if(Video.getVideoName() != null) {
+					MP3.setMP3Name(audio);// Sets the selected MP3
+					if(Video.getVideoName() != null) {// Enable buttons where applicable
 						mp3Button.setEnabled(true);
 					}
 					mp3Play.setEnabled(true);
@@ -136,13 +145,13 @@ public class MP3Tools extends JPanel {
 					// Code from: https://community.oracle.com/message/5491217
 					FileNameFilter filter = new FileNameFilter();
 					if(!filter.isValid(chooser.getSelectedFile().getAbsolutePath())){ 
-				        JOptionPane.showMessageDialog(null, "The filename " 
+				        JOptionPane.showMessageDialog(null, "The filename " // Show error dialog if not valid
 				        		+ chooser.getSelectedFile().getAbsolutePath() + ".mp3 is invalid.", 
 				        		"Save As Error", JOptionPane.ERROR_MESSAGE); 
-					} else {
+					} else {// If valid, then show progress while waiting for file creation
 						ProgressLoader progress = new ProgressLoader(frame);
 						progress.execute();
-
+						// Merge MP3 with Video and save file
 						MP3OverlayWorker overlay = new MP3OverlayWorker(mediaPlayer, label, frame, 
 								mp3TimeInMS, chooser, progress);
 						overlay.execute();
@@ -158,7 +167,7 @@ public class MP3Tools extends JPanel {
 		add(mp3Button, gb);
 
 		// MP3 TIMING LABEL
-		gb.gridy = 6;
+		gb.gridy = 6;// Displays time at which mp3 will be added
 		mp3Timing = new JLabel("Add mp3 at: 00:00");
 		mp3Timing.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		mp3Timing.setForeground(Color.orange);
@@ -167,7 +176,7 @@ public class MP3Tools extends JPanel {
 		add(mp3Timing, gb);
 		
 		// INFORMATIVE LABEL
-		gb.gridy = 7;
+		gb.gridy = 7;// Tells the user how to change the time
 		JLabel disclaimer1 = new JLabel("Right click on the progress bar");
 		disclaimer1.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		disclaimer1.setForeground(Color.white);
@@ -179,7 +188,10 @@ public class MP3Tools extends JPanel {
 		add(disclaimer2, gb);
 	}
 
-	// Sets the selected time for mp3 placement
+	/**Sets the selected time for mp3 placement by converting milliseconds to 
+	 * the correct format.
+	 * @param time	The time in milliseconds where the mp3 needs to be added
+	 */
 	public void mp3Timing(float time) {
 		if (time != -1) {
 			mp3TimeInMS = time;
@@ -191,28 +203,30 @@ public class MP3Tools extends JPanel {
 		}
 	}
 
-	// Gets the selected time for mp3 placement
+	/**
+	 * @return	The selected time for mp3 placement in milliseconds
+	 */
 	public float getMP3Timing() {
 		return mp3TimeInMS;
 	}
-
+	/**Enables/Disables choosemp3 button**/
 	public void setChooseMP3Enabled(boolean selection) {
 		chooseMP3.setEnabled(selection);
 	}
-	
+	/**Sets the name of the mp3**/
 	public void setMP3Selected() {
 		File mp3File = new File(MP3.getMP3Name());
 		mp3.setText("Chosen MP3: " + mp3File.getName());
 	}
-	
+	/**Enables/Disables play mp3 button**/
 	public void setMP3PlayEnabled(boolean selection) {
 		mp3Play.setEnabled(selection);
 	}
-	
+	/**Enables/Disables mp3 combo button**/
 	public void setMP3ComboEnabled(boolean selection) {
 		mp3Button.setEnabled(selection);
 	}
-	
+	/**Clicks mp3 play button**/
 	public void clickMP3Cancel() {
 		mp3Play.doClick();
 	}

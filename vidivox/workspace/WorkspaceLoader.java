@@ -13,7 +13,8 @@ import vidivox.guicomponents.VideoLabel;
 /**
  * This class loads the previous workspace by accessing a folder called "Workspace"
  * in the hidden directory ".PetulantWaffle"
- * **/
+ * @author Sabrina
+ */
 public class WorkspaceLoader {
 
 	private SpeechTab sTab;
@@ -22,6 +23,13 @@ public class WorkspaceLoader {
 	private EmbeddedMediaPlayer mediaPlayer;
 	private VideoLabel vLabel;
 
+	/**
+	 * @param vLabel		The label displaying the currently selected video
+	 * @param sTab			the speech tab
+	 * @param sTools		the speech Tools panel
+	 * @param mTools		the mp3 Tools panel
+	 * @param mediaPlayer	THe media player instance
+	 */
 	public WorkspaceLoader(VideoLabel vLabel, SpeechTab sTab, SpeechTools sTools, 
 			MP3Tools mTools, EmbeddedMediaPlayer mediaPlayer) {
 		this.mTools = mTools;
@@ -31,9 +39,12 @@ public class WorkspaceLoader {
 		this.vLabel = vLabel;
 	}
 	
+	/**
+	 * @throws Exception	Text is written into a file
+	 */
 	public void load() throws Exception {
-		
-		String speech = "";// Loads the saved speech
+		// Loads the saved speech
+		String speech = "";
 		String line;
 	    @SuppressWarnings("resource")
 		BufferedReader br = new BufferedReader(new FileReader(".PetulantWaffle/Workspace/speech.txt"));
@@ -42,8 +53,8 @@ public class WorkspaceLoader {
 	    	speech = speech + line + "\n";
 	    }
 	    sTab.setText(speech);
-	    
-	    @SuppressWarnings("resource")// Loads the saved video
+	 // Loads the saved video
+	    @SuppressWarnings("resource")
 		BufferedReader b = new BufferedReader(new FileReader(".PetulantWaffle/Workspace/settings.txt"));
 	    line = b.readLine();
 	    if(!line.equals("null")) {
@@ -55,8 +66,8 @@ public class WorkspaceLoader {
 				sTools.setComboEnabled(true);
 			}
 	    }
-	    
-	    line = b.readLine();// Loads the saved mp3
+	    // Loads the saved mp3
+	    line = b.readLine();
 	    if(!line.equals("null")) {
 	    	MP3.setMP3Name(line);
 	    	mTools.setMP3Selected();
@@ -65,14 +76,14 @@ public class WorkspaceLoader {
 				mTools.setMP3ComboEnabled(true);
 			}
 	    }
-	    
-	    line = b.readLine();// Loads gender selection
+	    // Loads gender selection
+	    line = b.readLine();
 	    sTools.setMaleSelected(line.equals(Boolean.valueOf(line)));
-	    
-	    line = b.readLine();// Loads speech time
+	    // Loads speech time
+	    line = b.readLine();
 	    sTools.speechTiming(Float.parseFloat(line));
-	    
-	    line = b.readLine();// Loads mp3 time
+	    // Loads mp3 time
+	    line = b.readLine();
 	    mTools.mp3Timing(Float.parseFloat(line));
 	}
 }

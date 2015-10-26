@@ -7,7 +7,6 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.IOException;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -25,6 +24,10 @@ import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 import vidivox.FileNameFilter;
 import vidivox.swingworkers.ProgressLoader;
 
+/**This class represents the speech tools panel where all the speech settings are displayed.
+ * It works with the speech tab to provide speech functionality.
+ * @author Sabrina
+ */
 public class SpeechTools extends JPanel {
 
 	private static final long serialVersionUID = 1L;
@@ -39,12 +42,19 @@ public class SpeechTools extends JPanel {
 	private JRadioButton male;
 	private JRadioButton female;
 
+	/**
+	 * @param frame			The main JFrame
+	 * @param directory		The default Directory
+	 * @param mediaPlayer	The media player instance
+	 * @param mTools		The mp3 tools panel
+	 * @param label			The label displaying the currently selected video
+	 */
 	public SpeechTools(final JFrame frame, final File directory, final EmbeddedMediaPlayer mediaPlayer, 
 			final MP3Tools mTools, final VideoLabel label) {
 
 		setBackground(Color.DARK_GRAY);
 		setLayout(new GridBagLayout());
-
+		//Implements GreidBagLayout
 		GridBagConstraints gb = new GridBagConstraints();
 		gb.fill = GridBagConstraints.HORIZONTAL;
 
@@ -109,20 +119,16 @@ public class SpeechTools extends JPanel {
 					// Make sure file name is valid
 					FileNameFilter filter = new FileNameFilter();
 					if(!filter.isValid(chooser.getSelectedFile().getAbsolutePath())){ 
-				        JOptionPane.showMessageDialog(null, "The filename " 
+				        JOptionPane.showMessageDialog(null, "The filename " // Show error dialog if not valid
 				        		+ chooser.getSelectedFile().getAbsolutePath() + ".avi is invalid.", 
 				        		"Save As Error", JOptionPane.ERROR_MESSAGE); 
-					} else {
-						try {
-							ProgressLoader progress = new ProgressLoader(frame);
-							progress.execute();
-							CreateAudio createMP3;
-							createMP3 = new CreateAudio(frame, mTools, speechTab.getText(),
-									chooser, progress, male.isSelected());
-							createMP3.execute();
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
+					} else {// If valid, then show progress while waiting for file creation
+						ProgressLoader progress = new ProgressLoader(frame);
+						progress.execute();
+						CreateAudio createMP3;// Create mp3 from text and save file
+						createMP3 = new CreateAudio(frame, mTools, speechTab.getText(),
+								chooser, progress, male.isSelected());
+						createMP3.execute();
 					}
 				}
 			}
@@ -146,13 +152,13 @@ public class SpeechTools extends JPanel {
 					// Make sure file name is valid
 					FileNameFilter filter = new FileNameFilter();
 					if(!filter.isValid(chooser.getSelectedFile().getAbsolutePath())){ 
-				        JOptionPane.showMessageDialog(null, "The filename " 
+				        JOptionPane.showMessageDialog(null, "The filename "  // Show error dialog if not valid
 				        		+ chooser.getSelectedFile().getAbsolutePath() + ".avi is invalid.", 
 				        		"Save As Error", JOptionPane.ERROR_MESSAGE); 
-					} else {
+					} else {// If valid, then show progress while waiting for file creation
 						ProgressLoader progress = new ProgressLoader(frame);
 						progress.execute();
-						ComboCreationWorker cc;
+						ComboCreationWorker cc;// Merge Speech with Video and save file
 						cc = new ComboCreationWorker(mediaPlayer, label, frame, chooser, speechTimeInMS,
 								progress, speechTab.getText(), male.isSelected());
 						cc.execute();
@@ -167,8 +173,8 @@ public class SpeechTools extends JPanel {
 		speechCombo.setEnabled(false);
 		add(speechCombo, gb);
 
-		// Speech settings Options
-		gb.gridy = 5;
+		// SPEECH TIMING LABEL
+		gb.gridy = 5;// Displays time at which speech will be added
 		speechTiming = new JLabel("Add speech at: 00:00");
 		speechTiming.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		speechTiming.setForeground(Color.orange);
@@ -177,7 +183,7 @@ public class SpeechTools extends JPanel {
 		add(speechTiming, gb);
 
 		// INFORMATIVE LABEL
-		gb.gridy = 6;
+		gb.gridy = 6;// Tells the user how to change the time
 		JLabel disclaimer1 = new JLabel("Right click on the progress bar");
 		disclaimer1.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		disclaimer1.setForeground(Color.white);
@@ -193,7 +199,10 @@ public class SpeechTools extends JPanel {
 		return speechTimeInMS;
 	}
 
-	// Sets the selected time for mp3 placement
+	/**Sets the selected time for speech placement by converting milliseconds to 
+	 * the correct format.
+	 * @param time	The time in milliseconds where the speech needs to be added
+	 */
 	public void speechTiming(float time) {
 		if (time != -1) {
 			speechTimeInMS = time;
@@ -206,32 +215,33 @@ public class SpeechTools extends JPanel {
 		}
 	}
 
+	/**@param speechTab	This class needs to work with the Speech tab*/
 	public void setSpeechTab(SpeechTab speechTab) {
 		this.speechTab = speechTab;
 	}
-
+	/**Enables/Disables speech combo button**/
 	public void setComboEnabled(boolean selection) {
 		speechCombo.setEnabled(selection);
 	}
-
+	/**Enables/Disables speak button**/
 	public void setSpeakEnabled(boolean selection) {
 		speak.setEnabled(selection);
 	}
-
+	/**Enables/Disables create mp3 button**/
 	public void setMP3Enabled(boolean selection) {
 		createMP3.setEnabled(selection);
 	}
-	
+	/**@return	Whether male voice is selected or not*/
 	public boolean isMaleSelected() {
 		return male.isSelected();
 	}
-	
+	/**@param selection	Choose the gender selection*/
 	public void setMaleSelected(boolean selection) {
 		if(!selection) {
 			female.doClick();
 		}
 	}
-	
+	/**Clicks speak button**/
 	public void clickSpeakCancel() {
 		speak.doClick();
 	}

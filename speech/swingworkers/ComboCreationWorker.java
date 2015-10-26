@@ -16,6 +16,9 @@ import video.Video;
 import vidivox.guicomponents.VideoLabel;
 import vidivox.swingworkers.ProgressLoader;
 
+/**This SwingWorker class merges speech with the selected video
+ * @author Sabrina
+ */
 public class ComboCreationWorker extends SwingWorker<Void, Void> {
 
 	private JFileChooser chooser;
@@ -27,6 +30,16 @@ public class ComboCreationWorker extends SwingWorker<Void, Void> {
 	private EmbeddedMediaPlayer mediaPlayer;
 	private VideoLabel label;
 
+	/**
+	 * @param mediaPlayer		The media player instance
+	 * @param label				The label displaying the currently selected video
+	 * @param frame				The main frame
+	 * @param chooser			The file chooser for saving said file
+	 * @param speechTimeInMS	The time in milliseconds that the user chose for speech
+	 * @param progress			The progress bar to be displayed during the creation
+	 * @param speech			The text to be used as speech
+	 * @param isMale			Gender selection
+	 */
 	public ComboCreationWorker(EmbeddedMediaPlayer mediaPlayer, VideoLabel label,
 			JFrame frame, JFileChooser chooser, float speechTimeInMS,
 			ProgressLoader progress, String speech, boolean isMale) {
@@ -42,12 +55,15 @@ public class ComboCreationWorker extends SwingWorker<Void, Void> {
 
 	// Code from
 	// http://stackoverflow.com/questions/24804928/singler-line-ffmpeg-cmd-to-merge-video-audio-and-retain-both-audios
+	/* (non-Javadoc)
+	 * @see javax.swing.SwingWorker#doInBackground()
+	 */
 	@Override
 	protected Void doInBackground() throws Exception {
 		
 		String cmd = null;
 
-		if (isMale) {
+		if (isMale) { //If male
 			
 			try {// Writes speech to text file
 				PrintWriter out = new PrintWriter(new FileWriter(
@@ -60,7 +76,7 @@ public class ComboCreationWorker extends SwingWorker<Void, Void> {
 			
 			// Create the wav file from the text in Speech.txt
 			cmd = "text2wave .PetulantWaffle/Speech.txt -o .PetulantWaffle/speech.wav;";
-		} else {
+		} else { //If female
 			SchemeCreator scheme = new SchemeCreator(speech);
 			scheme.createMP3Scheme();
 			
@@ -70,13 +86,13 @@ public class ComboCreationWorker extends SwingWorker<Void, Void> {
 		// Convert the wav file to mp3
 		cmd = cmd + "ffmpeg -i .PetulantWaffle/speech.wav -y .PetulantWaffle/audio.mp3;";
 
-		if (speechTimeInMS != 0.0) {
+		if (speechTimeInMS != 0.0) {// Merge video at specified time
 			// Replace with merged audio and create file specified by the user
 			cmd = cmd + "ffmpeg -i " + Video.getVideoName()
 					+ " -i .PetulantWaffle/audio.mp3 -filter_complex '[1:a]adelay=" + speechTimeInMS
 					+ "[aud2];[0:a][aud2]amix=inputs=2' -map 0:v -map 1:a "	+ chooser.getSelectedFile()
 					.getAbsolutePath() + ".avi";
-		} else {
+		} else {// Merge video at beginning
 			cmd = cmd + "ffmpeg -i " + Video.getVideoName()
 					+ " -i .PetulantWaffle/audio.mp3 -filter_complex '[0:a][1:a]amix=inputs=2' -map 0:v -map 1:a "
 					+ chooser.getSelectedFile().getAbsolutePath() + ".avi";
@@ -90,12 +106,16 @@ public class ComboCreationWorker extends SwingWorker<Void, Void> {
 		return null;
 	}
 
+	/* (non-Javadoc)
+	 * @see javax.swing.SwingWorker#done()
+	 */
 	@Override
 	protected void done() {
-		progress.disposeProgress();
+		progress.disposeProgress();// After file creation, close the progress bar
+		// Show successful save dialog
 		JOptionPane.showMessageDialog(frame, chooser.getSelectedFile().getName() 
 				+ " was successfully saved in "+chooser.getSelectedFile().getPath());
-		
+		// Prompt user is they'd like to open the created file
 		String ObjButtons[] = { "Yes", "No" };
 		int PromptResult = JOptionPane.showOptionDialog(null,
 				"Do you want to open this file?", "Open created file",
@@ -103,8 +123,8 @@ public class ComboCreationWorker extends SwingWorker<Void, Void> {
 				ObjButtons, ObjButtons[1]);
 		if (PromptResult == JOptionPane.YES_OPTION) {
 			Video.setVideoName(chooser.getSelectedFile().getAbsolutePath()+".avi");
-			mediaPlayer.playMedia(Video.getVideoName());
-			label.setCurrentVideo();
+			mediaPlayer.playMedia(Video.getVideoName());//If yes, set this as selected video
+			label.setCurrentVideo();// Update video label
 		}
 	}
 }

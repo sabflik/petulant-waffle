@@ -17,6 +17,7 @@ import vidivox.guicomponents.SpeechTools;
 /**
  * This class saves the current workspace by writing to files inside a folder
  * called "Workspace" in side the ".PetulantWaffle" hidden folder.
+ *  @author Sabrina
  * **/
 public class WorkspaceSaver {
 
@@ -25,6 +26,12 @@ public class WorkspaceSaver {
 	private MP3Tools mTools;
 	private boolean exit;
 
+	/**
+	 * @param sTab		The speech tab
+	 * @param sTools	The speech tools panel
+	 * @param mTools	The mp3 Tools panel
+	 * @param exit		Is the user trying to exit
+	 */
 	public WorkspaceSaver(SpeechTab sTab, SpeechTools sTools, MP3Tools mTools,
 			boolean exit) {
 		this.mTools = mTools;
@@ -33,16 +40,20 @@ public class WorkspaceSaver {
 		this.exit = exit;
 	}
 	
-	//Code from:
+	/**This method prompts the user if they want to save their workspace
+	 * Code from:
 	// http://stackoverflow.com/questions/15449022/show-prompt-before-closing-jframe
+	 */
 	public void promptSave() {
 		String ObjButtons[] = { "Yes", "No", "Cancel" };
 		int PromptResult = JOptionPane.showOptionDialog(null,
 				"Do you want to save this workspace?", "Confirm Save",
 				JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null,
 				ObjButtons, ObjButtons[1]);
+		// If no is selected and the user is trying to exit, the close the application
 		if (exit && (PromptResult == JOptionPane.NO_OPTION)) {
 			System.exit(0);
+		// If the user selects yes, the save the workspace
 		} else if (PromptResult == JOptionPane.YES_OPTION) {
 			try {
 				save();
@@ -55,6 +66,9 @@ public class WorkspaceSaver {
 		}
 	}
 
+	/**
+	 * @throws IOException	Tries to write settings to a file
+	 */
 	public void save() throws IOException {
 
 		// Creates file to store workspace information

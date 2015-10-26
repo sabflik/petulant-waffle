@@ -24,6 +24,10 @@ import vidivox.workspace.WorkspaceSaver;
 import java.io.File;
 import java.io.IOException;
 
+/**This is the main VIDIVOX class that contains the overall JFrame. It uses GridBagLayout to 
+ * handle re-sizing and contains all the other panels and tabs.
+ * @author Sabrina Zafarullah
+ */
 public class MainClass {
 
 	private final JFrame frame;
@@ -32,6 +36,7 @@ public class MainClass {
 	private File dir;
 	private Canvas canvas;
 
+	// Main class to set up VIDIVOX
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -44,7 +49,9 @@ public class MainClass {
 		});
 	}
 
-	// This method creates all necessary files before executing the gui
+	/**This method creates all necessary files before executing the GUI
+	 * @throws IOException	Attempts to create files
+	 */
 	private void createFiles() throws IOException {
 		// create hidden directory to store intermediate files
 		File hDir = new File(".PetulantWaffle");
@@ -62,6 +69,9 @@ public class MainClass {
 		speechFile.createNewFile();
 	}
 
+	/**
+	 * Creates the canvas and media player that goes into it
+	 */
 	private void setUpCanvas() {
 		final Canvas canvas = new Canvas();// Creates a canvas to display the video
 		canvas.setBackground(Color.black);
@@ -150,7 +160,7 @@ public class MainClass {
 				saver.promptSave();
 			}
 		});
-
+		// Sets up the shortcuts
 		Shortcut msc = new Shortcut(vTab, mp3Tools, speechTools);
 		msc.addShortcut(frame);
 		

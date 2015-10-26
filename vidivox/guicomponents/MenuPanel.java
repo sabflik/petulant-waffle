@@ -22,10 +22,24 @@ import video.*;
 import vidivox.workspace.WorkspaceLoader;
 import vidivox.workspace.WorkspaceSaver;
 
+/**This class represents the menu ribbon at the top. It contains the video selection, 
+ * workspace and help buttons.
+ * @author Sabrina
+ */
 public class MenuPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * @param vLabel		The label displaying the currently selected video
+	 * @param frame			The main JFrame
+	 * @param mediaPlayer	The media player instance
+	 * @param sTab			The speech tab
+	 * @param vTab			The video tab
+	 * @param sTools		The speech tools panel
+	 * @param mTools		The mp3 tools panel
+	 * @param directory		The default directory
+	 */
 	public MenuPanel(final VideoLabel vLabel, final JFrame frame, 
 			final EmbeddedMediaPlayer mediaPlayer,
 			final SpeechTab sTab, final VideoTab vTab,
@@ -33,7 +47,7 @@ public class MenuPanel extends JPanel {
 			final File directory) {
 
 		setBackground(Color.GRAY);
-		setLayout(null);
+		setLayout(null);// Implements absolute layout
 
 		// SELECT VIDEO BUTTON
 		final JButton selectVideo = new JButton("Select Video");
@@ -53,10 +67,10 @@ public class MenuPanel extends JPanel {
 
 				if (number == fChooser.APPROVE_OPTION) {
 					String video = fChooser.getSelectedFile().getAbsolutePath();
-					Video.setVideoName(video);
+					Video.setVideoName(video);// Sets selected video and plays it
 					mediaPlayer.playMedia(video);
 					vLabel.setCurrentVideo();
-					
+					// Enable buttons where applicable
 					if (sTab.isTextEnabled()) {
 						sTools.setComboEnabled(true);
 					}
@@ -77,7 +91,7 @@ public class MenuPanel extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				File dir = new File(".PetulantWaffle/Workspace");
 
-				if (dir.exists()) {
+				if (dir.exists()) {// Prompt user to load previous workspace
 					String ObjButtons[] = { "Yes", "No", "Cancel" };
 					int PromptResult = JOptionPane.showOptionDialog(null,
 							"Do you want to load previously saved workspace?",
@@ -85,6 +99,7 @@ public class MenuPanel extends JPanel {
 							JOptionPane.QUESTION_MESSAGE, null, ObjButtons,
 							ObjButtons[1]);
 					if (PromptResult == JOptionPane.YES_OPTION) {
+						//If yes, open up workspace loader and try loading
 						WorkspaceLoader loader = new WorkspaceLoader(vLabel, sTab,
 								sTools, mTools, mediaPlayer);
 						try {
@@ -93,7 +108,7 @@ public class MenuPanel extends JPanel {
 							System.out.println("Couldn't load workspace");
 						}
 					}
-				} else {
+				} else {// Throw error dialog if no workspace was found
 					JOptionPane.showMessageDialog(frame, "There are no saved workspaces", 
 							"Workspace error", JOptionPane.ERROR_MESSAGE);
 				}
@@ -104,7 +119,7 @@ public class MenuPanel extends JPanel {
 		load.setBounds(150, 0, 150, 20);
 		add(load);
 
-		// SAVE BUTTON
+		// SAVE BUTTON - Saves current workspace
 		final JButton save = new JButton("Save...");
 		save.setBackground(Color.WHITE);
 		save.addActionListener(new ActionListener() {
@@ -127,7 +142,7 @@ public class MenuPanel extends JPanel {
 				//Opens User Manual for Help
 // Code from: http://stackoverflow.com/questions/2546968/open-pdf-file-on-fly-from-java-application
 				if (Desktop.isDesktopSupported()) {
-				    try {
+				    try {// If it's not found show error dialog
 				        File myFile = new File(currentDirectory+"/UserManual.pdf");
 				        Desktop.getDesktop().open(myFile);
 				    } catch (IOException | IllegalArgumentException ex) {

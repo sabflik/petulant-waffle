@@ -15,8 +15,8 @@ import video.Video;
 import vidivox.guicomponents.MP3Tools;
 import vidivox.swingworkers.ProgressLoader;
 
-/**
- * This SwingWorker class converts the text entered into an mp3 file.
+/**This SwingWorker class converts the text entered into an mp3 file.
+ * @author Sabrina
  */
 public class CreateAudio extends SwingWorker<Void, Void> {
 
@@ -27,9 +27,16 @@ public class CreateAudio extends SwingWorker<Void, Void> {
 	private JFrame frame;
 	private MP3Tools mTools;
 
+	/**
+	 * @param frame			The main frame
+	 * @param mTools		mp3 tools panel
+	 * @param text			The text to be used as speech
+	 * @param chooser		The file chooser for saving said file
+	 * @param progress		The progress bar to be displayed during the creation
+	 * @param isMale		Gender selection
+	 */
 	public CreateAudio(JFrame frame, MP3Tools mTools,
-			String text, JFileChooser chooser, ProgressLoader progress, boolean isMale)
-			throws IOException {
+			String text, JFileChooser chooser, ProgressLoader progress, boolean isMale) {
 		this.text = text;
 		this.chooser = chooser;
 		this.progress = progress;
@@ -38,16 +45,19 @@ public class CreateAudio extends SwingWorker<Void, Void> {
 		this.mTools = mTools;
 	}
 
+	/* (non-Javadoc)
+	 * @see javax.swing.SwingWorker#doInBackground()
+	 */
 	@Override
 	protected Void doInBackground() throws Exception {
 
 		String cmd;
 
-		if (isMale) {
+		if (isMale) {// If male
 			// create the wav file and convert that wav file to mp3
 			cmd = "text2wave .PetulantWaffle/Speech.txt -o .PetulantWaffle/speech.wav;"
 					+ "ffmpeg -i .PetulantWaffle/speech.wav " + chooser.getSelectedFile().getAbsolutePath() + ".mp3";
-		} else {
+		} else {// If female create scheme file
 			SchemeCreator scheme = new SchemeCreator(text);
 			scheme.createMP3Scheme();
 
@@ -74,11 +84,15 @@ public class CreateAudio extends SwingWorker<Void, Void> {
 		return null;
 	}
 
+	/* (non-Javadoc)
+	 * @see javax.swing.SwingWorker#done()
+	 */
 	public void done() {
-		progress.disposeProgress();
+		progress.disposeProgress();// After file creation, close the progress bar
+		// Show successful save dialog
 		JOptionPane.showMessageDialog(frame, chooser.getSelectedFile().getName() 
 				+ " was successfully saved in "+ chooser.getSelectedFile().getPath());
-		
+		// Prompt user is they'd like to open the created file
 		String ObjButtons[] = { "Yes", "No" };
 		int PromptResult = JOptionPane.showOptionDialog(null,
 				"Do you want to open this file?", "Open created file",
@@ -86,8 +100,8 @@ public class CreateAudio extends SwingWorker<Void, Void> {
 				ObjButtons, ObjButtons[1]);
 		if (PromptResult == JOptionPane.YES_OPTION) {
 			MP3.setMP3Name(chooser.getSelectedFile().getAbsolutePath()+".mp3");
-			mTools.setMP3Selected();
-			mTools.setMP3PlayEnabled(true);
+			mTools.setMP3Selected();//If yes, set this as selected mp3
+			mTools.setMP3PlayEnabled(true);// Enable certain buttons
 		}
 		if(Video.getVideoName() != null) {
 			mTools.setMP3ComboEnabled(true);
