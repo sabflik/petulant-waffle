@@ -6,7 +6,7 @@
 Welcome to Vidivox. You can run this from the main Linux environment (l) in the
 UG4 labs. In order to run this, you will have to give it permission. This can be 
 done by right clicking on VIDIVOX_szaf045.jar, clicking on properties, and in the
-permissions tab, tick the box that gives it permission to run.
+permissions tab, ticking the box that gives it permission to run.
 
 ->You should be able to then double-click on the jar to run it.
 
