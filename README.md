@@ -1,7 +1,9 @@
 # petulant-waffle
 *******************************The VIDIVOX Project*********************************
+
 ********************************by Sabrina Zafarullah******************************
-<************************************README****************************************
+
+************************************README*****************************************
 
 Welcome to Vidivox. You can run this from the main Linux environment (l) in the
 UG4 labs. In order to run this, you will have to give it permission. This can be 
