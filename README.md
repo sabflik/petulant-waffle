@@ -3,8 +3,6 @@
 
 ********************************by Sabrina Zafarullah******************************
 
-************************************README*****************************************
-
 Welcome to Vidivox. You can run this from the main Linux environment (l) in the
 UG4 labs. In order to run this, you will have to give it permission. This can be 
 done by right clicking on VIDIVOX_szaf045.jar, clicking on properties, and in the
@@ -21,6 +19,9 @@ if you can't find it there for some reason, it should be in your current directo
 
 In order for the Help funtion to work, the "UserManual.pdf" file will need to be in
 the same directory as the two files that are created.
+
+Please make sure you have Festival and FFMPEG installed for optimum usage of Vidivox
+features.
 
 Hope you enjoy using my Vidivox!
 
