@@ -1,6 +1,6 @@
 # petulant-waffle
 *******************************The VIDIVOX Project*********************************
-<-------------------------------by Sabrina Zafarullah----------------------------->
+********************************by Sabrina Zafarullah******************************
 <************************************README****************************************
 
 Welcome to Vidivox. You can run this from the main Linux environment (l) in the
